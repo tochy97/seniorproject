@@ -42,6 +42,35 @@ export const loginUser = (data) => dispatch=>{
     });
 }
 
+export const createUser = (data) => dispatch=>{
+    const formData = JSON.stringify(data)
+    axios.post("http://127.0.0.1:8000/createuser/", formData, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(res => {
+        console.log(res)
+        const user = {
+            username:res.data.user.username,
+            id:res.data.user.id,
+            status:res.status
+        }
+        dispatch(setUser(user))
+        localStorage.setItem('token', res.data.token);
+    })
+    .catch(err => {
+        localStorage.removeItem('token');
+        console.log(err.response.status)
+        const info= {
+            error:"Invalid Username or Password",
+            status:err.response.status
+        }
+        dispatch(setError(info))
+        dispatch(resetUser);
+    });
+}
+
 export const checkUser = () => dispatch=>{
     axios.get('http://127.0.0.1:8000/currentuser/', {
         headers: {
