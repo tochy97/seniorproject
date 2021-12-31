@@ -68,12 +68,12 @@ function Register() {
                             <Form.Label>ID Number</Form.Label>
                         </Form.Floating>
                         <Form.Floating id="password" style={{marginTop: "1rem"}} >
-                            <Form.Control type="password" placeholder="Password" rvalue={password} onChange={e=>setPassword(e.target.value)} required></Form.Control>
-                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" placeholder="Last 4 digits of ID" rvalue={password} onChange={e=>setPassword(e.target.value)} required></Form.Control>
+                            <Form.Label>Last 4 digits of ID</Form.Label>
                         </Form.Floating>
                         <Form.Floating id="cpassword" style={{marginTop: "1rem"}} >
-                            <Form.Control type="password" placeholder="Confirm Password" rvalue={cpassword} onChange={e=>setCpassword(e.target.value)} required></Form.Control>
-                            <Form.Label>Confirm Password</Form.Label>
+                            <Form.Control type="password" placeholder="Confirm last 4 digits of ID" rvalue={cpassword} onChange={e=>setCpassword(e.target.value)} required></Form.Control>
+                            <Form.Label>Confirm last 4 digits of ID</Form.Label>
                         </Form.Floating>
                         <Button className="w-100 mt-4" variant="dark" type="submit">Register</Button>
                     </Form>

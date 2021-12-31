@@ -71,15 +71,18 @@ function Login() {
                         <Modal.Body>
                             <Form onSubmit={handleSubmit}>
                                 <Form.Floating id="username">
-                                    <Form.Control type="username" placeholder="ID Number" value={username} onChange={e=>setUsername(e.target.value)} autoFocus required></Form.Control>
+                                    <Form.Control type="username" placeholder="ID Number" value={username} onChange={e=>setUsername(e.target.value)} required></Form.Control>
                                     <Form.Label>ID Number</Form.Label>
                                 </Form.Floating>
                                 <Button className="w-100 mt-4" variant="dark" type="submit">Login</Button>
                             </Form>
                         </Modal.Body>
                         <Modal.Footer>
-                        <Button className="w-100 mt-4" variant="secondary" onClick={handleClose}>
+                        <Button variant="secondary" onClick={handleClose}>
                             Close
+                        </Button>
+                        <Button variant="primary" onClick={handleClose}>
+                            Login
                         </Button>
                         </Modal.Footer>
                     </Modal>
