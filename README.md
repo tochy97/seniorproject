@@ -1,6 +1,6 @@
-#UTA CSE Lab Equipment Checkout
+# UTA CSE Lab Equipment Checkout
 
-##Requirements
+## Requirements
 
 Must be able to add student (name, id, email, instructor, section, team)
 
