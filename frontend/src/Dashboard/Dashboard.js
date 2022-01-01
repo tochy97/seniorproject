@@ -24,6 +24,7 @@ function Dashboard() {
             <h1>You are logged in</h1>
             <Link to="/profile" className='m-5'><Button as="Nav">View Profile</Button></Link>
             <Link to="/checkout" className='m-5'><Button as="Nav">Checkout Item</Button></Link>
+            <Link to="/setaccount" className='m-5'><Button as="Nav">Confirm Account</Button></Link>
         </Container>
     );
 }

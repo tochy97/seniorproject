@@ -8,6 +8,8 @@ import NavComp from './NavComp/NavComp';
 import Dashboard from './Dashboard/Dashboard';
 import Profile from './Profile/Profile';
 import Checkout from './Checkout/Checkout';
+import SetAccount from './Auth/SetAccount';
+import EditAccount from './Auth/EditAccount';
 
 function App() {
   const dispatch = useDispatch();    
@@ -29,6 +31,8 @@ function App() {
     <Routes>
       <Route exact path="login" element={<Login/>}/>
       <Route exact path="register" element={<Register/>}/> 
+      <Route exact path="setaccount" element={<SetAccount/>}/> 
+      <Route exact path="editaccount" element={<EditAccount/>}/> 
       {
         isLoggedIn
         ?

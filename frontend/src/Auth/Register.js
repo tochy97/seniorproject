@@ -7,8 +7,10 @@ import { createUser, setError } from '../redux/actionCreators/authActionCreator'
 
 function Register() {
     const [username,setUsername] = useState("");
+    const [cusername,setCusername] = useState("");
     const [password,setPassword] = useState("");
     const [cpassword,setCpassword] = useState("");
+
     const dispatch = useDispatch();
     const histroy = useNavigate();
     
@@ -36,14 +38,21 @@ function Register() {
         dispatch(setError(info));
         if(!isNumeric(username)){
             const info= {
-                error:"ID number must numbers",
+                error:"ID number must be numbers",
             }
             dispatch(setError(info));
             return;
         }
         if(password.localeCompare(cpassword) !== 0){
             const info= {
-                error:"Passwords did not match",
+                error:"Last 4 digits did not match",
+            }
+            dispatch(setError(info));
+            return;
+        }
+        if(username.localeCompare(cusername) !== 0 ){
+            const info= {
+                error:"ID numbers did not match",
             }
             dispatch(setError(info));
             return;
@@ -52,8 +61,11 @@ function Register() {
             username: username,
             password: password
         }
+        if(error){
+            return;
+        }
         dispatch(createUser(data));
-        histroy("../", {replace:true});
+        histroy("../SetAccount", {replace:true});
     }
 
     return (
@@ -63,16 +75,20 @@ function Register() {
                 {error && status !== 401 && <Alert variant="danger">{error}</Alert>}
                 <Col lg={10}  className="mx-auto">
                     <Form onSubmit={handleSubmit}>
-                        <Form.Floating id="text" style={{marginTop: "1rem"}} >
-                            <Form.Control type="text" placeholder="ID Number" rvalue={setUsername} onChange={e=>setUsername(e.target.value)} required></Form.Control>
+                        <Form.Floating id="username" style={{marginTop: "1rem"}} >
+                            <Form.Control type="text" placeholder="ID Number" value={username} onChange={e=>setUsername(e.target.value)} required></Form.Control>
                             <Form.Label>ID Number</Form.Label>
                         </Form.Floating>
+                        <Form.Floating id="cusername" style={{marginTop: "1rem"}} >
+                            <Form.Control type="text" placeholder="Confirm ID number" value={cusername} onChange={e=>setCusername(e.target.value)} required></Form.Control>
+                            <Form.Label>Confirm ID number</Form.Label>
+                        </Form.Floating>
                         <Form.Floating id="password" style={{marginTop: "1rem"}} >
-                            <Form.Control type="password" placeholder="Last 4 digits of ID" rvalue={password} onChange={e=>setPassword(e.target.value)} required></Form.Control>
+                            <Form.Control type="password" placeholder="Last 4 digits of ID" value={password} onChange={e=>setPassword(e.target.value)} required></Form.Control>
                             <Form.Label>Last 4 digits of ID</Form.Label>
                         </Form.Floating>
                         <Form.Floating id="cpassword" style={{marginTop: "1rem"}} >
-                            <Form.Control type="password" placeholder="Confirm last 4 digits of ID" rvalue={cpassword} onChange={e=>setCpassword(e.target.value)} required></Form.Control>
+                            <Form.Control type="password" placeholder="Confirm last 4 digits of ID" value={cpassword} onChange={e=>setCpassword(e.target.value)} required></Form.Control>
                             <Form.Label>Confirm last 4 digits of ID</Form.Label>
                         </Form.Floating>
                         <Button className="w-100 mt-4" variant="dark" type="submit">Register</Button>

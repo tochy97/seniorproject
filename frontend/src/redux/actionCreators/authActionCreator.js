@@ -34,7 +34,7 @@ export const loginUser = (data) => dispatch=>{
         localStorage.removeItem('token');
         console.log(err.response.status)
         const info= {
-            error:"Invalid Username or Password",
+            error:"Invalid username or password",
             status:err.response.status
         }
         dispatch(setError(info))
@@ -44,7 +44,7 @@ export const loginUser = (data) => dispatch=>{
 
 export const createUser = (data) => dispatch=>{
     const formData = JSON.stringify(data)
-    axios.post("http://127.0.0.1:8000/createuser/", formData, {
+    axios.post("http://127.0.0.1:8000/userapi/", formData, {
         headers: {
             'Content-Type': 'application/json',
         },
@@ -52,18 +52,20 @@ export const createUser = (data) => dispatch=>{
     .then(res => {
         console.log(res)
         const user = {
-            username:res.data.user.username,
-            id:res.data.user.id,
+            username:res.data.username,
             status:res.status
         }
-        dispatch(setUser(user))
+        dispatch(setUser(user));
+        const info= {
+            error:"Refresh page",
+        }
+        dispatch(setError(info))
         localStorage.setItem('token', res.data.token);
     })
     .catch(err => {
         localStorage.removeItem('token');
-        console.log(err.response.status)
         const info= {
-            error:"Invalid Username or Password",
+            error:"Registration failed",
             status:err.response.status
         }
         dispatch(setError(info))
@@ -77,7 +79,7 @@ export const checkUser = () => dispatch=>{
             Authorization: `JWT ${localStorage.getItem('token')}`,
         }
     })
-    .then((res) => {
+    .then(res => {
         const user = {
             username:res.data.username,
             id:res.data.id,
@@ -96,6 +98,34 @@ export const checkUser = () => dispatch=>{
     }); 
 }
 
+export const setAccount = (data, id) => dispatch=>{
+    const formData = JSON.stringify(data)
+    axios.put(`http://127.0.0.1:8000/userapi/${id}`, formData, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+        },
+    })
+    .then(res => {
+        console.log(res)
+        const user = {
+            username:res.data.user.username,
+            id:res.data.user.id,
+            status:res.status
+        }
+        dispatch(setUser(user))
+    })
+    .catch(err => {
+        localStorage.removeItem('token');
+        console.log(err.response.status)
+        const info= {
+            error:"Update failed. Refresh Page",
+            status:err.response.status
+        }
+        dispatch(setError(info))
+        dispatch(resetUser);
+    });
+}
 
 export const logoutUser = () => dispatch=>{
     localStorage.removeItem('token');
