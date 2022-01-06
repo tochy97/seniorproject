@@ -6,16 +6,16 @@ import { checkUser } from '../../redux/actionCreators/authActionCreator';
 function Profile() {
     const dispatch = useDispatch();    
 
-    const { isLoggedIn, username } = useSelector(
+    const { isLoggedIn, user } = useSelector(
         (state) =>({
             isLoggedIn:state.auth.isLoggedIn, 
-            username:state.auth.username,
+            user:state.auth.user,
     }), shallowEqual);
 
     return (
         <Container>
             <Card>
-                <h1 className='text-center'>{username}</h1>
+                <h1 className='text-center'>{user.username}</h1>
             </Card>
         </Container>
     );

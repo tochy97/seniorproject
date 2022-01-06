@@ -20,11 +20,11 @@ function SetAccount() {
     const dispatch = useDispatch();
     const histroy = useNavigate();
 
-    const { error, status, id, isLoggedIn } = useSelector(
+    const { error, status, user, isLoggedIn } = useSelector(
         (state) =>({
             error:state.auth.error, 
             status:state.auth.status, 
-            id:state.auth.user_id, 
+            user:state.auth.user, 
             isLoggedIn:state.auth.isLoggedIn, 
     }), shallowEqual);
 
@@ -67,17 +67,16 @@ function SetAccount() {
             last_name:last_name,
             email:email,
         }
-        dispatch(setAccount(data, id));
+        dispatch(setAccount(data, user.id));
         setConfirmed(true);
     }
-
     return (
         <Container>
             <Card className='p-5'>
                 <Divider className="font-weight-bold text-center py-4"><h1>Confirm Account</h1></Divider>
                 {error && <Alert variant="danger">{error}</Alert>}
                 {
-                    !id || !isLoggedIn
+                    !user || !isLoggedIn
                     ?
                         <></>
                     :

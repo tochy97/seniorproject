@@ -1,10 +1,11 @@
-import { SET_USER, SET_ERROR, RESET_USER } from "../types/authTypes";
+import { SET_USER, SET_CONFIRMED, SET_ERROR, RESET_USER } from "../types/authTypes";
 
 const initialState = {
     isLoggedIn: false,
     user: null,
     status: null,
     error: null,
+    confirmed:false
 }
 
 const authReducer = (state=initialState, {type, payload})=>{
@@ -15,6 +16,11 @@ const authReducer = (state=initialState, {type, payload})=>{
                 user:payload.user,
                 error: null,
                 status:payload.status,
+            }
+            return state;
+        case SET_CONFIRMED:
+            state={ ...state,
+                confirmed:payload,
             }
             return state;
         case SET_ERROR:

@@ -49,8 +49,24 @@ function NavComp() {
                     isLoggedIn 
                     ?
                     <>  
+                        {
+                            user.is_superuser
+                            ?
+                            <>
+                                <Nav.Item  style={{marginLeft:"15px"}}>
+                                    <Nav.Link href="/admin/manager" style={{color:"black"}}>Manager</Nav.Link>
+                                </Nav.Item>
+                                <Divider style={{margin:"1rem"}}/>
+                                <Nav.Item  style={{marginLeft:"1rem"}}>
+                                    <Nav.Link href="/admin/adder" style={{color:"black"}}>Adder</Nav.Link>
+                                </Nav.Item>
+                                <Divider style={{margin:"1rem"}}/>
+                            </>
+                            :
+                            <></>
+                        }
                         <Nav.Item  style={{marginLeft:"1rem"}}>
-                            <Nav.Item variant="dark" type="submit" onClick={logout}>Logout</Nav.Item>
+                            <Nav.Item type="submit" onClick={logout}>Logout</Nav.Item>
                         </Nav.Item>
                     </>
                     :

@@ -14,9 +14,10 @@ import Admin from './components/Admin';
 function App() {
   const dispatch = useDispatch();    
 
-  const { isLoggedIn } = useSelector(
+  const { isLoggedIn, user } = useSelector(
     (state) =>({
       isLoggedIn:state.auth.isLoggedIn, 
+      user:state.auth.user, 
   }), shallowEqual);
 
   useEffect(() => {
@@ -54,7 +55,7 @@ function App() {
           <Route exact path="checkout" element={<Login/>}/>
       }
       {
-        isLoggedIn
+        isLoggedIn && user.is_superuser
           ?
             <Route path="admin/*" element={<Admin/>} />
           :
