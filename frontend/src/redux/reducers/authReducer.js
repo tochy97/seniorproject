@@ -2,8 +2,7 @@ import { SET_USER, SET_ERROR, RESET_USER } from "../types/authTypes";
 
 const initialState = {
     isLoggedIn: false,
-    username: null,
-    user_id: null,
+    user: null,
     status: null,
     error: null,
 }
@@ -13,10 +12,9 @@ const authReducer = (state=initialState, {type, payload})=>{
         case SET_USER:
             state={ ...state,
                 isLoggedIn:true,
-                username:payload.username,
-                user_id:payload.id,
+                user:payload.user,
                 error: null,
-                status:payload.status
+                status:payload.status,
             }
             return state;
         case SET_ERROR:

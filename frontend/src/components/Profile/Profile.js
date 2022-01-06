@@ -12,12 +12,6 @@ function Profile() {
             username:state.auth.username,
     }), shallowEqual);
 
-    useEffect(() => {
-        if(!isLoggedIn){
-            dispatch(checkUser());
-        }
-    }, [isLoggedIn,dispatch]);
-
     return (
         <Container>
             <Card>

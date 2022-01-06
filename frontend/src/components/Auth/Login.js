@@ -21,8 +21,6 @@ function Login() {
         error:state.auth.error, 
         status:state.auth.status, 
     }), shallowEqual);
-    
-    console.log(status)
 
     function handleSubmit(e){
         e.preventDefault();
@@ -34,7 +32,6 @@ function Login() {
             const temp = username.split(" ");
             const last = temp[temp.length -1].split("+");
             setUsername(last[last.length -1].slice(0,-1));
-            console.log(last[last.length - 1]);
         }
         e.preventDefault();
         const data = {

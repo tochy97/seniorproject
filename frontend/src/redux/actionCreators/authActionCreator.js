@@ -22,17 +22,16 @@ export const loginUser = (data) => dispatch=>{
     })
     .then(res => {
         console.log(res)
-        const user = {
-            username:res.data.user.username,
-            id:res.data.user.id,
+        const data = {
+            user:res.data.user,
             status:res.status
         }
-        dispatch(setUser(user))
+        dispatch(setUser(data))
+        console.log(localStorage.getItem('token'))
         localStorage.setItem('token', res.data.token);
     })
     .catch(err => {
         localStorage.removeItem('token');
-        console.log(err.response.status)
         const info= {
             error:"Invalid username or password",
             status:err.response.status
@@ -50,7 +49,6 @@ export const createUser = (data) => dispatch=>{
         },
     })
     .then(res => {
-        console.log(res)
         const user = {
             username:res.data.username,
             status:res.status
@@ -69,7 +67,7 @@ export const createUser = (data) => dispatch=>{
             status:err.response.status
         }
         dispatch(setError(info))
-        dispatch(resetUser);
+        dispatch(resetUser());
     });
 }
 
@@ -80,21 +78,20 @@ export const checkUser = () => dispatch=>{
         }
     })
     .then(res => {
-        const user = {
-            username:res.data.username,
-            id:res.data.id,
-            status:res.status
+        console.log("here")
+        const data = {
+            user:res.data,
+            status:200
         }
-        dispatch(setUser(user))
+        dispatch(setUser(data))
     })
     .catch(err => {   
         localStorage.removeItem('token');
         const info= {
-            error:"You are not logged in",
+            error:"You are notlogged in ",
             status:err.response.status
         }
         dispatch(setError(info))
-        dispatch(resetUser);
     }); 
 }
 
@@ -107,7 +104,6 @@ export const setAccount = (data, id) => dispatch=>{
         },
     })
     .then(res => {
-        console.log(res)
         const user = {
             username:res.data.user.username,
             id:res.data.user.id,
@@ -117,18 +113,16 @@ export const setAccount = (data, id) => dispatch=>{
     })
     .catch(err => {
         localStorage.removeItem('token');
-        console.log(err.response.status)
         const info= {
             error:"Update failed. Refresh Page",
             status:err.response.status
         }
         dispatch(setError(info))
-        dispatch(resetUser);
+        dispatch(resetUser());
     });
 }
 
 export const logoutUser = () => dispatch=>{
     localStorage.removeItem('token');
-    console.log("confirm")
     dispatch(resetUser());
 }

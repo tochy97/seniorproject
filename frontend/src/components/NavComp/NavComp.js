@@ -8,23 +8,23 @@ import uta from "./uta.jpeg"
 function NavComp() {
     const dispatch = useDispatch();    
 
-    const { isLoggedIn, username } = useSelector(
+    const { isLoggedIn, user } = useSelector(
         (state) =>({
             isLoggedIn:state.auth.isLoggedIn, 
-            username:state.auth.username,
+            user:state.auth.user,
     }), shallowEqual);
 
     useEffect(() => {
-        if(!username){
+        if(!isLoggedIn){
             dispatch(checkUser());
         }
-    }, [username,dispatch]);
+    }, [isLoggedIn,dispatch]);
     
     function logout(e){
-        console.log("logginout")
         e.preventDefault();
         dispatch(logoutUser());
     }
+    
     return (
         <Navbar expand={false} style={{padding: "5px",color:"#fff", borderRight:0}} >
         <Container fluid>
@@ -39,7 +39,7 @@ function NavComp() {
                 {   
                     isLoggedIn
                     ?
-                        <Offcanvas.Title id="offcanvasNavbarLabel">Hello, {username}</Offcanvas.Title>
+                        <Offcanvas.Title id="offcanvasNavbarLabel">Hello, {user.username}</Offcanvas.Title>
                     :
                         <Offcanvas.Title id="offcanvasNavbarLabel">Hello, guest</Offcanvas.Title>
                 }

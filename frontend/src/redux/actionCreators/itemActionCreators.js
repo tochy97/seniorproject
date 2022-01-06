@@ -1,4 +1,5 @@
 import * as types from "../types/itemTypes";
+import { setError, logoutUser } from "./authActionCreator";
 import axios from 'axios';
 
 const setLoading = ( data ) => ({
@@ -34,6 +35,17 @@ export const fetchItems = () => dispatch => {
     })
     .then(res => {
         dispatch(setItem(res.data));
+    })
+    .catch(err => {
+        if(err.response.status === 401)
+        {
+            const info= {
+                error:"Session expired. Refresh Page",
+                status:err.response.status
+            }
+            dispatch(setError(info))
+            dispatch(logoutUser());
+        }
     })
 }
 

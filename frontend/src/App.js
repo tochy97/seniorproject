@@ -9,6 +9,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import Profile from './components/Profile/Profile';
 import Checkout from './components/Checkout/Checkout';
 import SetAccount from './components/Auth/SetAccount';
+import Admin from './components/Admin';
 
 function App() {
   const dispatch = useDispatch();    
@@ -23,7 +24,7 @@ function App() {
           dispatch(checkUser());
       }
   }, [isLoggedIn,dispatch]);
-  
+
   return (
     <>
     <NavComp/>
@@ -51,6 +52,13 @@ function App() {
           <Route exact path="checkout" element={<Checkout/>}/>
         :
           <Route exact path="checkout" element={<Login/>}/>
+      }
+      {
+        isLoggedIn
+          ?
+            <Route path="admin/*" element={<Admin/>} />
+          :
+            <Route path="admin/*" element={<Login/>} />
       }
     </Routes>
     </>
