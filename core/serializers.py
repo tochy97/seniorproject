@@ -2,13 +2,21 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.settings import api_settings
 from rest_framework_jwt.settings import api_settings
-from .models import Account
+from .models import Account, Item
 
 class AccountSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Account
         fields = '__all__'
+        extra_kwargs = {'items': {'required': False}}
+
+class ItemSerializer(serializers.ModelSerializer):
+    users = AccountSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Item
+        fields = '__all__'
+        extra_kwargs = {'users': {'required': False}}
 
 class UserSerializer(serializers.ModelSerializer):
 

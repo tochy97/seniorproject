@@ -5,8 +5,15 @@ from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import AccountSerializer, UserSerializer, UserSerializerWithToken
-from .models import Account
+from .serializers import AccountSerializer, ItemSerializer, UserSerializer, UserSerializerWithToken
+from .models import Account, Item
+
+class ItemViewSet(viewsets.ModelViewSet):
+    queryset = Item.objects.all()
+    permissions_classes = [ 
+        permissions.AllowAny
+    ]
+    serializer_class = ItemSerializer
 
 class AccountViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.all()

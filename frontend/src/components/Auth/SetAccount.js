@@ -3,7 +3,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import Divider from '@mui/material/Divider';
 import { Card, Row, Col, Form, Alert, Button, Container } from 'react-bootstrap';
-import { createUser, setAccount, setError } from '../redux/actionCreators/authActionCreator';
+import { createUser, setAccount, setError } from '../../redux/actionCreators/authActionCreator';
 
 function SetAccount() {
     const [username,setUsername] = useState("");

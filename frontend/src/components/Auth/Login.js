@@ -3,7 +3,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import Divider from '@mui/material/Divider';
 import { Card, Row, Col, Form, Alert, Button, Modal } from 'react-bootstrap';
-import { setError, loginUser } from '../redux/actionCreators/authActionCreator';
+import { setError, loginUser } from '../../redux/actionCreators/authActionCreator';
 
 function Login() {
     const [username,setUsername] = useState("");
@@ -66,14 +66,11 @@ function Login() {
                     <Button variant="secondary" className="w-100 mt-4" onClick={handleShow}>Launch demo modal</Button>
                     <Modal show={show} onHide={handleClose}>
                         <Modal.Header closeButton>
-                        <Modal.Title>Modal heading</Modal.Title>
+                        <Modal.Title>Please Swipe Your ID</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <Form onSubmit={handleSubmit}>
-                                <Form.Floating id="username">
-                                    <Form.Control type="username" placeholder="ID Number" value={username} onChange={e=>setUsername(e.target.value)} required></Form.Control>
-                                    <Form.Label>ID Number</Form.Label>
-                                </Form.Floating>
+                                <input type="username" className='form-control' value={username} onChange={e=>setUsername(e.target.value)} autoFocus required></input>
                                 <Button className="w-100 mt-4" variant="dark" type="submit">Login</Button>
                             </Form>
                         </Modal.Body>

@@ -2,7 +2,7 @@ import { Divider } from '@mui/material';
 import React, { useEffect }  from 'react';
 import { Navbar, Nav, Container, Offcanvas } from 'react-bootstrap';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { logoutUser, checkUser } from '../redux/actionCreators/authActionCreator';
+import { logoutUser, checkUser } from '../../redux/actionCreators/authActionCreator';
 import uta from "./uta.jpeg"
 
 function NavComp() {

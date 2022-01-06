@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux'
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { Routes, Route } from "react-router-dom";
 import { checkUser } from './redux/actionCreators/authActionCreator';
-import Login from './Auth/Login';
-import Register from './Auth/Register';
-import NavComp from './NavComp/NavComp';
-import Dashboard from './Dashboard/Dashboard';
-import Profile from './Profile/Profile';
-import Checkout from './Checkout/Checkout';
-import SetAccount from './Auth/SetAccount';
-import EditAccount from './Auth/EditAccount';
+import Login from './components/Auth/Login';
+import Register from './components/Auth/Register';
+import NavComp from './components/NavComp/NavComp';
+import Dashboard from './components/Dashboard/Dashboard';
+import Profile from './components/Profile/Profile';
+import Checkout from './components/Checkout/Checkout';
+import SetAccount from './components/Auth/SetAccount';
 
 function App() {
   const dispatch = useDispatch();    
@@ -31,8 +30,7 @@ function App() {
     <Routes>
       <Route exact path="login" element={<Login/>}/>
       <Route exact path="register" element={<Register/>}/> 
-      <Route exact path="setaccount" element={<SetAccount/>}/> 
-      <Route exact path="editaccount" element={<EditAccount/>}/> 
+      <Route exact path="confirmaccount" element={<SetAccount/>}/> 
       {
         isLoggedIn
         ?

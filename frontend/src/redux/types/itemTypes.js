@@ -1,0 +1,7 @@
+export const SET_LOADING = "SET_LOADING"
+export const ADD_ITEM = "ADD_ITEM"
+export const SET_ITEM = "SET_ITEM"
+export const RESET_ITEM = "RESET_ITEM"
+export const DELETE_ITEM = "DELETE_ITEM"
+export const CHECKOUT_ITEM = "CHECKOUT_ITEM"
+export const RETURN_ITEM = "RETURN_ITEM"
