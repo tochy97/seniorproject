@@ -33,3 +33,11 @@ Change checkout item to accept serial number as input, scan through the items in
 Change instructor select input to get the options from users who have superuser priveledges
 
 Change section select input to get the options from selected instructor section list
+
+## Future
+
+Deploy django backend to aws
+
+Deploy react frontend to aws
+
+
