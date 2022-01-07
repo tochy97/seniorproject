@@ -91,9 +91,9 @@ function Register() {
         <Card className="py-4" style={{border:0}}>
             <Row className="px-5 my-6 gap-5">
                 <Divider className="font-weight-bold text-center py-4"><h1>Register</h1></Divider>
-                <Alert className="font-weight-bold text-center py-4" variant="dark"><h4>Enter ID or swipe card</h4></Alert>
                 {error && status === 999 && <Alert variant="danger">{error}</Alert>}
                 <Col lg={10}  className="mx-auto">
+                <Alert className="font-weight-bold text-center py-4" variant="dark"><h4>Enter ID or swipe card</h4></Alert>
                     <Form onSubmit={getUsername}>
                         <Form.Floating id="username" style={{marginTop: "1rem"}}>
                             <Form.Control type="text" placeholder="Click me!" value={data} onChange={e=>setData(e.target.value)} required></Form.Control>

@@ -99,7 +99,44 @@ export const setAccount = (data, id) => dispatch=>{
             id:res.data.user.id,
             status:res.status
         }
-        dispatch(setUser(user))
+        (async () => {
+            let acc = await axios.get(`http://127.0.0.1:8000/accounts/${id}`,{
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `JWT ${localStorage.getItem('token')}`,
+                },
+            })
+            if(!acc){
+                const temp = {
+                    user:id,
+                    section:data.section,
+                    instructor:data.instructor,
+                    team:data.team,
+                }
+                const accData = JSON.stringify(temp);
+                axios.post('http://127.0.0.1:8000/accounts/', accData, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `JWT ${localStorage.getItem('token')}`,
+                    },
+                })
+            }
+            else{
+                const temp = {
+                    section:data.section,
+                    instructor:data.instructor,
+                    team:data.team,
+                }
+                const accData = JSON.stringify(temp);
+                axios.put(`http://127.0.0.1:8000/accounts/${id}`, accData, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `JWT ${localStorage.getItem('token')}`,
+                    },
+                })
+            }
+        })()
+        dispatch(setUser(user));
     })
     .catch(err => {
         localStorage.removeItem('token');

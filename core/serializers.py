@@ -1,8 +1,14 @@
+from django.db.models import fields
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.settings import api_settings
 from rest_framework_jwt.settings import api_settings
-from .models import Account, Item
+from .models import Account, Item, Instruct
+
+class InstructSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Instruct
+        fields = '__all__'
 
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:

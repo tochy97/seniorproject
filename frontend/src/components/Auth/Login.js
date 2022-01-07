@@ -23,7 +23,6 @@ function Login() {
     const openConfirm = () => setConfirm(true);
     const closeConfirm = () => setConfirm(false);
 
-    console.log(password)
     const { error, status } = useSelector(
       (state) =>({
         error:state.auth.error, 
@@ -62,7 +61,7 @@ function Login() {
             setUsername(data);
             setData(" ");
             dispatch(setError(""));
-            return openConfirm();
+            return handleShow();
         }
     }
 
@@ -85,9 +84,9 @@ function Login() {
         <Card className="py-4" style={{border:0}}>
             <Row className="px-5 my-6 gap-5">
                 <Divider className="font-weight-bold text-center py-4"><h1>Login</h1></Divider>
-                <Alert className="font-weight-bold text-center py-4" variant="dark"><h4>Enter ID or swipe card</h4></Alert>
                 {error && status === 999 && <Alert variant="danger">{error}</Alert>}
                 <Col lg={10}  className="mx-auto">
+                <Alert className="font-weight-bold text-center py-4" variant="dark"><h4>Enter ID or swipe card</h4></Alert>
                     <Form onSubmit={getUsername}>
                         <Form.Floating id="username" style={{marginTop: "1rem"}} >
                             <Form.Control type="text" placeholder="Click me!" value={data} onChange={e=>setData(e.target.value)} required></Form.Control>
@@ -122,8 +121,8 @@ function Login() {
                             {error && status !== 401 && <Alert variant="danger">{error}</Alert>}
 
                                 <Form.Floating id="username" style={{marginTop: "1rem"}} >
-                                    <Form.Control type="password" placeholder="Enter a password" value={password} onChange={e=>setPassword(e.target.value)} required></Form.Control>
-                                    <Form.Label>Enter a password</Form.Label>
+                                    <Form.Control type="password" placeholder="Enter your password" value={password} onChange={e=>setPassword(e.target.value)} required></Form.Control>
+                                    <Form.Label>Enter your password</Form.Label>
                                 </Form.Floating>
                                 <Button className="w-100 mt-4" variant="dark" type="submit">Login</Button>
                             </Form>

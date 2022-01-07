@@ -19,3 +19,17 @@ Reports to see what's checked out
 Reports to see whats overdue
 
 Must be able to generate ids/barcodes/qr codes for items
+
+## Todo
+
+Add instructor view handler for profile page
+
+Add instructor vs account permisions
+
+Add instructor api for adding sections
+
+Change checkout item to accept serial number as input, scan through the items in database and automatically put the item the currently logged in accounts item list
+
+Change instructor select input to get the options from users who have superuser priveledges
+
+Change section select input to get the options from selected instructor section list
