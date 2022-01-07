@@ -35,6 +35,7 @@ export const fetchItems = () => dispatch => {
     })
     .then(res => {
         dispatch(setItem(res.data));
+        dispatch(setLoading(false))
     })
     .catch(err => {
         if(err.response.status === 401)

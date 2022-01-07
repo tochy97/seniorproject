@@ -10,7 +10,6 @@ const itemReducers = (state=initialState, {type, payload})=>{
         case SET_LOADING:
             state={ ...state,
                 isLoading: payload,
-                items: null,
             }
             return state;
         case ADD_ITEM:

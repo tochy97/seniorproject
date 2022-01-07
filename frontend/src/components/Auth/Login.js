@@ -30,13 +30,40 @@ function Login() {
         status:state.auth.status, 
     }), shallowEqual);
 
+    function isNumeric(str) {
+        if (typeof str != "string") return false // we only process strings!  
+        for (let i = 0; i < str.length; i++) {
+            if(isNaN(str[i]) && isNaN(parseFloat(str[i]))){
+                return false;
+            }
+        }
+        return true;
+    }
+
     function getUsername(e){
         e.preventDefault();
-        const temp = data.split(" ");
-        const last = temp[temp.length -1].split("+");
-        setUsername(last[last.length -1].slice(0,-1));
-        openConfirm();
-        setData("")
+        const x = data
+        if(x.split(" ").length > 2)
+        {
+            const temp = data.split(" ");
+            const last = temp[temp.length -1].split("+");
+            setUsername(last[last.length -1].slice(0,-1));
+            setData(" ");
+            return openConfirm();
+        }
+        else{
+            if(!isNumeric(data)){
+                const info= {
+                    error:"Username must be all numbers",
+                    status:999
+                }
+                return dispatch(setError(info));
+            }
+            setUsername(data);
+            setData(" ");
+            dispatch(setError(""));
+            return openConfirm();
+        }
     }
 
     function handleSubmit(e){
@@ -58,8 +85,8 @@ function Login() {
         <Card className="py-4" style={{border:0}}>
             <Row className="px-5 my-6 gap-5">
                 <Divider className="font-weight-bold text-center py-4"><h1>Login</h1></Divider>
-                <Alert className="font-weight-bold text-center py-4" variant="dark"><h4>Click text box then swipe your card or type in your ID</h4></Alert>
-                {error && status !== 401 && <Alert variant="danger">{error}</Alert>}
+                <Alert className="font-weight-bold text-center py-4" variant="dark"><h4>Enter ID or swipe card</h4></Alert>
+                {error && status === 999 && <Alert variant="danger">{error}</Alert>}
                 <Col lg={10}  className="mx-auto">
                     <Form onSubmit={getUsername}>
                         <Form.Floating id="username" style={{marginTop: "1rem"}} >
@@ -92,6 +119,8 @@ function Login() {
                         </Modal.Header>
                         <Modal.Body>
                             <Form onSubmit={handleSubmit}>
+                            {error && status !== 401 && <Alert variant="danger">{error}</Alert>}
+
                                 <Form.Floating id="username" style={{marginTop: "1rem"}} >
                                     <Form.Control type="password" placeholder="Enter a password" value={password} onChange={e=>setPassword(e.target.value)} required></Form.Control>
                                     <Form.Label>Enter a password</Form.Label>

@@ -6,8 +6,6 @@ import { Card, Row, Col, Form, Alert, Button, Container } from 'react-bootstrap'
 import { createUser, setAccount, setError } from '../../redux/actionCreators/authActionCreator';
 
 function SetAccount() {
-    const [username,setUsername] = useState("");
-    const [cusername,setCusername] = useState("");
     const [first_name,setFirst_name] = useState("");
     const [last_name,setLast_name] = useState("");
     const [email,setEmail] = useState("");
@@ -28,25 +26,9 @@ function SetAccount() {
             isLoggedIn:state.auth.isLoggedIn, 
     }), shallowEqual);
 
-    function isNumeric(str) {
-        if (typeof str != "string") return false // we only process strings!  
-        for (let i = 0; i < str.length; i++) {
-            if(isNaN(str[i]) && isNaN(parseFloat(str[i]))){
-                return false;
-            }
-        }
-        return true;
-    }
     
     function handleSubmit(e){
         e.preventDefault();
-        if(!isNumeric(username)){
-            const info= {
-                error:"ID number must be numbers",
-            }
-            dispatch(setError(info));
-            return;
-        }
         if(email.localeCompare(cemail) !== 0 ){
             const info= {
                 error:"Emails did not match",
@@ -54,15 +36,7 @@ function SetAccount() {
             dispatch(setError(info));
             return;
         }
-        if(username.localeCompare(cusername) !== 0 ){
-            const info= {
-                error:"ID numbers did not match",
-            }
-            dispatch(setError(info));
-            return;
-        }
         const data = {
-            username:username,
             first_name:first_name,
             last_name:last_name,
             email:email,
@@ -73,7 +47,7 @@ function SetAccount() {
     return (
         <Container>
             <Card className='p-5'>
-                <Divider className="font-weight-bold text-center py-4"><h1>Confirm Account</h1></Divider>
+                <Divider className="font-weight-bold text-center py-4"><h1>Set Account Information</h1></Divider>
                 {error && <Alert variant="danger">{error}</Alert>}
                 {
                     !user || !isLoggedIn
@@ -92,14 +66,6 @@ function SetAccount() {
                             <Form.Floating id="last_name" style={{marginTop: "1rem"}} >
                                 <Form.Control type="text" placeholder="Last Name" value={last_name} onChange={e=>setLast_name(e.target.value)} required></Form.Control>
                                 <Form.Label>Last Name</Form.Label>
-                            </Form.Floating>
-                            <Form.Floating id="username" style={{marginTop: "1rem"}} >
-                                <Form.Control type="text" placeholder="ID Number" value={username} onChange={e=>setUsername(e.target.value)} required></Form.Control>
-                                <Form.Label>ID Number</Form.Label>
-                            </Form.Floating>
-                            <Form.Floating id="cusername" style={{marginTop: "1rem"}} >
-                                <Form.Control type="text" placeholder="Confirm ID number" value={cusername} onChange={e=>setCusername(e.target.value)} required></Form.Control>
-                                <Form.Label>Confirm ID number</Form.Label>
                             </Form.Floating>
                             <Form.Floating id="email" style={{marginTop: "1rem"}} >
                                 <Form.Control type="email" placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)} required></Form.Control>
