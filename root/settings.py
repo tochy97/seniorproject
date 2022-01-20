@@ -34,16 +34,17 @@ DEBUG = int(env("DEBUG", default=1))
 
 ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS").split(" ")
 
-DATABASES = {
-    'default': {
-        'ENGINE': env('DB_ENGINE', default='django.db.backends.postgresql_psycopg2'),
-        'NAME': env('DB_NAME', default='coredb'),
-        'USER': env('DB_USER', default='core'),
-        'PASSWORD': env('DB_PASSWORD', default='12345678'),
-        'HOST': env('DB_HOST', default='localhost'),
-        'PORT': env('DB_PORT', default='5432'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': env('DB_ENGINE', default='django.db.backends.postgresql_psycopg2'),
+#         'NAME': env('DB_NAME', default='coredb'),
+#         'USER': env('DB_USER', default='core'),
+#         'PASSWORD': env('DB_PASSWORD', default='12345678'),
+#         'HOST': env('DB_HOST', default='localhost'),
+#         'PORT': env('DB_PORT', default='5432'),
+#     }
+# }
+
 
 CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS").split(" ")
 
@@ -117,14 +118,25 @@ WSGI_APPLICATION = 'root.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'coredb',
+#         'USER': 'core',
+#         'PASSWORD': '12345678',
+#         'HOST': 'localhost',
+#         'PORT': 8000,
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'coredb',
-        'USER': 'core',
-        'PASSWORD': '12345678',
-        'HOST': 'localhost',
-        'PORT': 5432,
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'rotc',
+        'USER': 'admin',
+        'PASSWORD': 'SeniorDesign1',
+        'HOST': 'rotc-database.c1grqregluxk.us-east-2.rds.amazonaws.com',
+        'PORT': '3307',
     }
 }
 

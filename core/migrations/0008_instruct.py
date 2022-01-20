@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             name='Instruct',
             fields=[
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='auth.user')),
-                ('sections', django.contrib.postgres.fields.ArrayField(base_field=models.IntegerField(default=1), size=None)),
+                # ('sections', django.contrib.postgres.fields.ArrayField(base_field=models.IntegerField(default=1), size=None)),
             ],
         ),
     ]
