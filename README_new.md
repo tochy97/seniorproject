@@ -1,10 +1,13 @@
-## Installation
+##back end setup
 
-create python virtual environment:
+create python virtual environment:<br>
 `$ python3 -m virtualenv venv`
 
-install required packages:
+activate virtual environment:<br>
+`$ source venv/bin/activate`
+
+install required packages:<br>
 `$ pip install -r requirements.txt`
 
-run web server:
+run web server:<br>
 `$ python3 manage.py runserver`
