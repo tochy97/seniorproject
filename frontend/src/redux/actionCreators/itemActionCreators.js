@@ -22,6 +22,51 @@ const deleteItem = ( data ) => ({
     payload:data,
 })
 
+// export const createItem = (data, id) => dispatch=>{
+//     const formData = JSON.stringify(data)
+
+//     console.log(formData)
+// }
+
+export const createItem = (data, id)  => dispatch => {
+    // const formData = JSON.stringify(data)
+    const formData = JSON.stringify({
+    // const formData = {
+        "name": data.name,
+        "type": data.type,
+        "description": data.description,
+        "total": 1,
+        "out": 0,
+        "available": 1,
+        "ser_no": data.ser_no,
+        "image": data.image})
+    // }
+
+    // console.log(formData['name'])
+
+    axios.post("http://127.0.0.1:8000/items/", formData, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+          }
+    })
+    .catch(err => {
+        if(err.response.status === 401)
+        {
+            const info= {
+                error:"Session expired. Refresh Page",
+                status:err.response.status
+            }
+            dispatch(setError(info))
+            dispatch(logoutUser());
+        }
+    })
+
+    console.log(formData)
+
+    // dispatch(reset('AddItem'));
+  };
+
 export const doItem = ( data, item, setProgress ) => dispatch => {
 
 }

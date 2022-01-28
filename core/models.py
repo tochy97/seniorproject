@@ -12,6 +12,7 @@ class Item(models.Model):
     out = models.IntegerField(default=0)
     available = models.IntegerField(default=1)
     ser_no = models.CharField(max_length=255)
+    image = models.ImageField(null=False, blank=False)
 
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -23,4 +24,11 @@ class Account(models.Model):
 class Instruct(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     # sections = ArrayField(models.IntegerField(default=1))
-    sections = models.CharField(max_length=50)
+    sections = models.CharField(max_length=10)
+
+# class Section(models.Model):
+#     class_no = models.CharField(max_length=4)
+#     section_no = models.IntegerField(primary_key=True)
+#     students = models.ManyToManyField(User, related_name="sections", blank=True)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, primary_key=False)
+    

@@ -51,13 +51,13 @@ function Login() {
             return openConfirm();
         }
         else{
-            if(!isNumeric(data)){
-                const info= {
-                    error:"Username must be all numbers",
-                    status:999
-                }
-                return dispatch(setError(info));
-            }
+            // if(!isNumeric(data)){
+            //     const info= {
+            //         error:"Username must be all numbers",
+            //         status:999
+            //     }
+            //     return dispatch(setError(info));
+            // }
             setUsername(data);
             setData(" ");
             dispatch(setError(""));
@@ -86,7 +86,7 @@ function Login() {
                 <Divider className="font-weight-bold text-center py-4"><h1>Login</h1></Divider>
                 {error && status === 999 && <Alert variant="danger">{error}</Alert>}
                 <Col lg={10}  className="mx-auto">
-                <Alert className="font-weight-bold text-center py-4" variant="dark"><h4>Enter ID or swipe card</h4></Alert>
+                <Alert className="font-weight-bold text-center py-4" variant="dark"><h4>Enter ID or Swipe Mav Card</h4></Alert>
                     <Form onSubmit={getUsername}>
                         <Form.Floating id="username" style={{marginTop: "1rem"}} >
                             <Form.Control type="text" placeholder="Click me!" value={data} onChange={e=>setData(e.target.value)} required></Form.Control>
@@ -94,7 +94,7 @@ function Login() {
                         </Form.Floating>
                         <Button className="w-100 mt-4" variant="dark" type="submit">Login</Button>
                     </Form>
-                    <h1 className='text-center mt-5'>OR</h1>
+                    {/* <h1 className='text-center mt-5'>OR</h1> */}
                     <Modal show={confirm} onHide={handleClose}>
                         <Modal.Header closeButton>
                         <Modal.Title>Is this your ID?</Modal.Title>
@@ -114,7 +114,7 @@ function Login() {
                     </Modal>
                     <Modal show={show} onHide={handleClose}>
                         <Modal.Header closeButton>
-                        <Modal.Title>Click input box then swipe card</Modal.Title>
+                        <Modal.Title>Validate Access</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <Form onSubmit={handleSubmit}>

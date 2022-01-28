@@ -27,62 +27,75 @@ function NavComp() {
     
     return (
         <Navbar expand={false} style={{padding: "5px",color:"#fff", borderRight:0}} >
-        <Container fluid>
-        <Navbar.Brand href="/"><img style={{width:"85px"}} src={uta}/></Navbar.Brand>
-            <Navbar.Toggle aria-controls="offcanvasNavbar" style={{border:0}}>Options</Navbar.Toggle>
-            <Navbar.Offcanvas
-            id="offcanvasNavbar"
-            aria-labelledby="offcanvasNavbarLabel"
-            placement="end"
-            >
-            <Offcanvas.Header closeButton>
-                {   
-                    isLoggedIn
-                    ?
-                        <Offcanvas.Title id="offcanvasNavbarLabel">Hello, {user.username}</Offcanvas.Title>
-                    :
-                        <Offcanvas.Title id="offcanvasNavbarLabel">Hello, guest</Offcanvas.Title>
-                }
-            </Offcanvas.Header>
-            <Offcanvas.Body>
-                { 
-                    isLoggedIn 
-                    ?
-                    <>  
-                        {
-                            user.is_superuser
+        
+             <Container fluid>
+                 <Navbar.Brand href="/"><img style={{width:"85px"}} src="https://testbucketuta.s3.us-east-2.amazonaws.com/uta.jpeg"/></Navbar.Brand>
+                     <Navbar.Toggle aria-controls="offcanvasNavbar" style={{border:0}}>Options</Navbar.Toggle>
+                     <Navbar.Offcanvas
+                    id="offcanvasNavbar"
+                    aria-labelledby="offcanvasNavbarLabel"
+                    placement="end"
+                    >
+                    <Offcanvas.Header closeButton>
+                        {   
+                            isLoggedIn
                             ?
+                                <Offcanvas.Title id="offcanvasNavbarLabel">Hello, {user.username}</Offcanvas.Title>
+                            :
+                                <Offcanvas.Title id="offcanvasNavbarLabel">Hello, guest</Offcanvas.Title>
+                        }
+                    </Offcanvas.Header>
+                    <Offcanvas.Body>
+                        { 
+                            isLoggedIn 
+                            ?
+                            <>  
+                                {
+                                    user.is_superuser
+                                    ?
+                                    <>
+                                            <Nav.Item  style={{marginLeft:"15px"}}>
+                                                <Nav.Link href="/admin/additem" style={{color:"black"}}>Add Item</Nav.Link>
+                                            </Nav.Item>
+                                        <Divider style={{margin:"1rem"}}/>
+                                            <Nav.Item  style={{marginLeft:"15px"}}>
+                                                <Nav.Link href="/admin/inventoryreport" style={{color:"black"}}>Inventory Report</Nav.Link>
+                                            </Nav.Item>
+                                        <Divider style={{margin:"1rem"}}/>
+                                            <Nav.Item  style={{marginLeft:"15px"}}>
+                                                <Nav.Link href="/admin/studentReport" style={{color:"black"}}>Student Report</Nav.Link>
+                                            </Nav.Item>
+                                        <Divider style={{margin:"1rem"}}/>
+                                            <Nav.Item  style={{marginLeft:"15px"}}>
+                                                <Nav.Link href="/admin/manager" style={{color:"black"}}>Manager ????</Nav.Link>
+                                            </Nav.Item>
+                                        <Divider style={{margin:"1rem"}}/>
+                                            <Nav.Item  style={{marginLeft:"1rem"}}>
+                                                <Nav.Link href="/admin/adder" style={{color:"black"}}>Adder ????</Nav.Link>
+                                            </Nav.Item>
+                                        <Divider style={{margin:"1rem"}}/>
+                                    </>
+                                    :
+                                    <></>
+                                }
+                                <Nav.Item  style={{marginLeft:"1rem"}}>
+                                    <Nav.Item type="submit" onClick={logout}>Logout</Nav.Item>
+                                </Nav.Item>
+                            </>
+                            :
                             <>
                                 <Nav.Item  style={{marginLeft:"15px"}}>
-                                    <Nav.Link href="/admin/manager" style={{color:"black"}}>Manager</Nav.Link>
+                                    <Nav.Link href="/login" style={{color:"black"}}>Login</Nav.Link>
                                 </Nav.Item>
                                 <Divider style={{margin:"1rem"}}/>
                                 <Nav.Item  style={{marginLeft:"1rem"}}>
-                                    <Nav.Link href="/admin/adder" style={{color:"black"}}>Adder</Nav.Link>
+                                    <Nav.Link href="/register" style={{color:"black"}}>Register</Nav.Link>
                                 </Nav.Item>
-                                <Divider style={{margin:"1rem"}}/>
                             </>
-                            :
-                            <></>
                         }
-                        <Nav.Item  style={{marginLeft:"1rem"}}>
-                            <Nav.Item type="submit" onClick={logout}>Logout</Nav.Item>
-                        </Nav.Item>
-                    </>
-                    :
-                    <>
-                        <Nav.Item  style={{marginLeft:"15px"}}>
-                            <Nav.Link href="/login" style={{color:"black"}}>Login</Nav.Link>
-                        </Nav.Item>
-                        <Divider style={{margin:"1rem"}}/>
-                        <Nav.Item  style={{marginLeft:"1rem"}}>
-                            <Nav.Link href="/register" style={{color:"black"}}>Register</Nav.Link>
-                        </Nav.Item>
-                    </>
-                }
-            </Offcanvas.Body>
-            </Navbar.Offcanvas>
-        </Container>
+                    </Offcanvas.Body>
+                    </Navbar.Offcanvas>
+            </Container>
         </Navbar>
     );
 }

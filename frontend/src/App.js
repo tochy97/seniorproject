@@ -7,7 +7,7 @@ import Register from './components/Auth/Register';
 import NavComp from './components/NavComp/NavComp';
 import Dashboard from './components/Dashboard/Dashboard';
 import Profile from './components/Profile/Profile';
-import Checkout from './components/Checkout/Checkout';
+import ViewItems from './components/ViewItems/ViewItems';
 import SetAccount from './components/Auth/SetAccount';
 import Admin from './components/Admin';
 
@@ -50,9 +50,9 @@ function App() {
       {
         isLoggedIn
         ?
-          <Route exact path="checkout" element={<Checkout/>}/>
+          <Route exact path="viewitems" element={<ViewItems/>}/>
         :
-          <Route exact path="checkout" element={<Login/>}/>
+          <Route exact path="viewitems" element={<Login/>}/>
       }
       {
         isLoggedIn && user.is_superuser
