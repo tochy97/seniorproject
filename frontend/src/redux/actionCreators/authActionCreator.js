@@ -12,6 +12,9 @@ export const setError = (data)=>({
 const resetUser = ()=>({
     type:types.RESET_USER,
 })
+const setMount = ()=>({
+    type:types.SET_MOUNT,
+})
 
 export const checkUser = () => dispatch=>{
     axios.get('http://127.0.0.1:8000/currentuser/', {
@@ -20,11 +23,12 @@ export const checkUser = () => dispatch=>{
         }
     })
     .then(res => {
+
         const data = {
             user:res.data,
             status:200
         }
-        dispatch(setUser(data))
+        dispatch(setUser(data), setMount())
     })
     .catch(err => {   
         localStorage.removeItem('token');
@@ -32,7 +36,7 @@ export const checkUser = () => dispatch=>{
             error:"You are notlogged in ",
             status:err.response.status
         }
-        dispatch(setError(info))
+        dispatch(setError(info), setMount())
     }); 
 }
 

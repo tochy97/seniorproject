@@ -1,7 +1,8 @@
-import { SET_USER, SET_ERROR, RESET_USER } from "../types/authTypes";
+import { SET_USER, SET_ERROR, RESET_USER, SET_MOUNT } from "../types/authTypes";
 
 const initialState = {
     isLoggedIn: false,
+    mounted: false,
     user: null,
     status: null,
     error: null,
@@ -14,12 +15,17 @@ const authReducer = (state=initialState, {type, payload})=>{
                 isLoggedIn:true,
                 user:payload.user,
                 error: null,
+                mounted:true,
                 status:payload.status,
             }
             return state;
-            return state;
+        case SET_MOUNT:
+            state={ ...state,
+                mounted:true
+            }
         case SET_ERROR:
             state={ ...state,
+                mounted:true,
                 error:payload.error,
                 status:payload.status
             }

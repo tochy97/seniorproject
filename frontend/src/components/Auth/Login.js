@@ -23,10 +23,11 @@ function Login() {
     const openConfirm = () => setConfirm(true);
     const closeConfirm = () => setConfirm(false);
 
-    const { error, status } = useSelector(
+    const { error, status, mounted } = useSelector(
       (state) =>({
         error:state.auth.error, 
         status:state.auth.status, 
+        mounted:state.auth.mounted, 
     }), shallowEqual);
 
     function isNumeric(str) {
@@ -76,65 +77,70 @@ function Login() {
             password: password
         }
         dispatch(loginUser(data));
-        setUsername(" ");
         histroy("../", {replace:true});
     }
 
     return (
         <Card className="py-4" style={{border:0}}>
-            <Row className="px-5 my-6 gap-5">
-                <Divider className="font-weight-bold text-center py-4"><h1>Login</h1></Divider>
-                {error && status === 999 && <Alert variant="danger">{error}</Alert>}
-                <Col lg={10}  className="mx-auto">
-                <Alert className="font-weight-bold text-center py-4" variant="dark"><h4>Enter ID or Swipe Mav Card</h4></Alert>
-                    <Form onSubmit={getUsername}>
-                        <Form.Floating id="username" style={{marginTop: "1rem"}} >
-                            <Form.Control type="text" placeholder="Click me!" value={data} onChange={e=>setData(e.target.value)} required></Form.Control>
-                            <Form.Label>Click Me!</Form.Label>
-                        </Form.Floating>
-                        <Button className="w-100 mt-4" variant="dark" type="submit">Login</Button>
-                    </Form>
-                    {/* <h1 className='text-center mt-5'>OR</h1> */}
-                    <Modal show={confirm} onHide={handleClose}>
-                        <Modal.Header closeButton>
-                        <Modal.Title>Is this your ID?</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Form>
-                                {username}
-                            </Form>
-                            <Button className="w-100 mt-4" variant="dark" onClick={handleShow}>YES</Button>
-                            <Button className="w-100 mt-4" variant="secondary" onClick={closeConfirm}>NO</Button>
-                        </Modal.Body>
-                        <Modal.Footer>
-                        <Button variant="secondary" onClick={closeConfirm}>
-                            Close
-                        </Button>
-                        </Modal.Footer>
-                    </Modal>
-                    <Modal show={show} onHide={handleClose}>
-                        <Modal.Header closeButton>
-                        <Modal.Title>Validate Access</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Form onSubmit={handleSubmit}>
-                            {error && status !== 401 && <Alert variant="danger">{error}</Alert>}
+            {
+                mounted
+                ?
+                <Row className="px-5 my-6 gap-5">
+                    <Divider className="font-weight-bold text-center py-4"><h1>Login</h1></Divider>
+                    {error && status === 999 && <Alert variant="danger">{error}</Alert>}
+                    <Col lg={10}  className="mx-auto">
+                    <Alert className="font-weight-bold text-center py-4" variant="dark"><h4>Enter ID or Swipe Mav Card</h4></Alert>
+                        <Form onSubmit={getUsername}>
+                            <Form.Floating id="username" style={{marginTop: "1rem"}} >
+                                <Form.Control type="text" placeholder="Click me!" value={data} onChange={e=>setData(e.target.value)} required></Form.Control>
+                                <Form.Label>Click Me!</Form.Label>
+                            </Form.Floating>
+                            <Button className="w-100 mt-4" variant="dark" type="submit">Login</Button>
+                        </Form>
+                        {/* <h1 className='text-center mt-5'>OR</h1> */}
+                        <Modal show={confirm} onHide={handleClose}>
+                            <Modal.Header closeButton>
+                            <Modal.Title>Is this your ID?</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form>
+                                    {username}
+                                </Form>
+                                <Button className="w-100 mt-4" variant="dark" onClick={handleShow}>YES</Button>
+                                <Button className="w-100 mt-4" variant="secondary" onClick={closeConfirm}>NO</Button>
+                            </Modal.Body>
+                            <Modal.Footer>
+                            <Button variant="secondary" onClick={closeConfirm}>
+                                Close
+                            </Button>
+                            </Modal.Footer>
+                        </Modal>
+                        <Modal show={show} onHide={handleClose}>
+                            <Modal.Header closeButton>
+                            <Modal.Title>Validate Access</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form onSubmit={handleSubmit}>
+                                {error && status !== 401 && <Alert variant="danger">{error}</Alert>}
 
-                                <Form.Floating id="username" style={{marginTop: "1rem"}} >
-                                    <Form.Control type="password" placeholder="Enter your password" value={password} onChange={e=>setPassword(e.target.value)} required></Form.Control>
-                                    <Form.Label>Enter your password</Form.Label>
-                                </Form.Floating>
-                                <Button className="w-100 mt-4" variant="dark" type="submit">Login</Button>
-                            </Form>
-                        </Modal.Body>
-                        <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Close
-                        </Button>
-                        </Modal.Footer>
-                    </Modal>
-                </Col>
-            </Row>
+                                    <Form.Floating id="username" style={{marginTop: "1rem"}} >
+                                        <Form.Control type="password" placeholder="Enter your password" value={password} onChange={e=>setPassword(e.target.value)} required></Form.Control>
+                                        <Form.Label>Enter your password</Form.Label>
+                                    </Form.Floating>
+                                    <Button className="w-100 mt-4" variant="dark" type="submit">Login</Button>
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Close
+                            </Button>
+                            </Modal.Footer>
+                        </Modal>
+                    </Col>
+                </Row>
+                :
+                <></>
+            }
         </Card>
     );
 }
