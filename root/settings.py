@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import environ
+from datetime import timedelta
 
 # Initialise environment variables
 env = environ.Env()
@@ -133,7 +134,8 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 JWT_AUTH = {
-    'JWT_RESPONSE_PAYLOAD_HANDLER': 'root.utils.my_jwt_response_handler'
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'root.utils.my_jwt_response_handler',
+    'JWT_EXPIRATION_DELTA': timedelta(seconds=600),
 }
 
 DEFAULT_FILE_STORAGE = env("DEFAULT_FILE_STORAGE")
