@@ -1,6 +1,7 @@
 import * as types from "../types/authTypes";
 import axios from 'axios';
 
+
 const setUser = (data)=>({
     type:types.SET_USER,
     payload:data
