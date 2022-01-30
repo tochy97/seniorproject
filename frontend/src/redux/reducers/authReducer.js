@@ -21,7 +21,7 @@ const authReducer = (state=initialState, {type, payload})=>{
             return state;
         case SET_MOUNT:
             state={ ...state,
-                mounted:true
+                mounted:payload
             }
         case SET_ERROR:
             state={ ...state,

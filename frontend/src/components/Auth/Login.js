@@ -3,7 +3,8 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import Divider from '@mui/material/Divider';
 import { Card, Row, Col, Form, Alert, Button, Modal } from 'react-bootstrap';
-import { setError, loginUser } from '../../redux/actionCreators/authActionCreator';
+import { setError, loginUser, setMount } from '../../redux/actionCreators/authActionCreator';
+import Loading from '../Loading/Loading'
 
 function Login() {
     const [data,setData] = useState("");
@@ -77,6 +78,7 @@ function Login() {
             password: password
         }
         dispatch(loginUser(data));
+        setPassword("");
         histroy("../", {replace:true});
     }
 
@@ -139,7 +141,7 @@ function Login() {
                     </Col>
                 </Row>
                 :
-                <></>
+                <Loading/>
             }
         </Card>
     );

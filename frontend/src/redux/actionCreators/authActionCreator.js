@@ -12,8 +12,9 @@ export const setError = (data)=>({
 const resetUser = ()=>({
     type:types.RESET_USER,
 })
-const setMount = ()=>({
+export const setMount = (data)=>({
     type:types.SET_MOUNT,
+    payload:data
 })
 
 export const checkUser = () => dispatch=>{
@@ -28,7 +29,7 @@ export const checkUser = () => dispatch=>{
             user:res.data,
             status:200
         }
-        dispatch(setUser(data), setMount())
+        dispatch(setUser(data))
     })
     .catch(err => {   
         localStorage.removeItem('token');
@@ -36,7 +37,7 @@ export const checkUser = () => dispatch=>{
             error:"You are notlogged in ",
             status:err.response.status
         }
-        dispatch(setError(info), setMount())
+        dispatch(setError(info))
     }); 
 }
 
