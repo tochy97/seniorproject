@@ -24,7 +24,7 @@ class Account(models.Model):
 class Instruct(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     # sections = ArrayField(models.IntegerField(default=1))
-    sections = models.CharField(max_length=10)
+    sections = models.CharField(max_length=10, blank=True, null=True)
 
 # class Section(models.Model):
 #     class_no = models.CharField(max_length=4)

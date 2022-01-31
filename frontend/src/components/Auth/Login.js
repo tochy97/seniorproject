@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Divider from '@mui/material/Divider';
 import { Card, Row, Col, Form, Alert, Button, Modal } from 'react-bootstrap';
 import { setError, loginUser, setMount } from '../../redux/actionCreators/authActionCreator';
@@ -79,11 +79,14 @@ function Login() {
         }
         dispatch(loginUser(data));
         setPassword("");
-        histroy("../", {replace:true});
+        if(!error)
+        {
+            histroy("../", {replace:true});
+        }
     }
 
     return (
-        <Card className="py-4" style={{border:0}}>
+        <Card className="p-5" style={{border:0}}>
             {
                 mounted
                 ?
@@ -123,7 +126,7 @@ function Login() {
                             </Modal.Header>
                             <Modal.Body>
                                 <Form onSubmit={handleSubmit}>
-                                {error && status !== 401 && <Alert variant="danger">{error}</Alert>}
+                                {error && status !== 401 && <Alert variant="danger">{error} <Link to="/register" style={{color:"black"}}>Register</Link></Alert>}
 
                                     <Form.Floating id="username" style={{marginTop: "1rem"}} >
                                         <Form.Control type="password" placeholder="Enter your password" value={password} onChange={e=>setPassword(e.target.value)} required></Form.Control>

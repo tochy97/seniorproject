@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Divider from '@mui/material/Divider';
 import { Card, Row, Col, Form, Alert, Button, Modal } from 'react-bootstrap';
 import { createUser, setError } from '../../redux/actionCreators/authActionCreator';
@@ -53,13 +53,13 @@ function Register() {
             return openConfirm();
         }
         else{
-            if(!isNumeric(data)){
+            /*if(!isNumeric(data)){
                 const info= {
                     error:"Username must be all numbers",
                     status:999
                 }
                 return dispatch(setError(info));
-            }
+            }*/
             setUsername(data);
             setData(" ");
             dispatch(setError(""));
@@ -83,12 +83,17 @@ function Register() {
             username: username,
             password: password
         }
-        dispatch(createUser(data));
-        histroy("../SetAccount", {replace:true});
+        dispatch(createUser(data)); 
+        if(error)
+        {
+            histroy("../SetAccount", {replace:true});
+        }
+        else{
+        }
     }
     console.log(username)
     return (
-        <Card className="py-4" style={{border:0}}>
+        <Card className="p-5" style={{border:0}}>
             <Row className="px-5 my-6 gap-5">
                 <Divider className="font-weight-bold text-center py-4"><h1>Register</h1></Divider>
                 {error && status === 999 && <Alert variant="danger">{error}</Alert>}
@@ -124,7 +129,7 @@ function Register() {
                         </Modal.Header>
                         <Modal.Body>
                             <Form onSubmit={handleSubmit}>                
-                            {error && status !== 401 && <Alert variant="danger">{error}</Alert>}
+                            {error && status !== 401 && <Alert variant="danger">{error}  <Link to="/login" style={{color:"black"}}>Login</Link></Alert>}
                                 <Form.Floating id="password" style={{marginTop: "1rem"}} >
                                     <Form.Control type="password" placeholder="Enter a password" value={password} onChange={e=>setPassword(e.target.value)} required></Form.Control>
                                     <Form.Label>Enter a password</Form.Label>

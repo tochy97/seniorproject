@@ -45,7 +45,6 @@ function SetAccount() {
         setConfirmed(true);
     }
     return (
-        <Container>
             <Card className='p-5'>
                 <Divider className="font-weight-bold text-center py-4"><h1>Set Account Information</h1></Divider>
                 {error && <Alert variant="danger">{error}</Alert>}
@@ -75,29 +74,36 @@ function SetAccount() {
                                 <Form.Control type="email" placeholder="Confirm Email" value={cemail} onChange={e=>setCemail(e.target.value)} required></Form.Control>
                                 <Form.Label>Confirm Email</Form.Label>
                             </Form.Floating>
-                            <FloatingLabel controlId="floatingSelect" label="Who is your instructor" style={{marginTop: "1rem"}}>
-                                <Form.Select value={instructor} onChange={e=>setInstructor(e.target.value)} id="instructor" style={{marginTop: "1rem"}} >
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                </Form.Select>
-                            </FloatingLabel>
-                            <Form.Floating id="team" style={{marginTop: "1rem"}} >
-                                <Form.Control type="text" placeholder="Team name" value={team} onChange={e=>setTeam(e.target.value)} required></Form.Control>
-                                <Form.Label>Team name</Form.Label>
-                            </Form.Floating>
-                            <FloatingLabel controlId="floatingSelect" label="Select your section" style={{marginTop: "1rem"}}>
-                                <Form.Select value={section} onChange={e=>setSection(e.target.value)} id="section" style={{marginTop: "1rem"}} >
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                </Form.Select>
-                            </FloatingLabel>
+                            {
+                                user.is_superuser
+                                ?
+                                <></>
+                                :
+                                <>
+                                <FloatingLabel controlId="floatingSelect" label="Who is your instructor" style={{marginTop: "1rem"}}>
+                                    <Form.Select value={instructor} onChange={e=>setInstructor(e.target.value)} id="instructor" style={{marginTop: "1rem"}} >
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                    </Form.Select>
+                                </FloatingLabel>
+                                <Form.Floating id="team" style={{marginTop: "1rem"}} >
+                                    <Form.Control type="text" placeholder="Team name" value={team} onChange={e=>setTeam(e.target.value)} required></Form.Control>
+                                    <Form.Label>Team name</Form.Label>
+                                </Form.Floating>
+                                <FloatingLabel controlId="floatingSelect" label="Select your section" style={{marginTop: "1rem"}}>
+                                    <Form.Select value={section} onChange={e=>setSection(e.target.value)} id="section" style={{marginTop: "1rem"}} >
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                    </Form.Select>
+                                </FloatingLabel>
+                                </>
+                            }
                             <Button className="w-100 mt-4" variant="dark" type="submit">Confirm</Button>
                         </Form>
                 }
             </Card>
-        </Container>
     );
 }
 

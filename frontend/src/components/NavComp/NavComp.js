@@ -54,25 +54,17 @@ function NavComp() {
                                     user.is_superuser
                                     ?
                                     <>
-                                            <Nav.Item  style={{marginLeft:"15px"}}>
-                                                <Nav.Link href="/admin/additem" style={{color:"black"}}>Add Item</Nav.Link>
-                                            </Nav.Item>
+                                        <Nav.Item  style={{marginLeft:"15px"}}>
+                                            <Nav.Link href="/admin/report" style={{color:"black"}}>Report</Nav.Link>
+                                        </Nav.Item>
                                         <Divider style={{margin:"1rem"}}/>
-                                            <Nav.Item  style={{marginLeft:"15px"}}>
-                                                <Nav.Link href="/admin/inventoryreport" style={{color:"black"}}>Inventory Report</Nav.Link>
-                                            </Nav.Item>
+                                        <Nav.Item  style={{marginLeft:"15px"}}>
+                                            <Nav.Link href="/admin/manage" style={{color:"black"}}>Manage</Nav.Link>
+                                        </Nav.Item>
                                         <Divider style={{margin:"1rem"}}/>
-                                            <Nav.Item  style={{marginLeft:"15px"}}>
-                                                <Nav.Link href="/admin/studentReport" style={{color:"black"}}>Student Report</Nav.Link>
-                                            </Nav.Item>
-                                        <Divider style={{margin:"1rem"}}/>
-                                            <Nav.Item  style={{marginLeft:"15px"}}>
-                                                <Nav.Link href="/admin/manager" style={{color:"black"}}>Manager ????</Nav.Link>
-                                            </Nav.Item>
-                                        <Divider style={{margin:"1rem"}}/>
-                                            <Nav.Item  style={{marginLeft:"1rem"}}>
-                                                <Nav.Link href="/admin/adder" style={{color:"black"}}>Adder ????</Nav.Link>
-                                            </Nav.Item>
+                                        <Nav.Item  style={{marginLeft:"1rem"}}>
+                                            <Nav.Link href="/admin/adde" style={{color:"black"}}>Add</Nav.Link>
+                                        </Nav.Item>
                                         <Divider style={{margin:"1rem"}}/>
                                     </>
                                     :

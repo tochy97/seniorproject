@@ -18,8 +18,8 @@ export const setMount = (data)=>({
     payload:data
 })
 
-export const checkUser = () => dispatch=>{
-    axios.get('http://127.0.0.1:8000/currentuser/', {
+export const checkUser = ()  => async dispatch=>{
+    await axios.get('http://127.0.0.1:8000/currentuser/', {
         headers: {
             Authorization: `JWT ${localStorage.getItem('token')}`,
         }
@@ -43,9 +43,9 @@ export const checkUser = () => dispatch=>{
 }
 
 
-export const loginUser = (data) => dispatch=>{
+export const loginUser = (data) => async dispatch=>{
     const formData = JSON.stringify(data)
-    axios.post("http://127.0.0.1:8000/auth/", formData, {
+    await axios.post("http://127.0.0.1:8000/auth/", formData, {
         headers: {
             'Content-Type': 'application/json',
         },
@@ -65,13 +65,12 @@ export const loginUser = (data) => dispatch=>{
             status:err.response.status
         }
         dispatch(setError(info))
-        dispatch(resetUser);
     });
 }
 
-export const createUser = (data) => dispatch=>{
+export const createUser = (data) =>  async dispatch=>{
     const formData = JSON.stringify(data)
-    axios.post("http://127.0.0.1:8000/createuser/", formData, {
+    await axios.post("http://127.0.0.1:8000/createuser/", formData, {
         headers: {
             'Content-Type': 'application/json',
         },
@@ -83,17 +82,16 @@ export const createUser = (data) => dispatch=>{
     .catch(err => {
         localStorage.removeItem('token');
         const info= {
-            error:"Registration failed",
+            error:err.response.data.username,
             status:err.response.status
         }
         dispatch(setError(info))
-        dispatch(resetUser());
     });
 }
 
-export const setAccount = (data, id) => dispatch=>{
+export const setAccount = (data, id) => async dispatch=>{
     const formData = JSON.stringify(data)
-    axios.put(`http://127.0.0.1:8000/userapi/${id}`, formData, {
+    await axios.put(`http://127.0.0.1:8000/userapi/${id}`, formData, {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `JWT ${localStorage.getItem('token')}`,

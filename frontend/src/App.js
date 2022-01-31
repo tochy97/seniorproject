@@ -32,34 +32,19 @@ function App() {
     <Routes>
       <Route exact path="login" element={<Login/>}/>
       <Route exact path="register" element={<Register/>}/> 
-      <Route exact path="confirmaccount" element={<SetAccount/>}/> 
       {
         isLoggedIn
         ?
-          <Route exact path="/*" element={<Dashboard/>}/>
-        :
-          <Route exact path="/*" element={<Login/>}/>
-      }
-      {
-        isLoggedIn
-        ?
-          <Route exact path="profile" element={<Profile/>}/>
-        :
-          <Route exact path="profile" element={<Login/>}/>
-      }
-      {
-        isLoggedIn
-        ?
-          <Route exact path="viewitems" element={<ViewItems/>}/>
-        :
-          <Route exact path="viewitems" element={<Login/>}/>
-      }
-      {
-        isLoggedIn && user.is_superuser
-          ?
+          <>
+            <Route exact path="/*" element={<Dashboard/>}/>
+            <Route exact path="profile" element={<Profile/>}/>
+            <Route exact path="viewitems" element={<ViewItems/>}/>
             <Route path="admin/*" element={<Admin/>} />
-          :
-            <Route path="admin/*" element={<Login/>} />
+            <Route exact path="confirmaccount" element={<SetAccount/>}/> 
+          </>
+        :
+        
+          <Route exact path="/*" element={<Login/>}/>
       }
     </Routes>
     </>
