@@ -34,6 +34,7 @@ const accountReducer = (state=initialState, {type, payload})=>{
                 set:payload,
                 mounted:true,
             }
+            return state;
         default:
             return state;
     }

@@ -1,0 +1,10 @@
+export const ADD_SECTION = "ADD_SECTION"
+export const SET_SETCTION = "SET_SECTION"
+export const DELETE_SECTION = "DELETE_SECTION"
+export const RESET_SECTION = "RESET_SECTION"
+export const JOIN_SECTION = "JOIN_SECTION"
+
+export const ADD_CLASS = "ADD_CLASS"
+export const SET_CLASS = "SET_CLASS"
+export const DELETE_CLASS = "DELETE_CLASS"
+export const RESET_CLASS = "RESET_CLASS"

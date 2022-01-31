@@ -3,9 +3,9 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { checkUser } from "../../redux/actionCreators/authActionCreator";
 import { Route, Routes } from 'react-router-dom';
 import Adder from './Data/Adder';
-import Report from './Data/Report';
+import Report    from './Data/Report';
 import Manager from './Data/Manager';
-import AddItem from "./Data/AddItem";
+import AddItem from "./Data/Items/AddItem";
 import Dashboard from '../Dashboard/Dashboard';
 
 function Admin() {
@@ -25,7 +25,7 @@ function Admin() {
                 <>
                 <Route path="addItem" element={<AddItem/>}/>
                 
-                <Route path="adde" element={<Adder/>} />
+                <Route path="add" element={<Adder/>} />
                 <Route path="manage" element={<Manager/>} />
                 <Route path="report" element={<Report/>} />
 

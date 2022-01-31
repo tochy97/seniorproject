@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Nav, Button, Card } from 'react-bootstrap';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { createInstructor, fetchAccount } from '../../../redux/actionCreators/accountActionCreators';
 import Loading from '../../Loading/Loading';
 function Report(props) {
+    const [tab,setTab] = useState("sections");
     const dispatch = useDispatch();    
   
     const { mounted, user, error, status, isSet } = useSelector(
@@ -23,7 +24,7 @@ function Report(props) {
     }
 
     return (
-        <Card className="py-4" style={{border:0}}>
+        <Card className="py-5" style={{border:0}}>
             <h1 className='p-5 text-center'>Report</h1>
             {
                 !isSet && mounted
@@ -32,18 +33,18 @@ function Report(props) {
                 :
                 mounted
                 ?
-                    <Nav fill variant="tabs" className='justify-content-centered' defaultActiveKey="sections">
+                    <Nav fill variant="tabs" className='justify-content-centered' defaultActiveKey="sections"  onSelect={(selectedKey) => setTab(selectedKey)}>
                         <Nav.Item>
-                            <Nav.Link eventKey="sections">All</Nav.Link>
+                            <Nav.Link eventKey="sections"><h5>All</h5></Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link eventKey="available">Available</Nav.Link>
+                            <Nav.Link eventKey="available"><h5>Available</h5></Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link eventKey="checkedout">Checkedout</Nav.Link>
+                            <Nav.Link eventKey="checkedout"><h5>Checkedout</h5></Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link eventKey="items">Overdue</Nav.Link>
+                            <Nav.Link eventKey="items"><h5>Overdue</h5></Nav.Link>
                         </Nav.Item>
                     </Nav>
                 :

@@ -5,8 +5,8 @@ from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import AccountSerializer, ItemSerializer, UserSerializer, UserSerializerWithToken, InstructSerializer
-from .models import Account, Item, Instruct
+from .serializers import AccountSerializer, ItemSerializer, UserSerializer, UserSerializerWithToken, InstructSerializer, ClassesSerializer, SectionSerializer
+from .models import Account, Item, Instruct, Classes, Section
 
 class ItemViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.all()
@@ -21,6 +21,20 @@ class AccountViewSet(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
     serializer_class = AccountSerializer
+
+class ClassesViewSet(viewsets.ModelViewSet):
+    queryset = Classes.objects.all()
+    permissions_classes = [ 
+        permissions.AllowAny
+    ]
+    serializer_class = ClassesSerializer
+
+class SectionViewSet(viewsets.ModelViewSet):
+    queryset = Section.objects.all()
+    permissions_classes = [ 
+        permissions.AllowAny
+    ]
+    serializer_class = SectionSerializer
 
 class InstructViewSet(viewsets.ModelViewSet):
     queryset = Instruct.objects.all()

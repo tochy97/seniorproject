@@ -25,10 +25,15 @@ class Instruct(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     # sections = ArrayField(models.IntegerField(default=1))
     sections = models.CharField(max_length=10, blank=True, null=True)
+    classes = models.CharField(max_length=10, blank=True, null=True)
 
-# class Section(models.Model):
-#     class_no = models.CharField(max_length=4)
-#     section_no = models.IntegerField(primary_key=True)
-#     students = models.ManyToManyField(User, related_name="sections", blank=True)
-#     user = models.ForeignKey(User, on_delete=models.CASCADE, primary_key=False)
+class Classes(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=False)
+    sections = models.CharField(max_length=10, blank=True, null=True)
+    number = models.PositiveSmallIntegerField()
+
+class Section(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=False)
+    students = models.CharField(max_length=10, blank=True, null=True)
+    number = models.PositiveSmallIntegerField()
     

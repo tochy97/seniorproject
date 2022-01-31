@@ -63,7 +63,7 @@ function NavComp() {
                                         </Nav.Item>
                                         <Divider style={{margin:"1rem"}}/>
                                         <Nav.Item  style={{marginLeft:"1rem"}}>
-                                            <Nav.Link href="/admin/adde" style={{color:"black"}}>Add</Nav.Link>
+                                            <Nav.Link href="/admin/add" style={{color:"black"}}>Add</Nav.Link>
                                         </Nav.Item>
                                         <Divider style={{margin:"1rem"}}/>
                                     </>

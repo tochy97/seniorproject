@@ -138,7 +138,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 JWT_AUTH = {
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'root.utils.my_jwt_response_handler',
-    'JWT_EXPIRATION_DELTA': timedelta(seconds=600),
+    'JWT_EXPIRATION_DELTA': timedelta(seconds=1800),
 }
 
 DEFAULT_FILE_STORAGE = env("DEFAULT_FILE_STORAGE")

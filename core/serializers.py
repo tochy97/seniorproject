@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from rest_framework_jwt.settings import api_settings
 from django.utils.translation import ugettext_lazy as _
 
-from .models import Account, Item, Instruct
+from .models import Account, Item, Instruct, Classes, Section
 
 class InstructSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,6 +17,16 @@ class AccountSerializer(serializers.ModelSerializer):
         model = Account
         fields = '__all__'
         extra_kwargs = {'items': {'required': False}}
+
+class ClassesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Classes
+        fields = '__all__'
+
+class SectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Section
+        fields = '__all__'
 
 class ItemSerializer(serializers.ModelSerializer):
     users = AccountSerializer(many=True, read_only=True)
