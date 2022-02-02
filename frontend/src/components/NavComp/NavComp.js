@@ -30,20 +30,20 @@ function NavComp() {
         
              <Container fluid>
                  <Navbar.Brand href="/"><img style={{width:"85px"}} src="https://testbucketuta.s3.us-east-2.amazonaws.com/uta.jpeg"/></Navbar.Brand>
-                     <Navbar.Toggle aria-controls="offcanvasNavbar" style={{border:0}}>Options</Navbar.Toggle>
+                        {   
+                            isLoggedIn
+                            ?
+                                <Navbar.Toggle aria-controls="offcanvasNavbar" style={{border:0}}>{user.username}</Navbar.Toggle>
+                            :
+                                <Navbar.Toggle aria-controls="offcanvasNavbar" style={{border:0}}>Options</Navbar.Toggle>
+                        }
                      <Navbar.Offcanvas
                     id="offcanvasNavbar"
                     aria-labelledby="offcanvasNavbarLabel"
                     placement="end"
                     >
                     <Offcanvas.Header closeButton>
-                        {   
-                            isLoggedIn
-                            ?
-                                <Offcanvas.Title id="offcanvasNavbarLabel">Hello, {user.username}</Offcanvas.Title>
-                            :
-                                <Offcanvas.Title id="offcanvasNavbarLabel">Hello, guest</Offcanvas.Title>
-                        }
+                        <Offcanvas.Title id="offcanvasNavbarLabel">UTA CSE Lab</Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                         { 

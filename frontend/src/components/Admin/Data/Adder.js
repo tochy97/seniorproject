@@ -1,10 +1,10 @@
-import { Container } from '@mui/material';
 import React, { useState } from 'react';
-import { Nav, Button, Card, Form } from 'react-bootstrap';
+import { Nav, Button, Card, Container } from 'react-bootstrap';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { createInstructor, fetchAccount } from '../../../redux/actionCreators/accountActionCreators';
 import Loading from '../../Loading/Loading';
 import AddItem from './Items/AddItem';
+import AddSection from './Sections/AddSection';
 
 function Adder(props) {
     const [tab,setTab] = useState("sections");
@@ -25,10 +25,6 @@ function Adder(props) {
     const confirmAccount    = () => {
         console.log("here")
         dispatch(createInstructor(user.id));
-    }
-
-    function handleSubmit(){
-        
     }
 
     return (
@@ -53,22 +49,13 @@ function Adder(props) {
                     {
                         tab === "items"
                         ?
-                            <div className='mt-5'>
+                            <Container className='mt-5'>
                                 <AddItem/>
-                            </div>
+                            </Container>
                         :
-                        <Container className='mt-5'>
-                            <Card className='p-5'>
-                                <Card.Title>Add New Class</Card.Title>
-                                <Form onSubmit={handleSubmit()}>
-                                    <Form.Floating id="class" style={{marginTop: "1rem"}} >
-                                        <Form.Control type="text" placeholder="Class number" value={classNum} onChange={e=>setClassNum(e.target.value)} required></Form.Control>
-                                        <Form.Label>Class number</Form.Label>
-                                    </Form.Floating>
-                                    <Button type='submit' variant='dark' className='mt-3 w-100'>Add Class</Button>
-                                </Form>
-                            </Card>
-                        </Container>
+                            <Container className='mt-5'>
+                                <AddSection/>
+                            </Container>
                     }
                 </>
                 :

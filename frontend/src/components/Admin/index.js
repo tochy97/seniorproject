@@ -7,16 +7,24 @@ import Report    from './Data/Report';
 import Manager from './Data/Manager';
 import AddItem from "./Data/Items/AddItem";
 import Dashboard from '../Dashboard/Dashboard';
+import { fetchClass } from '../../redux/actionCreators/sectionActionCreators';
 
 function Admin() {
     const dispatch = useDispatch();    
   
-    const { isLoggedIn, user } = useSelector(
+    const { error, user, mounted } = useSelector(
       (state) =>({
-        isLoggedIn:state.auth.isLoggedIn, 
+        error:state.auth.error, 
         user:state.auth.user, 
+        mounted:state.section.mounted
     }), shallowEqual);
-    console.log(user)
+
+    useEffect(() => {
+        if(!mounted){
+            dispatch(fetchClass());
+        }
+    }, [mounted,dispatch]);
+
     return (
         <Routes>
             {

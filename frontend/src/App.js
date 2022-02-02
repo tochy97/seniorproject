@@ -14,10 +14,11 @@ import Admin from './components/Admin';
 function App() {
   const dispatch = useDispatch();    
 
-  const { isLoggedIn, user } = useSelector(
+  const { isLoggedIn, user, status } = useSelector(
     (state) =>({
       isLoggedIn:state.auth.isLoggedIn, 
       user:state.auth.user, 
+      status:state.auth.status, 
   }), shallowEqual);
 
   useEffect(() => {

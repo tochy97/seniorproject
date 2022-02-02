@@ -1,4 +1,4 @@
-import { ADD_CLASS, ADD_SECTION, SET_CLASS, SET_SETCTION, DELETE_CLASS, DELETE_SECTION, RESET_CLASS, RESET_SECTION, JOIN_SECTION } from "../types/sectionTypes"
+import { ADD_CLASS, ADD_SECTION, SET_CLASS, DELETE_CLASS, RESET_CLASS } from "../types/sectionTypes"
 
 const initialState = {
     classes:null,
@@ -13,34 +13,25 @@ const sectionReducer = (state=initialState, {type, payload})=>{
                 classes:[...state.classes,payload]
             }
             return state;
-        case ADD_SECTION:
+        case ADD_SECTION:            
+            const current = state.classes.find(cla=>cla.id === payload.classID)
+            console.log("current: " + current)
+            current.sections = payload.data
+            console.log("payload: " + payload.data)
             state={
-                sections:[...state.sections,payload]
+                classes:state.classes.map(cla=>cla.id === payload.classID? current : cla)
             }
             return state;
         case SET_CLASS:     
             state={...state,
                 classes:payload,
-                mounted:true,
-            }
-            return state;
-        case SET_SETCTION:     
-            state={...state,
-                sections:payload,
-                mounted:true,
+                mounted:true
             }
             return state;
         case RESET_CLASS:
             state=initialState;
             return state;
-        case RESET_SECTION:
-            state=initialState;
-            return state;
         case DELETE_CLASS:
-            return state;
-        case DELETE_SECTION:
-            return state;
-        case JOIN_SECTION:
             return state;
         default:
             return state;

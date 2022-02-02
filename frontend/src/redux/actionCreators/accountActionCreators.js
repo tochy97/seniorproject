@@ -42,7 +42,7 @@ export const fetchAccount = ( user ) => dispatch => {
             dispatch(isSet(false));
             const info= {
                 error:"Failed to find account",
-                status:err.response.status
+                status:404
             }
             dispatch(setError(info));
         })
@@ -52,7 +52,7 @@ export const fetchAccount = ( user ) => dispatch => {
 
 export const createInstructor = ( id ) => dispatch => {
     let form_data = new FormData();
-    form_data.append('user', id);
+    form_data.append('instructor', id);
     axios.post("http://127.0.0.1:8000/instructors/", form_data, {
         headers:{
             'Content-Type': 'application/json',
@@ -65,9 +65,10 @@ export const createInstructor = ( id ) => dispatch => {
     })
     .catch(err => {
         dispatch(isSet(false));
+        console.log(err)
         const info= {
             error:"Failed to confirm account",
-            status:err.response.status
+            status:400
         }
         dispatch(setError(info));
     })
