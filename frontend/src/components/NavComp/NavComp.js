@@ -58,12 +58,8 @@ function NavComp() {
                                             <Nav.Link href="/admin/report" style={{color:"black"}}>Report</Nav.Link>
                                         </Nav.Item>
                                         <Divider style={{margin:"1rem"}}/>
-                                        <Nav.Item  style={{marginLeft:"15px"}}>
-                                            <Nav.Link href="/admin/manage" style={{color:"black"}}>Manage</Nav.Link>
-                                        </Nav.Item>
-                                        <Divider style={{margin:"1rem"}}/>
                                         <Nav.Item  style={{marginLeft:"1rem"}}>
-                                            <Nav.Link href="/admin/add" style={{color:"black"}}>Add</Nav.Link>
+                                            <Nav.Link href="/admin/add" style={{color:"black"}}>Data Management</Nav.Link>
                                         </Nav.Item>
                                         <Divider style={{margin:"1rem"}}/>
                                     </>

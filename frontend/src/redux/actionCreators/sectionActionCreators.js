@@ -6,10 +6,6 @@ const addClass = ( data ) => ({
     type:types.ADD_CLASS,
     payload:data
 })
-const addSection = ( data ) => ({
-    type:types.ADD_SECTION,
-    payload:data
-})
 const resetClass = () => ({
     type:types.RESET_CLASS,
 })
@@ -57,6 +53,42 @@ export const createClass = ( classNum, id ) => async dispatch => {
     .catch(err => {
         const info= {
             error:"Failed to create class",
+            status:400
+        }
+        dispatch(setError(info));
+    })
+}
+
+export const removeClass = ( classID ) => async dispatch => {
+    await axios.delete(`http://127.0.0.1:8000/classes/${classID}/`, {
+        headers:{
+            'Content-Type': 'application/json',
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+        }
+    })
+    .then(() => {
+        (async () => {
+            await axios.get("http://127.0.0.1:8000/classes/", {
+                headers:{
+                    'Content-Type': 'application/json',
+                    Authorization: `JWT ${localStorage.getItem('token')}`,
+                }
+            })
+            .then((res) => {
+                dispatch(addClass(res.data));
+            })
+            .catch(err => {
+                const info= {
+                    error:"Failed to reload",
+                    status:400
+                }
+                dispatch(setError(info));
+            })
+        })()
+    })
+    .catch(err => {
+        const info= {
+            error:"Failed to delete class",
             status:400
         }
         dispatch(setError(info));
@@ -119,7 +151,7 @@ export const createSection = ( classID, secNum, id, classNum ) => async dispatch
                     })
                     .catch(err => {
                         const info= {
-                            error:"Failed to create class",
+                            error:"Failed to reload",
                             status:400
                         }
                         dispatch(setError(info));

@@ -29,7 +29,7 @@ function Adder(props) {
 
     return (
         <Card className="py-5" style={{border:0}}>
-            <h1 className='p-5 text-center'>Adder</h1>
+            <h1 className='p-5 text-center'>Data Management</h1>
             {
                 !isSet && mounted
                 ?

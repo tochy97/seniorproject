@@ -3,7 +3,7 @@ import { Modal, Button, Card, Form, Stack, Alert, Row, Col, Overlay } from 'reac
 import { Divider } from "@mui/material"
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { setError } from '../../../../redux/actionCreators/authActionCreator';
-import { createClass, createSection, fetchClass } from '../../../../redux/actionCreators/sectionActionCreators';
+import { createClass, createSection, fetchClass, removeClass } from '../../../../redux/actionCreators/sectionActionCreators';
 
 function AddSection(props) {
     const [classNumber,setClassNumber] = useState("");
@@ -92,6 +92,8 @@ function AddSection(props) {
                 error:"Section number must be all numbers",
                 status:999
             }
+            setCSectionNumber("");
+            setSectionNumber("");
             return dispatch(setError(info));
         }
         else if(sectionList[classKey].includes(sectionNumber)){
@@ -100,21 +102,33 @@ function AddSection(props) {
                 error:"Section already exist",
                 status:998
             }
+            setCSectionNumber("");
+            setSectionNumber("");
             return dispatch(setError(info));
         }
         else{
             e.preventDefault();
-            dispatch(createSection(classID, sectionNumber, user.id, selectedClass))
+            dispatch(createSection(classID, sectionNumber, user.id, selectedClass));
+            closeAdding();
+            setCSectionNumber("");
+            setSectionNumber("");
         }
 
     }
 
     function handleChange(value, number, classNumber, index){
-        console.log(value)
         setClassKey(index);
         setClassID(number);
         setSelectedClass(classNumber);
         setSectionNumber(value);
+    }
+
+    function deleteClass(id){
+        dispatch(removeClass(id));
+    }
+
+    function editClass(id, index){
+
     }
 
     return (
@@ -142,12 +156,12 @@ function AddSection(props) {
                                     <h4>Class: {clas.number}</h4>
                                     <Row>
                                         <Col>
-                                            <Button variant='info' className='w-100 p-2'>
+                                            <Button variant='info' className='w-100 p-2'  onClick={()=>editClass(clas.id, index)}>
                                                 <h3>Edit</h3>
                                             </Button>
                                         </Col>
                                         <Col>
-                                            <Button variant='danger' className='w-100 p-2'>
+                                            <Button variant='danger' className='w-100 p-2'  onClick={()=>deleteClass(clas.id)}>
                                                 <h3>Delete</h3>
                                             </Button>
                                         </Col>
