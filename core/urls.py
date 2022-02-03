@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework import routers, urlpatterns
-from core.views import AccountViewSet, ClassesDetails, ClassesViewSet, ItemViewSet, UserViewSet, current_user, CreateUser, UserAPI, InstructViewSet, InstructDetails
+from core.views import AccountViewSet, ClassesViewSet, ItemViewSet, UserViewSet, current_user, CreateUser, UserAPI, InstructViewSet
 
 router = routers.DefaultRouter()
 
@@ -12,8 +12,6 @@ router.register('users', UserViewSet,'users')
 
 urlpatterns = [
     path('currentuser/', current_user),
-    path('instructs/<int:pk>/', InstructDetails.as_view()),
-    path('class/<int:pk>/', ClassesDetails.as_view()),
     path('createuser/', CreateUser.as_view()),
     path('userapi/<int:pk>', UserAPI.as_view()),
 ]

@@ -67,7 +67,7 @@ export const createSection = ( classID, secNum, id, classNum ) => async dispatch
 
     function isNumeric(str) {
         if (typeof str != "string") return false // we only process strings!  
-        for (let i = 0; i < str.length; i++) {
+        for (let i = 0; i < str.length; i++){
             if(isNaN(str[i]) && isNaN(parseFloat(str[i]))){
                 return false;
             }
@@ -95,11 +95,10 @@ export const createSection = ( classID, secNum, id, classNum ) => async dispatch
         }
         output += secNum
 
-
         let form_data = new FormData();
         form_data.append('instructor', id);
         form_data.append('sections', output);
-        form_data.append('number', secNum);
+        form_data.append('number', classNum);
         (async () => {
             await axios.put(`http://127.0.0.1:8000/classes/${classID}/`, form_data, {
                 headers:{
@@ -107,21 +106,42 @@ export const createSection = ( classID, secNum, id, classNum ) => async dispatch
                     Authorization: `JWT ${localStorage.getItem('token')}`,
                 }
             })
-            .then((res) => {
-                const data = {
-                    classID: res.id,
-                    data: res.data,
-                }
-                dispatch(addSection(data));
+            .then(() => {
+                (async () => {
+                    await axios.get("http://127.0.0.1:8000/classes/", {
+                        headers:{
+                            'Content-Type': 'application/json',
+                            Authorization: `JWT ${localStorage.getItem('token')}`,
+                        }
+                    })
+                    .then((res) => {
+                        dispatch(addClass(res.data));
+                    })
+                    .catch(err => {
+                        const info= {
+                            error:"Failed to create class",
+                            status:400
+                        }
+                        dispatch(setError(info));
+                    })
+                })()
             })
             .catch(err => {
+                console.log(err)
                 const info= {
-                    status:400,
+                    status:996,
                     error:"Failed to create section",
                 }
                 dispatch(setError(info));
             })
         })()
+    })
+    .catch(err => {
+        const info= {
+            status:400,
+            error:"Failed to load class for update",
+        }
+        dispatch(setError(info));
     })
 
 }

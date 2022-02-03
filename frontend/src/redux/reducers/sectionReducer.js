@@ -15,9 +15,7 @@ const sectionReducer = (state=initialState, {type, payload})=>{
             return state;
         case ADD_SECTION:            
             const current = state.classes.find(cla=>cla.id === payload.classID)
-            console.log("current: " + current)
             current.sections = payload.data
-            console.log("payload: " + payload.data)
             state={
                 classes:state.classes.map(cla=>cla.id === payload.classID? current : cla)
             }
