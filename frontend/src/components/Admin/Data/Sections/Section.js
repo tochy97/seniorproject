@@ -1,17 +1,16 @@
-import { selectClasses } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Card, Form, Stack, Alert } from 'react-bootstrap';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { setError } from '../../../../redux/actionCreators/authActionCreator';
-import { createClass, createSection, editClass, fetchClass, removeSection, removeClass, editSection } from '../../../../redux/actionCreators/sectionActionCreators';
-import "./Section.css"
+import { createClass, createSection, editClass, fetchClass, removeClass, editSection } from '../../../../redux/actionCreators/sectionActionCreators';
+import './Section.css';
 
 function Section(props) {
     const [classNumber,setClassNumber] = useState('');
     const [cClassNumber,setCClassNumber] = useState('');
     const [eClassNumber, setEClassNumber] = useState('');
-    const [sectionNumber, setSectionNumber] =  useState('');
-    const [cSectionNumber, setCSectionNumber] =  useState('');
+    const [sectionNumber, setSectionNumber] = useState('');
+    const [cSectionNumber, setCSectionNumber] = useState('');
     const [classID, setClassID] = useState('');
     const [selectedClass, setSelectedClass] = useState([]);
     const [selectedSection, setSelectedSection] = useState('');
@@ -75,7 +74,7 @@ function Section(props) {
             }
             return dispatch(setError(info));
         }
-        else if(classNumber !== cClassNumber){
+        else if(classNumber !== cClassNumber || !classNumber || !cClassNumber){
             const info= {
                 error:"Class numbers do not match",
                 status:999
@@ -106,6 +105,7 @@ function Section(props) {
     }
     function updateClass(){
         dispatch(editClass(classID, eClassNumber));
+        setEClassNumber('');
         closeConfirm();
     }
     
@@ -164,7 +164,6 @@ function Section(props) {
         dispatch(setError(info));
         setSelectedSection(sectionNumber)
         setSelectedClass(clas)
-        console.log(selectedClass)
         setEditing(true)
         if(!isNumeric(eClassNumber)){
             const info= {
@@ -187,7 +186,6 @@ function Section(props) {
         }
         else{
             let temp = selectedClass.sections
-            console.log(selectedClass)
             let curr = []
             for (let i = 0; i < temp.length; i++) {
                 if(isNumeric(temp[i]) && temp[i] !== ' '){

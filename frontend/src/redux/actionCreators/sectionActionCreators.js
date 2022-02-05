@@ -114,7 +114,6 @@ export const removeClass = ( classID ) => async dispatch => {
 }
 
 export const editClass = ( classID, newNumber ) => async dispatch => {
-    console.log(classID)
     await axios.get(`http://127.0.0.1:8000/classes/${classID}/`, {
         headers:{
             'Content-Type': 'application/json',
@@ -125,7 +124,6 @@ export const editClass = ( classID, newNumber ) => async dispatch => {
         (async () => {
             let form_data = new FormData();
             form_data.append('instructor', res.data.instructor);
-            console.log(newNumber)
             form_data.append('number', newNumber);
             await axios.put(`http://127.0.0.1:8000/classes/${classID}/`, form_data, {
                 headers:{
@@ -154,7 +152,6 @@ export const editClass = ( classID, newNumber ) => async dispatch => {
                 })()
             })
             .catch(err => {
-                console.log(err)
                 const info= {
                     status:503,
                     error:"Failed to update class number",
@@ -241,7 +238,6 @@ export const createSection = ( classID, secNum, id, classNum ) => async dispatch
                 })()
             })
             .catch(err => {
-                console.log(err)
                 const info= {
                     status:503,
                     error:"Failed to create section",
@@ -262,7 +258,6 @@ export const createSection = ( classID, secNum, id, classNum ) => async dispatch
 
 export const editSection = ( clas ) => async dispatch => {
     let form_data = new FormData();
-    console.log(clas)
     form_data.append('instructor', clas.instructor);
     form_data.append('number', clas.number);
     form_data.append('sections', clas.sections);

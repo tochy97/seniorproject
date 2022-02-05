@@ -11,7 +11,7 @@ function Profile() {
             isLoggedIn:state.auth.isLoggedIn, 
             user:state.auth.user,
     }), shallowEqual);
-
+    console.log(user)
     return (
         <Container>
             <Card className='p-5'>
