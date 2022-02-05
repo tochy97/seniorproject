@@ -31,7 +31,7 @@ class Instruct(models.Model):
 
 class Classes(models.Model):
     id = models.AutoField(primary_key=True)
-    instructor = ListTextField(base_field=models.PositiveSmallIntegerField(), size=100, max_length=(1000), blank=True, null=True)
+    instructor = models.PositiveSmallIntegerField()
     sections = ListTextField(base_field=models.PositiveSmallIntegerField(), size=100, max_length=(1000), blank=True, null=True)
     number = models.PositiveSmallIntegerField()
 

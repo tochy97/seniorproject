@@ -1,5 +1,5 @@
 import * as types from "../types/sectionTypes";
-import { setError, logoutUser } from "./authActionCreator";
+import { setError } from "./authActionCreator";
 import axios from 'axios';
 
 const addClass = ( data ) => ({
@@ -19,6 +19,12 @@ const deleteClass = ( data ) => ({
 })
 
 export const fetchClass = () => async dispatch => {
+    const info= {
+        status: 101,
+        error:"",
+    };
+    dispatch(setError(info));
+
     await axios.get("http://127.0.0.1:8000/classes/", {
         headers:{
             'Content-Type': 'application/json',
@@ -31,13 +37,19 @@ export const fetchClass = () => async dispatch => {
     .catch(err => {
         const info= {
             error:"Failed to retrieve classes",
-            status:404
+            status:504
         }
         dispatch(setError(info));
     })
 }
 
 export const createClass = ( classNum, id ) => async dispatch => {
+    const info= {
+        status: 101,
+        error:"",
+    };
+    dispatch(setError(info));
+
     let form_data = new FormData();
     form_data.append('instructor', id);
     form_data.append('number', classNum);
@@ -53,13 +65,19 @@ export const createClass = ( classNum, id ) => async dispatch => {
     .catch(err => {
         const info= {
             error:"Failed to create class",
-            status:400
+            status:501
         }
         dispatch(setError(info));
     })
 }
 
 export const removeClass = ( classID ) => async dispatch => {
+    const info= {
+        status: 101,
+        error:"",
+    };
+    dispatch(setError(info));
+
     await axios.delete(`http://127.0.0.1:8000/classes/${classID}/`, {
         headers:{
             'Content-Type': 'application/json',
@@ -79,8 +97,8 @@ export const removeClass = ( classID ) => async dispatch => {
             })
             .catch(err => {
                 const info= {
-                    error:"Failed to reload",
-                    status:400
+                    error:"Failed to update class list",
+                    status:504
                 }
                 dispatch(setError(info));
             })
@@ -89,13 +107,76 @@ export const removeClass = ( classID ) => async dispatch => {
     .catch(err => {
         const info= {
             error:"Failed to delete class",
-            status:400
+            status:502
+        }
+        dispatch(setError(info));
+    })
+}
+
+export const editClass = ( classID, selectedClass, newNumber ) => async dispatch => {
+    console.log(classID)
+    await axios.get(`http://127.0.0.1:8000/classes/${classID}/`, {
+        headers:{
+            'Content-Type': 'application/json',
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+        }
+    })
+    .then((res) => {
+        (async () => {
+            let form_data = new FormData();
+            form_data.append('instructor', res.data.instructor);
+            form_data.append('number', newNumber);
+            await axios.put(`http://127.0.0.1:8000/classes/${classID}/`, form_data, {
+                headers:{
+                    'Content-Type': 'application/json',
+                    Authorization: `JWT ${localStorage.getItem('token')}`,
+                }
+            })
+            .then(() => {
+                (async () => {
+                    await axios.get("http://127.0.0.1:8000/classes/", {
+                        headers:{
+                            'Content-Type': 'application/json',
+                            Authorization: `JWT ${localStorage.getItem('token')}`,
+                        }
+                    })
+                    .then((res) => {
+                        dispatch(addClass(res.data));
+                    })
+                    .catch(err => {
+                        const info= {
+                            error:"Failed to reload",
+                            status:504
+                        }
+                        dispatch(setError(info));
+                    })
+                })()
+            })
+            .catch(err => {
+                console.log(err)
+                const info= {
+                    status:503,
+                    error:"Failed to update class number",
+                }
+                dispatch(setError(info));
+            })
+        })()
+    })
+    .catch(err => {
+        const info= {
+            status:504,
+            error:"Failed to load class for update",
         }
         dispatch(setError(info));
     })
 }
 
 export const createSection = ( classID, secNum, id, classNum ) => async dispatch => {
+    const info= {
+        status: 101,
+        error:"",
+    };
+    dispatch(setError(info));
 
     function isNumeric(str) {
         if (typeof str != "string") return false // we only process strings!  
@@ -152,7 +233,7 @@ export const createSection = ( classID, secNum, id, classNum ) => async dispatch
                     .catch(err => {
                         const info= {
                             error:"Failed to reload",
-                            status:400
+                            status:504
                         }
                         dispatch(setError(info));
                     })
@@ -161,7 +242,7 @@ export const createSection = ( classID, secNum, id, classNum ) => async dispatch
             .catch(err => {
                 console.log(err)
                 const info= {
-                    status:996,
+                    status:503,
                     error:"Failed to create section",
                 }
                 dispatch(setError(info));
@@ -170,7 +251,7 @@ export const createSection = ( classID, secNum, id, classNum ) => async dispatch
     })
     .catch(err => {
         const info= {
-            status:400,
+            status:504,
             error:"Failed to load class for update",
         }
         dispatch(setError(info));

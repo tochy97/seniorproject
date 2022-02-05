@@ -4,7 +4,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { createInstructor, fetchAccount } from '../../../redux/actionCreators/accountActionCreators';
 import Loading from '../../Loading/Loading';
 import AddItem from './Items/AddItem';
-import AddSection from './Sections/AddSection';
+import AddSection from './Sections/Section';
 
 function Adder(props) {
     const [tab,setTab] = useState("sections");

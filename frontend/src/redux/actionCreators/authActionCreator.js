@@ -36,7 +36,7 @@ export const checkUser = ()  => async dispatch=>{
         localStorage.removeItem('token');
         const info= {
             error:"You are notlogged in ",
-            status:err.response.status
+            status:401
         }
         dispatch(setError(info))
     }); 
@@ -44,6 +44,11 @@ export const checkUser = ()  => async dispatch=>{
 
 
 export const loginUser = (data) => async dispatch=>{
+    const info= {
+        status: 101,
+        error:"",
+    };
+    dispatch(setError(info));
     const formData = JSON.stringify(data)
     await axios.post("http://127.0.0.1:8000/auth/", formData, {
         headers: {
@@ -62,13 +67,18 @@ export const loginUser = (data) => async dispatch=>{
         localStorage.removeItem('token');
         const info= {
             error:"Invalid username or password",
-            status:err.response.status
+            status:402
         }
         dispatch(setError(info))
     });
 }
 
 export const createUser = (data) =>  async dispatch=>{
+    const info= {
+        status: 101,
+        error:"",
+    };
+    dispatch(setError(info));
     const formData = JSON.stringify(data)
     await axios.post("http://127.0.0.1:8000/createuser/", formData, {
         headers: {
@@ -83,13 +93,18 @@ export const createUser = (data) =>  async dispatch=>{
         localStorage.removeItem('token');
         const info= {
             error:err.response.data.username,
-            status:err.response.status
+            status:403
         }
         dispatch(setError(info))
     });
 }
 
 export const setAccount = (data, id) => async dispatch=>{
+    const info= {
+        status: 101,
+        error:"",
+    };
+    dispatch(setError(info));
     const formData = JSON.stringify(data)
     await axios.put(`http://127.0.0.1:8000/userapi/${id}`, formData, {
         headers: {
@@ -110,6 +125,14 @@ export const setAccount = (data, id) => async dispatch=>{
                     Authorization: `JWT ${localStorage.getItem('token')}`,
                 },
             })
+            .catch(err => {
+                const info= {
+                    error:"Failed to retrieve account",
+                    status:404
+                }
+                dispatch(setError(info))
+                dispatch(resetUser());
+            });
             if(!acc){
                 const temp = {
                     user:id,
@@ -124,6 +147,14 @@ export const setAccount = (data, id) => async dispatch=>{
                         Authorization: `JWT ${localStorage.getItem('token')}`,
                     },
                 })
+                .catch(err => {
+                    const info= {
+                        error:"Failed to create account",
+                        status:405
+                    }
+                    dispatch(setError(info))
+                    dispatch(resetUser());
+                });
             }
             else{
                 const temp = {
@@ -138,6 +169,14 @@ export const setAccount = (data, id) => async dispatch=>{
                         Authorization: `JWT ${localStorage.getItem('token')}`,
                     },
                 })
+                .catch(err => {
+                    const info= {
+                        error:"Failed to update account",
+                        status:406
+                    }
+                    dispatch(setError(info))
+                    dispatch(resetUser());
+                });
             }
         })()
         dispatch(setUser(user));
@@ -146,7 +185,7 @@ export const setAccount = (data, id) => async dispatch=>{
         localStorage.removeItem('token');
         const info= {
             error:"Update failed. Refresh Page",
-            status:err.response.status
+            status:407
         }
         dispatch(setError(info))
         dispatch(resetUser());
@@ -154,6 +193,11 @@ export const setAccount = (data, id) => async dispatch=>{
 }
 
 export const logoutUser = () => dispatch=>{
+    const info= {
+        status: 101,
+        error:"",
+    };
+    dispatch(setError(info));
     localStorage.removeItem('token');
     dispatch(resetUser());
 }

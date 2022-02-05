@@ -1,0 +1,33 @@
+Authentication
+
+401: Not logged in
+
+402: Failed to log in
+
+403: Failed to create user
+
+404: Failed to retried account
+
+405: Failed to createe account
+
+406: Failed to update account
+
+407: Failed to update user
+
+Section/Classes
+
+501: Failed to create class
+
+502: Failed to delete class
+
+503: Failed to create section
+
+504: Failed to retried class list 
+
+505: Failed to update class number
+
+Client Side
+
+101:Everything is good
+
+999: Syntax Error

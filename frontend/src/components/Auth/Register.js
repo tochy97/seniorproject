@@ -69,16 +69,18 @@ function Register() {
 
     function handleSubmit(e){
         e.preventDefault();
+        const info= {
+            status: 101,
+            error:"",
+        };
+        dispatch(setError(info));
         if(password !== cpassword){
             const info= {
                 error:"Passwords do not match",
+                status:999
             }
             return dispatch(setError(info));
         }
-        const info= {
-            error:"",
-        }
-        dispatch(setError(info));
         const data = {
             username: username,
             password: password

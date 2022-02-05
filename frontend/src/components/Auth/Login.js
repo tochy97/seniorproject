@@ -70,6 +70,7 @@ function Login() {
     function handleSubmit(e){
         e.preventDefault();
         const info= {
+            status: 101,
             error:"",
         }
         dispatch(setError(info));
