@@ -1,8 +1,9 @@
+import { selectClasses } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Card, Form, Stack, Alert } from 'react-bootstrap';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { setError } from '../../../../redux/actionCreators/authActionCreator';
-import { createClass, createSection, editClass, fetchClass, removeClass } from '../../../../redux/actionCreators/sectionActionCreators';
+import { createClass, createSection, editClass, fetchClass, removeSection, removeClass } from '../../../../redux/actionCreators/sectionActionCreators';
 import "./Section.css"
 
 function Section(props) {
@@ -50,6 +51,12 @@ function Section(props) {
             setSectionList(output);}
     }, [mounted,dispatch]);
     
+    function handleChange(value, number, classNumber, index){
+        setClassID(number);
+        setSelectedClass(classNumber);
+        setSectionNumber(value);
+    }
+
     function isNumeric(str) {
         if (typeof str != "string") return false // we only process strings!  
         for (let i = 0; i < str.length; i++) {
@@ -83,12 +90,6 @@ function Section(props) {
 
     function deleteClass(id){
         dispatch(removeClass(id));
-    }
-    
-    function handleChange(value, number, classNumber, index){
-        setClassID(number);
-        setSelectedClass(classNumber);
-        setSectionNumber(value);
     }
 
     const [confirm, setConfirm] = useState(false);
@@ -175,6 +176,42 @@ function Section(props) {
         }
     }
 
+    function updateSection(){
+        let temp = selectedClass.sections
+        let curr = []
+        for (let i = 0; i < temp.length; i++) {
+            if(isNumeric(temp[i]) && temp[i] !== ' '){
+                curr.push(temp[i])
+            }
+        }
+        temp = curr.filter(element => element !== selectedSection)
+        console.log(curr + " - " + temp);
+    }
+
+    function deleteSection(){
+        let temp = selectedClass.sections
+        let curr = []
+        for (let i = 0; i < temp.length; i++) {
+            if(isNumeric(temp[i]) && temp[i] !== ' '){
+                curr.push(temp[i])
+            }
+        }
+        temp = curr.filter(element => element !== selectedSection)
+        curr = temp[0]
+        if(temp.length > 1){
+            for (let i = 1; i < temp.length; i++) {
+                if(isNumeric(temp[i]) && temp[i] !== ' '){
+                    curr += " ,"
+                    curr += temp[i]
+                }
+            }
+        }
+        console.log(curr);
+        selectedClass.sections = curr;
+        dispatch(removeSection(selectedClass));
+        closeEditing();
+
+    }
 
     return (
         <>
@@ -225,7 +262,7 @@ function Section(props) {
                             <Card key={index}>
                                 <Card.Header className='p-4'>
                                     <Form.Floating id="class" style={{marginTop: "1rem"}} >
-                                        <Form.Control onFocus={console.log(clas )} type="number" placeholder={`Class: ${clas.number}`} value={eClassNumber} onChange={e=>setEClassNumber(e.target.value)} required></Form.Control>
+                                        <Form.Control type="number" placeholder={`Class: ${clas.number}`} value={eClassNumber} onChange={e=>setEClassNumber(e.target.value)} required></Form.Control>
                                         <Form.Label><h4>Class: {clas.number}</h4></Form.Label>
                                     </Form.Floating>
                                     <div className='mt-3'>
@@ -251,12 +288,12 @@ function Section(props) {
                                                                 {
                                                                     sec.map((data) =>(
                                                                         <>
-                                                                        <Card className='section_box' onClick={()=>openEditing(clas.number,data)}>
+                                                                        <Card className='section_box' onClick={()=>openEditing(clas,data)}>
                                                                             <Card.Title>Section: {data}</Card.Title>
                                                                         </Card>
                                                                         <Modal show={editing} onHide={closeEditing}>
                                                                             <Modal.Header closeButton>
-                                                                            <Modal.Title>Edit Section {selectedClass}-{selectedSection}</Modal.Title>
+                                                                            <Modal.Title>Edit Section {selectedClass.number}-{selectedSection}</Modal.Title>
                                                                             </Modal.Header>
                                                                             <Modal.Body>
                                                                                 {error && <Alert variant='danger'>{error}</Alert>}
@@ -270,10 +307,10 @@ function Section(props) {
                                                                                         <Form.Label>Confirm section number</Form.Label>
                                                                                     </Form.Floating>
                                                                                     <div className='mt-3'>
-                                                                                        <Button variant='success' className='p-2 '>
+                                                                                        <Button variant='success' className='p-2 ' onClick={() => updateSection()}>
                                                                                             Save
                                                                                         </Button>
-                                                                                        <Button variant='danger' className='mx-3 p-2'>
+                                                                                        <Button variant='danger' className='mx-3 p-2' onClick={() => deleteSection()}>
                                                                                             Delete Section
                                                                                         </Button>
                                                                                     </div>

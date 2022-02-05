@@ -113,7 +113,7 @@ export const removeClass = ( classID ) => async dispatch => {
     })
 }
 
-export const editClass = ( classID, selectedClass, newNumber ) => async dispatch => {
+export const editClass = ( classID, newNumber ) => async dispatch => {
     console.log(classID)
     await axios.get(`http://127.0.0.1:8000/classes/${classID}/`, {
         headers:{
@@ -125,6 +125,7 @@ export const editClass = ( classID, selectedClass, newNumber ) => async dispatch
         (async () => {
             let form_data = new FormData();
             form_data.append('instructor', res.data.instructor);
+            console.log(newNumber)
             form_data.append('number', newNumber);
             await axios.put(`http://127.0.0.1:8000/classes/${classID}/`, form_data, {
                 headers:{
@@ -257,4 +258,50 @@ export const createSection = ( classID, secNum, id, classNum ) => async dispatch
         dispatch(setError(info));
     })
 
+}
+
+export const editSection = ( clas ) => async dispatch => {
+
+}
+
+export const removeSection = ( clas ) => async dispatch => {
+    let form_data = new FormData();
+    console.log(clas)
+    form_data.append('instructor', clas.instructor);
+    form_data.append('number', clas.number);
+    form_data.append('sections', clas.sections);
+    await axios.put(`http://127.0.0.1:8000/classes/${clas.id}/`, form_data, {
+        headers:{
+            'Content-Type': 'application/json',
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+        }
+    })
+    .then(() => {
+        (async () => {
+            await axios.get("http://127.0.0.1:8000/classes/", {
+                headers:{
+                    'Content-Type': 'application/json',
+                    Authorization: `JWT ${localStorage.getItem('token')}`,
+                }
+            })
+            .then((res) => {
+                dispatch(addClass(res.data));
+            })
+            .catch(err => {
+                const info= {
+                    error:"Failed to reload",
+                    status:504
+                }
+                dispatch(setError(info));
+            })
+        })()
+    })
+    .catch(err => {
+        console.log(err)
+        const info= {
+            status:503,
+            error:"Failed to update class number",
+        }
+        dispatch(setError(info));
+    })
 }
