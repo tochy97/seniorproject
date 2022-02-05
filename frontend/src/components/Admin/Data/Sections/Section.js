@@ -256,7 +256,7 @@ function Section(props) {
                                                                         </Card>
                                                                         <Modal show={editing} onHide={closeEditing}>
                                                                             <Modal.Header closeButton>
-                                                                            <Modal.Title>Edit Section {selectedClass.number}-{selectedSection}</Modal.Title>
+                                                                            <Modal.Title>Edit Section {selectedClass}-{selectedSection}</Modal.Title>
                                                                             </Modal.Header>
                                                                             <Modal.Body>
                                                                                 {error && <Alert variant='danger'>{error}</Alert>}
