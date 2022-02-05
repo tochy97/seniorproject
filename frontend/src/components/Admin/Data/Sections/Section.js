@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Card, Form, Stack, Alert } from 'react-bootstrap';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { setError } from '../../../../redux/actionCreators/authActionCreator';
-import { createClass, createSection, editClass, fetchClass, removeSection, removeClass } from '../../../../redux/actionCreators/sectionActionCreators';
+import { createClass, createSection, editClass, fetchClass, removeSection, removeClass, editSection } from '../../../../redux/actionCreators/sectionActionCreators';
 import "./Section.css"
 
 function Section(props) {
@@ -51,9 +51,9 @@ function Section(props) {
             setSectionList(output);}
     }, [mounted,dispatch]);
     
-    function handleChange(value, number, classNumber, index){
-        setClassID(number);
-        setSelectedClass(classNumber);
+    function handleChange(value, clas){
+        setClassID(clas.id);
+        setSelectedClass(clas);
         setSectionNumber(value);
     }
 
@@ -138,7 +138,7 @@ function Section(props) {
             e.preventDefault();
             const info= {
                 error:"Section already exist",
-                status:998
+                status:506
             }
             setCSectionNumber("");
             setSectionNumber("");
@@ -156,19 +156,20 @@ function Section(props) {
     
     const [editing, setEditing] = useState(false);
     const closeEditing = () => setEditing(false);
-    function openEditing(classNumber,sectionNumber){
+    function openEditing(clas,sectionNumber){
         const info= {
             status: 101,
             error:"",
         };
         dispatch(setError(info));
         setSelectedSection(sectionNumber)
-        setSelectedClass(classNumber)
+        setSelectedClass(clas)
+        console.log(selectedClass)
         setEditing(true)
         if(!isNumeric(eClassNumber)){
             const info= {
                 error:"Class number must be all numbers",
-                status:995
+                status:999
             }
             setCSectionNumber("");
             setSectionNumber("");
@@ -177,15 +178,44 @@ function Section(props) {
     }
 
     function updateSection(){
-        let temp = selectedClass.sections
-        let curr = []
-        for (let i = 0; i < temp.length; i++) {
-            if(isNumeric(temp[i]) && temp[i] !== ' '){
-                curr.push(temp[i])
+        if(!sectionNumber || !cSectionNumber || sectionNumber !== cSectionNumber){
+            const info= {
+                error:"Section number and confirm section must match",
+                status:999
             }
+            return dispatch(setError(info))
         }
-        temp = curr.filter(element => element !== selectedSection)
-        console.log(curr + " - " + temp);
+        else{
+            let temp = selectedClass.sections
+            console.log(selectedClass)
+            let curr = []
+            for (let i = 0; i < temp.length; i++) {
+                if(isNumeric(temp[i]) && temp[i] !== ' '){
+                    if(temp[i] === sectionNumber){
+                        const info= {
+                            error:"Section already exists",
+                            status:506
+                        }
+                        return dispatch(setError(info))
+                    }
+                    curr.push(temp[i])
+                }
+            }
+            curr.push(sectionNumber)
+            temp = curr.filter(element => element !== selectedSection)
+            curr = temp[0]
+            if(temp.length > 1){
+                for (let i = 1; i < temp.length; i++) {
+                    if(isNumeric(temp[i]) && temp[i] !== ' '){
+                        curr += " ,"
+                        curr += temp[i]
+                    }
+                }
+            }
+            selectedClass.sections = curr;
+            dispatch(editSection(selectedClass));
+            closeEditing();
+        }
     }
 
     function deleteSection(){
@@ -206,11 +236,9 @@ function Section(props) {
                 }
             }
         }
-        console.log(curr);
         selectedClass.sections = curr;
-        dispatch(removeSection(selectedClass));
+        dispatch(editSection(selectedClass));
         closeEditing();
-
     }
 
     return (
@@ -299,7 +327,7 @@ function Section(props) {
                                                                                 {error && <Alert variant='danger'>{error}</Alert>}
                                                                                 <Form>
                                                                                     <Form.Floating id="class" style={{marginTop: "1rem"}} >
-                                                                                        <Form.Control type="number" placeholder="Section number" value={sectionNumber} onChange={e=>handleChange(e.target.value, clas.id, clas.number, index)} required></Form.Control>
+                                                                                        <Form.Control type="number" placeholder="Section number" value={sectionNumber} onChange={e=>handleChange(e.target.value, clas)} required></Form.Control>
                                                                                         <Form.Label>New Section number</Form.Label>
                                                                                     </Form.Floating>
                                                                                     <Form.Floating id="class" style={{marginTop: "1rem"}} >

@@ -261,10 +261,6 @@ export const createSection = ( classID, secNum, id, classNum ) => async dispatch
 }
 
 export const editSection = ( clas ) => async dispatch => {
-
-}
-
-export const removeSection = ( clas ) => async dispatch => {
     let form_data = new FormData();
     console.log(clas)
     form_data.append('instructor', clas.instructor);

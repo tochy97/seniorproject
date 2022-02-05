@@ -26,6 +26,8 @@ Section/Classes
 
 505: Failed to update class number
 
+506: Section already exists
+
 Client Side
 
 101:Everything is good
