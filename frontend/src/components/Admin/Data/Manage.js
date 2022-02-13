@@ -4,6 +4,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { createInstructor, fetchAccount } from '../../../redux/actionCreators/accountActionCreators';
 import Loading from '../../Loading/Loading';
 import AddItem from './Items/AddItem';
+import ManageItem from './Items/ManageItem';
 import AddSection from './Sections/Section';
 
 function Adder(props) {
@@ -45,6 +46,9 @@ function Adder(props) {
                         <Nav.Item>
                             <Nav.Link eventKey="items"><h5>Items</h5></Nav.Link>
                         </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link eventKey="itemsEdit"><h5>Manage Items</h5></Nav.Link>
+                        </Nav.Item>
                     </Nav>
                     {
                         tab === "items"
@@ -53,9 +57,25 @@ function Adder(props) {
                                 <AddItem/>
                             </Container>
                         :
+                            <></>
+                    }
+                    {   
+                        tab === "sections"
+                        ?
                             <Container className='mt-5'>
                                 <AddSection/>
                             </Container>
+                        :
+                        <></>
+                    }
+                    {   
+                        tab === "itemsEdit"
+                        ?
+                            <Container className='mt-5'>
+                                <ManageItem/>
+                            </Container>
+                        :
+                        <></>
                     }
                 </>
                 :
