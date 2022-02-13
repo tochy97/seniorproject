@@ -2,7 +2,7 @@ import * as types from "../types/itemTypes";
 import { setError, logoutUser } from "./authActionCreator";
 import axios from 'axios';
 
-const setLoading = ( data ) => ({
+export const setLoading = ( data ) => ({
     type:types.SET_LOADING,
     payload:data,
 })
