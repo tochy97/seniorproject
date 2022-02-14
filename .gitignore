@@ -1,6 +1,11 @@
 **/__pycache__
 root/.env
 venv
+/frontend/src/config
+/frontend/.firebaserc
+/frontend/firebase.json
+/core/migrations
+firebase-debug.log
 
 # dependencies
 **/node_modules
