@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { checkUser } from "../../../../redux/actionCreators/authActionCreator";
-import { fetchItems } from '../../../../redux/actionCreators/itemActionCreators';
+import { fetchItems, setLoading } from '../../../../redux/actionCreators/itemActionCreators';
 import { createItem } from '../../../../redux/actionCreators/itemActionCreators';
 import axios from 'axios';
 
@@ -131,7 +131,7 @@ function AddItem() {
                 setOut("")
                 setTotal("")    
 
-                dispatch(fetchItems())
+                dispatch(setLoading(true))
             })
             .catch(err => console.log(err))
         
