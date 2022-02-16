@@ -6,7 +6,7 @@ import './About.css'
 export default function About() {
 
   return (<>
-  <h6 className='text-center'>The CSE Lab is located in Woolf Hall, room 221</h6>
+  <h6 className='text-center'>The Senior Design Lab is located in the ERB, room 208</h6>
   <div id='location-info'>
     <img src='/woolf.png' />
   </div>
