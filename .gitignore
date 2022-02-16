@@ -1,5 +1,6 @@
 **/__pycache__
 root/.env
+core/migrations
 venv
 
 # dependencies
