@@ -37,5 +37,6 @@ class Classes(models.Model):
     sections = ListTextField(base_field=models.IntegerField(), size=10, max_length=(10 * 5), blank=True, null=True)
     number = models.IntegerField()
 
-
+class CheckedOutItems(models.Model):
+    None
     
