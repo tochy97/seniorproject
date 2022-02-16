@@ -1,0 +1,57 @@
+div#location-info {
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+div#location-info img {
+  border: 5px double lightgray;
+  border-radius: 30px;
+  width: 90%;
+  height: 200px;
+  display: block;
+  margin: 0 auto;
+  object-fit: cover;
+}
+
+div#faculty-box {
+  padding: 10px;
+  margin-bottom: 50px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.faculty-card.card {
+  margin: 10px;
+  display: grid;
+  grid-template-columns: 30% 1fr;
+  grid-template-rows: 100px 50px;
+}
+
+.faculty-card img {
+  grid-row: 1 3;
+  width: 100%;
+  height: 150%;
+  object-fit: cover;
+}
+
+.faculty-card p {
+  padding: 10px;
+  grid-column: 2;
+}
+
+.faculty-card a {
+  text-decoration: none;
+  color: #0f53bd;
+  transition: 0.2s;
+}
+
+.faculty-card a:hover {
+  color: #fc903a;
+  transition: 0.1s;
+}
+
+div#policy p {
+  width: 85%;
+  margin: 0 auto 25px auto;
+  text-align: center;
+}
