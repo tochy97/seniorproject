@@ -55,6 +55,10 @@ function NavComp() {
                                     ?
                                     <>
                                         <Nav.Item  style={{marginLeft:"15px"}}>
+                                            <Nav.Link href="/admin/checkout" style={{color:"black"}}>Checkout</Nav.Link>
+                                        </Nav.Item>
+                                        <Divider style={{margin:"1rem"}}/>
+                                        <Nav.Item  style={{marginLeft:"15px"}}>
                                             <Nav.Link href="/admin/report" style={{color:"black"}}>Report</Nav.Link>
                                         </Nav.Item>
                                         <Divider style={{margin:"1rem"}}/>
