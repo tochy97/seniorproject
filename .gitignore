@@ -6,6 +6,7 @@ venv
 /frontend/firebase.json
 /core/migrations
 firebase-debug.log
+**/package-lock.json
 
 # dependencies
 **/node_modules
