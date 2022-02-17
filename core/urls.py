@@ -1,11 +1,10 @@
 from django.urls import path
 from rest_framework import routers, urlpatterns
-from core.views import AccountViewSet, ClassesViewSet, ItemViewSet, UserViewSet, current_user, CreateUser, UserAPI, InstructViewSet, CreateItem
+from core.views import AccountViewSet, ClassesViewSet, ItemViewSet, UserViewSet, current_user, CreateUser, UserAPI, CreateItem
 
 router = routers.DefaultRouter()
 
 router.register('accounts', AccountViewSet,'accounts')
-router.register('instructors', InstructViewSet,'instructors')
 router.register('items', ItemViewSet,'items')
 router.register('classes', ClassesViewSet,'classes')
 router.register('users', UserViewSet,'users')

@@ -26,11 +26,6 @@ class Account(models.Model):
     team = models.CharField(max_length=50)
     items = models.ManyToManyField(Item, related_name='users', blank=True)
 
-class Instruct(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    sections = ListTextField(base_field=models.IntegerField(), size=100,)
-    classes = ListTextField(base_field=models.IntegerField(), size=100,)
-
 class Classes(models.Model):
     id = models.AutoField(primary_key=True)
     instructor = models.IntegerField()

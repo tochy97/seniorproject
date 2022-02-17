@@ -8,37 +8,29 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import Http404
-from .serializers import AccountSerializer, ItemSerializer, UserSerializer, UserSerializerWithToken, InstructSerializer, ClassesSerializer
-from .models import Account, Item, Instruct, Classes
+from .serializers import AccountSerializer, ItemSerializer, UserSerializer, UserSerializerWithToken, ClassesSerializer
+from .models import Account, Item, Classes
 
 class ItemViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.all()
     permissions_classes = [ 
-        permissions.AllowAny
+        permissions.IsAuthenticated
     ]
     serializer_class = ItemSerializer
 
 class AccountViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.all()
     permissions_classes = [ 
-        permissions.AllowAny
+        permissions.IsAuthenticated
     ]
     serializer_class = AccountSerializer
 
 class ClassesViewSet(viewsets.ModelViewSet):
     queryset = Classes.objects.all()
     permissions_classes = [ 
-        permissions.AllowAny
+        permissions.IsAuthenticated
     ]
     serializer_class = ClassesSerializer
-
-class InstructViewSet(viewsets.ModelViewSet):
-    queryset = Instruct.objects.all()
-
-    permissions_classes = [ 
-        permissions.AllowAny
-    ]
-    serializer_class = InstructSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -68,7 +60,7 @@ class CreateUser(APIView):
 class CreateItem(APIView):
 
     parser_classes = (MultiPartParser, FormParser)
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, format=None):
         print(request.data)

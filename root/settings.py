@@ -16,7 +16,7 @@ DEBUG = int(env("DEBUG", default=1))
 
 # ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS").split(" ")
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000",]
+CORS_ORIGIN_WHITELIST = ["http://localhost:3000","https://serniorproject-27215.web.app"]
 
 # Application definition
 INSTALLED_APPS = [

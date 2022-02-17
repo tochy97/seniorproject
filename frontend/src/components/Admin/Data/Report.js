@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Nav, Button, Card } from 'react-bootstrap';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { createInstructor, fetchAccount } from '../../../redux/actionCreators/accountActionCreators';
 import Loading from '../../Loading/Loading';
 function Report(props) {
     const [tab,setTab] = useState("sections");
-    const dispatch = useDispatch();    
   
     const { mounted, user, error, status, isSet } = useSelector(
       (state) =>({
@@ -16,21 +14,11 @@ function Report(props) {
         isSet:state.account.set
     }), shallowEqual);
 
-    dispatch(fetchAccount(user));
-
-    const confirmAccount    = () => {
-        console.log("here")
-        dispatch(createInstructor(user.id));
-    }
 
     return (
         <Card className="py-5" style={{border:0}}>
             <h1 className='p-5 text-center'>Report</h1>
             {
-                !isSet && mounted
-                ?
-                    <Button variant='dark' onClick={confirmAccount} style={{padding:"1em"}}>Complete account setup</Button>
-                :
                 mounted
                 ?
                     <Nav fill variant="tabs" className='justify-content-centered' defaultActiveKey="sections"  onSelect={(selectedKey) => setTab(selectedKey)}>
