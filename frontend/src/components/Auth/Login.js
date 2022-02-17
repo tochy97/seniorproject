@@ -24,11 +24,10 @@ function Login() {
     const openConfirm = () => setConfirm(true);
     const closeConfirm = () => setConfirm(false);
 
-    const { error, status, mounted } = useSelector(
+    const { error, status } = useSelector(
       (state) =>({
         error:state.auth.error, 
         status:state.auth.status, 
-        mounted:state.auth.mounted, 
     }), shallowEqual);
 
     function isNumeric(str) {
@@ -80,17 +79,11 @@ function Login() {
         }
         dispatch(loginUser(data));
         setPassword("");
-        if(!error)
-        {
-            histroy("../", {replace:true});
-        }
+        histroy("../", {replace:true});
     }
 
     return (
         <Card className="p-5" style={{border:0}}>
-            {
-                mounted
-                ?
                 <Row className="px-5 my-6 gap-5">
                     <Divider className="font-weight-bold text-center py-4"><h1>Login</h1></Divider>
                     {error && status === 999 && <Alert variant="danger">{error}</Alert>}
@@ -144,9 +137,6 @@ function Login() {
                         </Modal>
                     </Col>
                 </Row>
-                :
-                <Loading/>
-            }
         </Card>
     );
 }

@@ -62,7 +62,6 @@ function Register() {
             }*/
             setUsername(data);
             setData(" ");
-            dispatch(setError(""));
             return openConfirm();
         }
     }
@@ -86,12 +85,7 @@ function Register() {
             password: password
         }
         dispatch(createUser(data)); 
-        if(error)
-        {
-            histroy("../SetAccount", {replace:true});
-        }
-        else{
-        }
+        histroy("../", {replace:true});
     }
     console.log(username)
     return (

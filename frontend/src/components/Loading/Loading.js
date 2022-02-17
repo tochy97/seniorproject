@@ -4,7 +4,7 @@ import { Spinner } from 'react-bootstrap';
 function Loading(props) {
     return (
         <h1 className='text-center'>
-            <Spinner animation="border" style={{width:"15em", height:"15em"}}/>
+            <Spinner animation="border" style={{width:"10em", height:"10em"}}/>
         </h1>
     );
 }

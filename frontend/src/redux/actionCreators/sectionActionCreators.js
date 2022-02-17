@@ -19,12 +19,6 @@ const deleteClass = ( data ) => ({
 })
 
 export const fetchClass = () => async dispatch => {
-    const info= {
-        status: 101,
-        error:"",
-    };
-    dispatch(setError(info));
-
     await axios.get("http://127.0.0.1:8000/classes/", {
         headers:{
             'Content-Type': 'application/json',
@@ -44,12 +38,6 @@ export const fetchClass = () => async dispatch => {
 }
 
 export const createClass = ( classNum, id ) => async dispatch => {
-    const info= {
-        status: 101,
-        error:"",
-    };
-    dispatch(setError(info));
-
     let form_data = new FormData();
     form_data.append('instructor', id);
     form_data.append('number', classNum);
@@ -72,12 +60,6 @@ export const createClass = ( classNum, id ) => async dispatch => {
 }
 
 export const removeClass = ( classID ) => async dispatch => {
-    const info= {
-        status: 101,
-        error:"",
-    };
-    dispatch(setError(info));
-
     await axios.delete(`http://127.0.0.1:8000/classes/${classID}/`, {
         headers:{
             'Content-Type': 'application/json',
@@ -170,12 +152,6 @@ export const editClass = ( classID, newNumber ) => async dispatch => {
 }
 
 export const createSection = ( classID, secNum, id, classNum ) => async dispatch => {
-    const info= {
-        status: 101,
-        error:"",
-    };
-    dispatch(setError(info));
-
     function isNumeric(str) {
         if (typeof str != "string") return false // we only process strings!  
         for (let i = 0; i < str.length; i++){

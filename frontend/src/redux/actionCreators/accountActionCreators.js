@@ -1,5 +1,5 @@
 import * as types from "../types/accountTypes";
-import { setError, logoutUser } from "./authActionCreator";
+import { setError, logoutUser, setAllowed, setMount } from "./authActionCreator";
 import axios from 'axios';
 
 const setAccount = ( data ) => ({
@@ -10,66 +10,60 @@ const addAccount = ( data ) => ({
     type:types.ADD_ACCOUNT,
     payload:data
 })
-const resetAccount = () => ({
+export const resetAccount = () => ({
     type:types.RESET_ACCOUNT,
 })
 const deleteAccount = ( data ) => ({
     type:types.DELETE_ACCOUNT,
     payload:data,
 })
-
-const isSet = (data) => ({
+export const mountAccount = ( data ) => ({
     type:types.IS_SET,
     payload:data,
 })
 
-export const doItem = ( data, item, setProgress ) => dispatch => {
-
-}
-
-export const fetchAccount = ( user ) => dispatch => {
-    if(user.is_superuser){
-        axios.get(`http://127.0.0.1:8000/instructors/${user.id}/`, {
-            headers: {
-                Authorization: `JWT ${localStorage.getItem('token')}`,
-              }
-        })
-        .then(res => {
-            dispatch(setAccount(res.data));
-            dispatch(isSet(true));
-        })
-        .catch(err => {
-            dispatch(isSet(false));
-            const info= {
-                error:"Failed to find account",
-                status:404
-            }
-            dispatch(setError(info));
-        })
-
-    }
-}
-
-export const createInstructor = ( id ) => dispatch => {
-    let form_data = new FormData();
-    form_data.append('instructor', id);
-    axios.post("http://127.0.0.1:8000/instructors/", form_data, {
-        headers:{
-            'Content-Type': 'application/json',
-            Authorization: `JWT ${localStorage.getItem('token')}`,
-        }
+export const fetchAccount = ( id ) => async dispatch => {
+    dispatch(setMount(false));
+    await axios.get(`http://127.0.0.1:8000/accounts/${id}/`, {
+    headers: {
+        Authorization: `JWT ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      }
     })
     .then(res => {
+        dispatch(setAllowed(true));
         dispatch(setAccount(res.data));
-        dispatch(isSet(true));
     })
     .catch(err => {
-        dispatch(isSet(false));
-        console.log(err)
+        dispatch(mountAccount(true));
         const info= {
-            error:"Failed to confirm account",
-            status:400
+            error:"Failed to find account",
+            status:404
         }
         dispatch(setError(info));
     })
 }
+
+export const createAccount = ( id ) => async dispatch => {
+
+    let form_data = new FormData();
+    form_data.append('user', id);
+    await axios.post("http://127.0.0.1:8000/accounts/", form_data, {
+        headers:{
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(res => {
+        dispatch(setAccount(res.data));
+        dispatch(setAllowed(true));
+    })
+    .catch(err => {
+        const info= {
+            error:"Failed to send",
+            status:404
+        }
+        dispatch(setError(info));
+    })
+    
+}   

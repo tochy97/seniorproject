@@ -4,6 +4,7 @@ import { Card, Container, Row, Button, Nav } from 'react-bootstrap';
 import { Divider } from '@mui/material';
 import { checkUser } from '../../redux/actionCreators/authActionCreator';
 import { fetchItems } from '../../redux/actionCreators/itemActionCreators';
+import Loading from '../Loading/Loading';
 
 function ViewItems() {
     const dispatch = useDispatch();
@@ -46,8 +47,7 @@ function ViewItems() {
                     {
                         !items
                         ? 
-                            <>
-                            </>
+                            <Loading/>
                         : 
                             <>
                                 <Divider className='p-5'><h1>Inventory</h1></Divider>

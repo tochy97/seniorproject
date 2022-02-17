@@ -13,12 +13,6 @@ function NavComp() {
             isLoggedIn:state.auth.isLoggedIn, 
             user:state.auth.user,
     }), shallowEqual);
-
-    useEffect(() => {
-        if(!isLoggedIn){
-            dispatch(checkUser());
-        }
-    }, [isLoggedIn,dispatch]);
     
     function logout(e){
         e.preventDefault();

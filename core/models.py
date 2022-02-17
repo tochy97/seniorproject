@@ -21,9 +21,9 @@ class Item(models.Model):
 
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    instructor =  models.ForeignKey(User, on_delete=models.CASCADE, related_name="instructor")
-    section = models.IntegerField()
-    team = models.CharField(max_length=50)
+    instructor =  models.ForeignKey(User, on_delete=models.CASCADE, related_name="instructor", blank=True, null=True)
+    section = models.IntegerField(blank=True, null=True)
+    team = models.CharField(max_length=50, blank=True, null=True)
     items = models.ManyToManyField(Item, related_name='users', blank=True)
 
 class Instruct(models.Model):

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Nav, Button, Card, Container } from 'react-bootstrap';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { createInstructor, fetchAccount } from '../../../redux/actionCreators/accountActionCreators';
 import Loading from '../../Loading/Loading';
 import AddItem from './Items/AddItem';
 import ManageItem from './Items/ManageItem';
@@ -21,21 +20,10 @@ function Adder(props) {
         isSet:state.account.set
     }), shallowEqual);
 
-    dispatch(fetchAccount(user));
-
-    const confirmAccount    = () => {
-        console.log("here")
-        dispatch(createInstructor(user.id));
-    }
-
     return (
         <Card className="py-5" style={{border:0}}>
             <h1 className='p-5 text-center'>Data Management</h1>
             {
-                !isSet && mounted
-                ?
-                    <Button variant='dark' onClick={confirmAccount} style={{padding:"1em"}}>Complete account setup</Button>
-                :
                 mounted
                 ?
                 <>
