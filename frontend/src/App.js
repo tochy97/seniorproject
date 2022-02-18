@@ -8,6 +8,7 @@ import NavComp from './components/NavComp/NavComp';
 import Dashboard from './components/Dashboard/Dashboard';
 import Profile from './components/Profile/Profile';
 import ViewItems from './components/ViewItems/ViewItems';
+import About from './components/About/About';
 import SetAccount from './components/Auth/SetAccount';
 import Admin from './components/Admin';
 
@@ -40,6 +41,7 @@ function App() {
             <Route exact path="/*" element={<Dashboard/>}/>
             <Route exact path="profile" element={<Profile/>}/>
             <Route exact path="viewitems" element={<ViewItems/>}/>
+            <Route exact path="about" element={<About />}/>
             <Route path="admin/*" element={<Admin/>} />
             <Route exact path="confirmaccount" element={<SetAccount/>}/> 
           </>

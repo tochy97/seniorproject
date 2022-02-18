@@ -27,7 +27,7 @@ function Dashboard() {
         },
         {
             title: "About",
-            link: "/#",
+            link: "/about",
             icon: faCircleInfo
         },
         {
