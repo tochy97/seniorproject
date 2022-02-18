@@ -8,7 +8,12 @@ import NavComp from './components/NavComp/NavComp';
 import Dashboard from './components/Dashboard/Dashboard';
 import Profile from './components/Profile/Profile';
 import ViewItems from './components/ViewItems/ViewItems';
+<<<<<<< HEAD
 import SetAccount from './components/Profile/SetAccount';
+=======
+import About from './components/About/About';
+import SetAccount from './components/Auth/SetAccount';
+>>>>>>> 4b9e17de6a74f14d224f9f242915ab7ba5b8b768
 import Admin from './components/Admin';
 import Disclaimer from './components/Profile/Disclaimer';
 import { fetchAccount } from './redux/actionCreators/accountActionCreators';
