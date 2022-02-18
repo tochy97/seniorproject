@@ -2,7 +2,6 @@ import { ADD_CLASS, SET_CLASS } from "../types/sectionTypes"
 
 const initialState = {
     classes:null,
-    sections:null,
     mounted:false,
 }
 

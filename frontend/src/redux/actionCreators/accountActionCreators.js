@@ -21,9 +21,68 @@ export const mountAccount = ( data ) => ({
     type:types.IS_SET,
     payload:data,
 })
+const getInstructors = ( data ) => ({
+    type:types.GET_INSTRUCTORS,
+    payload:data,
+})
+
+export const fetchMyInstructor = ( id ) => async dispatch => {
+    await axios.get(`http://127.0.0.1:8000/users/${id}/`, {
+        headers: {
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+          }
+    })
+    .then((res) => {
+        console.log(res.data)
+        const output = {
+            first_name: res.data.first_name,
+            last_name: res.data.last_name,
+        }
+        dispatch(getInstructors(output))
+    })
+    .catch(err => {
+        const info= {
+            error:"Failed to fetch instrcutors",
+            status:404
+        }
+        dispatch(setError(info));
+    })
+}
+
+export const fetchInstructors = () => async dispatch => {
+    await axios.get("http://127.0.0.1:8000/users/", {
+        headers: {
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+          }
+    })
+    .then((res) => {
+        const output = []
+        let temp;
+        res.data.forEach(element => {
+            if(element.is_superuser){
+                temp = {
+                    first: element.first_name,
+                    last: element.last_name,
+                    id: element.id,
+                }
+                output.push(temp);
+            }
+        });
+        dispatch(getInstructors(output))
+    })
+    .catch(err => {
+        dispatch(mountAccount(true));
+        const info= {
+            error:"Failed to fetch instrcutors",
+            status:404
+        }
+        dispatch(setError(info));
+    })
+}
 
 export const fetchAccount = ( id ) => async dispatch => {
-    dispatch(setMount(false));
     await axios.get(`http://127.0.0.1:8000/accounts/${id}/`, {
     headers: {
         Authorization: `JWT ${localStorage.getItem('token')}`,
@@ -45,7 +104,6 @@ export const fetchAccount = ( id ) => async dispatch => {
 }
 
 export const createAccount = ( id ) => async dispatch => {
-
     let form_data = new FormData();
     form_data.append('user', id);
     await axios.post("http://127.0.0.1:8000/accounts/", form_data, {
@@ -67,3 +125,42 @@ export const createAccount = ( id ) => async dispatch => {
     })
     
 }   
+
+export const updateAccount = ( userData, id, accountData ) => async dispatch => {
+    const form_data = JSON.stringify(userData)
+    await axios.put(`http://127.0.0.1:8000/userapi/${id}/`, form_data, {
+        headers:{
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+        }
+    })
+    .then((res) => {
+        (async () => {
+            let account_data = JSON.stringify(accountData)
+            console.log(accountData)
+            await axios.put(`http://127.0.0.1:8000/accounts/${id}/`, account_data, {
+                headers:{
+                    Authorization: `JWT ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(res => {
+                dispatch(setAccount(res.data));
+            })
+            .catch(err => {
+                const info= {
+                    error:"Failed to send",
+                    status:404
+                }
+                dispatch(setError(info));
+            })
+        })()
+    })
+    .catch(err => {
+        const info= {
+            error:"Failed to send",
+            status:404
+        }
+        dispatch(setError(info));
+    })
+}

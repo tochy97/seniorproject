@@ -21,7 +21,6 @@ function Disclaimer(props) {
         e.preventDefault();
         if(checked)
         {
-            console.log("creating account for  : " + user.id)
             dispatch(createAccount(user.id));
             histroy("../", {replace:true});
         }

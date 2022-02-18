@@ -8,7 +8,7 @@ import NavComp from './components/NavComp/NavComp';
 import Dashboard from './components/Dashboard/Dashboard';
 import Profile from './components/Profile/Profile';
 import ViewItems from './components/ViewItems/ViewItems';
-import SetAccount from './components/Auth/SetAccount';
+import SetAccount from './components/Profile/SetAccount';
 import Admin from './components/Admin';
 import Disclaimer from './components/Profile/Disclaimer';
 import { fetchAccount } from './redux/actionCreators/accountActionCreators';
@@ -18,23 +18,30 @@ import NotFound from './components/NotFound/NotFound';
 function App() {
   const dispatch = useDispatch();    
 
-  const { isLoggedIn, user, status, allowed, mounted, accountMounted } = useSelector(
+  const { isLoggedIn, user, status, allowed, mounted, accountMounted, account } = useSelector(
     (state) =>({
       isLoggedIn:state.auth.isLoggedIn, 
       user:state.auth.user, 
       status:state.auth.status, 
       allowed:state.auth.allowed,
       mounted:state.auth.mounted,
-      accountMounted:state.account.mounted
+      accountMounted:state.account.mounted,
+      account:state.account.data
   }), shallowEqual);
-  console.log(isLoggedIn)
+
   useEffect(() => {
       if(!isLoggedIn){
           dispatch(checkUser());
       }
       else{
-        if(user.is_superuser === true){
+        if(!accountMounted){
+          dispatch(fetchAccount(user.id))
+        }
+        else
+        {
+        if(user.is_superuser === true || account){
           dispatch(setAllowed(true));
+        }
         }
       }
   }, [isLoggedIn,dispatch]);
@@ -58,7 +65,7 @@ function App() {
           :
           <>
           {
-            accountMounted 
+            accountMounted || allowed
             ?
             <Routes>
               {

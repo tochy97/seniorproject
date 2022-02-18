@@ -5,6 +5,16 @@ import Divider from '@mui/material/Divider';
 import { Card, Row, Col, Form, Alert, Button, Modal } from 'react-bootstrap';
 import { createUser, setError } from '../../redux/actionCreators/authActionCreator';
 
+function isNumeric(str) {
+    if (typeof str != "string") return false // we only process strings!  
+    for (let i = 0; i < str.length; i++) {
+        if(isNaN(str[i]) && isNaN(parseFloat(str[i]))){
+            return false;
+        }
+    }
+    return true;
+}
+
 function Register() {
     const [data,setData] = useState("");
     const [username,setUsername] = useState("");
@@ -31,17 +41,7 @@ function Register() {
           status:state.auth.status, 
     }), shallowEqual);
 
-    function isNumeric(str) {
-        if (typeof str != "string") return false // we only process strings!  
-        for (let i = 0; i < str.length; i++) {
-            if(isNaN(str[i]) && isNaN(parseFloat(str[i]))){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    function getUsername(e){
+    const getUsername = (e) => {
         e.preventDefault();
         const x = data
         if(x.split(" ").length > 1)
@@ -66,7 +66,7 @@ function Register() {
         }
     }
 
-    function handleSubmit(e){
+    const handleSubmit = (e) =>{
         e.preventDefault();
         const info= {
             status: 101,
@@ -87,7 +87,7 @@ function Register() {
         dispatch(createUser(data)); 
         histroy("../", {replace:true});
     }
-    console.log(username)
+    
     return (
         <Card className="p-5" style={{border:0}}>
             <Row className="px-5 my-6 gap-5">
