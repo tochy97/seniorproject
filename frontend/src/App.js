@@ -9,7 +9,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import Profile from './components/Profile/Profile';
 import ViewItems from './components/ViewItems/ViewItems';
 import About from './components/About/About';
-import SetAccount from './components/Auth/SetAccount';
+import SetAccount from './components/Profile/SetAccount';
 import Admin from './components/Admin';
 import Disclaimer from './components/Profile/Disclaimer';
 import { fetchAccount } from './redux/actionCreators/accountActionCreators';
