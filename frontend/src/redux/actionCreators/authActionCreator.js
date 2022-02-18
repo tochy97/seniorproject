@@ -1,5 +1,6 @@
 import * as types from "../types/authTypes";
 import axios from 'axios';
+import { fetchAccount, mountAccount, resetAccount } from "./accountActionCreators";
 
 
 const setUser = (data)=>({
@@ -17,6 +18,10 @@ export const setMount = (data)=>({
     type:types.SET_MOUNT,
     payload:data
 })
+export const setAllowed = (data)=>({
+    type:types.SET_ALLOWED,
+    payload:data
+})
 
 export const checkUser = ()  => async dispatch=>{
     await axios.get('http://127.0.0.1:8000/currentuser/', {
@@ -25,12 +30,14 @@ export const checkUser = ()  => async dispatch=>{
         }
     })
     .then(res => {
-
         const data = {
             user:res.data,
-            status:200
+            status:101
         }
-        dispatch(setUser(data))
+        dispatch(setUser(data));
+        if(!res.data.is_superuser){
+            dispatch(fetchAccount(res.data.id));
+        }
     })
     .catch(err => {   
         localStorage.removeItem('token');
@@ -44,11 +51,6 @@ export const checkUser = ()  => async dispatch=>{
 
 
 export const loginUser = (data) => async dispatch=>{
-    const info= {
-        status: 101,
-        error:"",
-    };
-    dispatch(setError(info));
     const formData = JSON.stringify(data)
     await axios.post("http://127.0.0.1:8000/auth/", formData, {
         headers: {
@@ -60,8 +62,14 @@ export const loginUser = (data) => async dispatch=>{
             user:res.data.user,
             status:res.status
         }
-        dispatch(setUser(data))
+        dispatch(setUser(data));
         localStorage.setItem('token', res.data.token);
+        if(!res.data.user.is_superuser){
+            dispatch(fetchAccount(res.data.user.id));
+        }
+        else{
+            dispatch(mountAccount(true))
+        }
     })
     .catch(err => {
         localStorage.removeItem('token');
@@ -74,11 +82,6 @@ export const loginUser = (data) => async dispatch=>{
 }
 
 export const createUser = (data) =>  async dispatch=>{
-    const info= {
-        status: 101,
-        error:"",
-    };
-    dispatch(setError(info));
     const formData = JSON.stringify(data)
     await axios.post("http://127.0.0.1:8000/createuser/", formData, {
         headers: {
@@ -99,109 +102,28 @@ export const createUser = (data) =>  async dispatch=>{
     });
 }
 
-export const setAccount = (data, id) => async dispatch=>{
-    const info= {
-        status: 101,
-        error:"",
-    };
-    dispatch(setError(info));
-    const formData = JSON.stringify(data)
-    await axios.put(`http://127.0.0.1:8000/userapi/${id}`, formData, {
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `JWT ${localStorage.getItem('token')}`,
-        },
-    })
-    .then(res => {
-        const user = {
-            username:res.data.user.username,
-            id:res.data.user.id,
-            status:res.status
-        }
-        (async () => {
-            let acc = await axios.get(`http://127.0.0.1:8000/accounts/${id}`,{
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `JWT ${localStorage.getItem('token')}`,
-                },
-            })
-            .catch(err => {
-                const info= {
-                    error:"Failed to retrieve account",
-                    status:404
-                }
-                dispatch(setError(info))
-                dispatch(resetUser());
-            });
-            if(!acc){
-                const temp = {
-                    user:id,
-                    section:data.section,
-                    instructor:data.instructor,
-                    team:data.team,
-                }
-                const accData = JSON.stringify(temp);
-                axios.post('http://127.0.0.1:8000/accounts/', accData, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `JWT ${localStorage.getItem('token')}`,
-                    },
-                })
-                .catch(err => {
-                    const info= {
-                        error:"Failed to create account",
-                        status:405
-                    }
-                    dispatch(setError(info))
-                    dispatch(resetUser());
-                });
-            }
-            else{
-                const temp = {
-                    section:data.section,
-                    instructor:data.instructor,
-                    team:data.team,
-                }
-                const accData = JSON.stringify(temp);
-                axios.put(`http://127.0.0.1:8000/accounts/${id}`, accData, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `JWT ${localStorage.getItem('token')}`,
-                    },
-                })
-                .catch(err => {
-                    const info= {
-                        error:"Failed to update account",
-                        status:406
-                    }
-                    dispatch(setError(info))
-                    dispatch(resetUser());
-                });
-            }
-        })()
-        dispatch(setUser(user));
-    })
-    .catch(err => {
-        localStorage.removeItem('token');
-        const info= {
-            error:"Update failed. Refresh Page",
-            status:407
-        }
-        dispatch(setError(info))
-        dispatch(resetUser());
-    });
-}
-
 export const logoutUser = () => dispatch=>{
-    const info= {
-        status: 101,
-        error:"",
-    };
-    dispatch(setError(info));
     localStorage.removeItem('token');
     dispatch(resetUser());
+    dispatch(resetAccount())
 }
 
-export const confirmUser = () => dispatch => {
-
+export const updateUser = ( data, id ) => async dispatch => {
+    const form_data = JSON.stringify(data)
+    await axios.put(`http://127.0.0.1:8000/userapi/${id}/`, form_data, {
+        headers:{
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(res => {
+        dispatch(checkUser());
+    })
+    .catch(err => {
+        const info= {
+            error:"Failed to send",
+            status:404
+        }
+        dispatch(setError(info));
+    })
 }

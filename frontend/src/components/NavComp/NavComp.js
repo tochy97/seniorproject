@@ -1,28 +1,25 @@
 import { Divider } from '@mui/material';
 import React, { useEffect }  from 'react';
-import { Navbar, Nav, Container, Offcanvas } from 'react-bootstrap';
+import { Navbar, Nav, Container, Offcanvas, Button } from 'react-bootstrap';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { logoutUser, checkUser } from '../../redux/actionCreators/authActionCreator';
 import uta from "./uta.jpeg"
 
 function NavComp() {
-    const dispatch = useDispatch();    
+    const dispatch = useDispatch();
+    const histroy = useNavigate();    
 
     const { isLoggedIn, user } = useSelector(
         (state) =>({
             isLoggedIn:state.auth.isLoggedIn, 
             user:state.auth.user,
     }), shallowEqual);
-
-    useEffect(() => {
-        if(!isLoggedIn){
-            dispatch(checkUser());
-        }
-    }, [isLoggedIn,dispatch]);
     
-    function logout(e){
+    const logout = (e) =>{
         e.preventDefault();
         dispatch(logoutUser());
+        histroy("../", {replace:true});
     }
     
     return (
@@ -66,8 +63,20 @@ function NavComp() {
                                     :
                                     <></>
                                 }
+                                <Nav.Item  style={{marginLeft:"15px"}}>
+                                    <Nav.Link href="/profile" style={{color:"black"}}>Profile</Nav.Link>
+                                </Nav.Item>
+                                <Divider style={{margin:"1rem"}}/>  
+                                <Nav.Item  style={{marginLeft:"15px"}}>
+                                    <Nav.Link href="/inventory" style={{color:"black"}}>Inventory</Nav.Link>
+                                </Nav.Item>
+                                <Divider style={{margin:"1rem"}}/>
                                 <Nav.Item  style={{marginLeft:"1rem"}}>
-                                    <Nav.Item type="submit" onClick={logout}>Logout</Nav.Item>
+                                    <Nav.Link href="/about" style={{color:"black"}}>About</Nav.Link>
+                                </Nav.Item>
+                                <Divider style={{margin:"1rem"}}/>  
+                                <Nav.Item  style={{marginLeft:"1rem"}}>
+                                    <Button type="submit" onClick={logout} variant='ghost'>Logout</Button>
                                 </Nav.Item>
                             </>
                             :

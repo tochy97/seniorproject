@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Nav, Button, Card, Container } from 'react-bootstrap';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import Loading from '../../Loading/Loading';
@@ -20,13 +20,10 @@ function Adder(props) {
         isSet:state.account.set
     }), shallowEqual);
 
-
     return (
         <Card className="py-5" style={{border:0}}>
             <h1 className='p-5 text-center'>Data Management</h1>
             {
-                mounted
-                ?
                 <>
                     <Nav fill variant="tabs" className='justify-content-centered' defaultActiveKey="sections" onSelect={(selectedKey) => setTab(selectedKey)}>
                         <Nav.Item>
@@ -67,8 +64,6 @@ function Adder(props) {
                         <></>
                     }
                 </>
-                :
-                <Loading/>
             }
         </Card>
     );

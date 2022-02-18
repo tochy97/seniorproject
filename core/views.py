@@ -35,7 +35,7 @@ class ClassesViewSet(viewsets.ModelViewSet):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     permissions_classes = [ 
-        permissions.AllowAny
+        permissions.IsAuthenticated
     ]
     serializer_class = UserSerializer
 
@@ -60,7 +60,7 @@ class CreateUser(APIView):
 class CreateItem(APIView):
 
     parser_classes = (MultiPartParser, FormParser)
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAdminUser,)
 
     def post(self, request, format=None):
         print(request.data)
@@ -72,6 +72,8 @@ class CreateItem(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserAPI(APIView):
+
+    permission_classes = (permissions.IsAuthenticated,)
 
     def put(self, request, pk):
         user = User.objects.get(pk=pk)

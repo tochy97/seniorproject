@@ -14,7 +14,6 @@ function Report(props) {
         isSet:state.account.set
     }), shallowEqual);
 
-
     return (
         <Card className="py-5" style={{border:0}}>
             <h1 className='p-5 text-center'>Report</h1>

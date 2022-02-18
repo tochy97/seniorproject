@@ -13,7 +13,7 @@ urlpatterns = [
     path('currentuser/', current_user),
     path('createuser/', CreateUser.as_view()),
     path('createitem/', CreateItem.as_view(), name='createitem'),
-    path('userapi/<int:pk>', UserAPI.as_view()),
+    path('userapi/<int:pk>/', UserAPI.as_view()),
 ]
 
 urlpatterns += router.urls

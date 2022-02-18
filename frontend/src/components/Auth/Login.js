@@ -6,6 +6,17 @@ import { Card, Row, Col, Form, Alert, Button, Modal } from 'react-bootstrap';
 import { setError, loginUser, setMount } from '../../redux/actionCreators/authActionCreator';
 import Loading from '../Loading/Loading'
 
+function isNumeric(str) {
+    if (typeof str != "string") return false // we only process strings!  
+    for (let i = 0; i < str.length; i++) {
+        if(isNaN(str[i]) && isNaN(parseFloat(str[i]))){
+            return false;
+        }
+    }
+    return true;
+}
+
+
 function Login() {
     const [data,setData] = useState("");
     const [username,setUsername] = useState("");
@@ -24,24 +35,13 @@ function Login() {
     const openConfirm = () => setConfirm(true);
     const closeConfirm = () => setConfirm(false);
 
-    const { error, status, mounted } = useSelector(
+    const { error, status } = useSelector(
       (state) =>({
         error:state.auth.error, 
         status:state.auth.status, 
-        mounted:state.auth.mounted, 
     }), shallowEqual);
 
-    function isNumeric(str) {
-        if (typeof str != "string") return false // we only process strings!  
-        for (let i = 0; i < str.length; i++) {
-            if(isNaN(str[i]) && isNaN(parseFloat(str[i]))){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    function getUsername(e){
+    const getUsername = (e) => {
         e.preventDefault();
         const x = data
         if(x.split(" ").length > 2)
@@ -67,7 +67,7 @@ function Login() {
         }
     }
 
-    function handleSubmit(e){
+    const handleSubmit = (e) => {
         e.preventDefault();
         const info= {
             status: 101,
@@ -80,17 +80,11 @@ function Login() {
         }
         dispatch(loginUser(data));
         setPassword("");
-        if(!error)
-        {
-            histroy("../", {replace:true});
-        }
+        histroy("../", {replace:true});
     }
 
     return (
         <Card className="p-5" style={{border:0}}>
-            {
-                mounted
-                ?
                 <Row className="px-5 my-6 gap-5">
                     <Divider className="font-weight-bold text-center py-4"><h1>Login</h1></Divider>
                     {error && status === 999 && <Alert variant="danger">{error}</Alert>}
@@ -144,9 +138,6 @@ function Login() {
                         </Modal>
                     </Col>
                 </Row>
-                :
-                <Loading/>
-            }
         </Card>
     );
 }
