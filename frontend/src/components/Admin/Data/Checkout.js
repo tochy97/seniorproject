@@ -8,30 +8,38 @@ import { fetchUsers, logoutUser } from '../../../redux/actionCreators/authAction
 import { setError } from '../../../redux/actionCreators/authActionCreator';
 
 import axios from 'axios';
-import { Card } from 'react-bootstrap';
+import { Card, Col, Row, Stack } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap';
 import { Form } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
 function Checkout(props) {
 
     const dispatch = useDispatch();
-    
-    const [startCheckout, setStartCheckout] = useState(true);
 
-    const [currentUser, setCurrentUser] = useState("")
+    // This one tracks the input to mag strip
+    const [currentUser, setCurrentUser] = useState("");
+    // bucket holds all the users from database
     const [bucket, setBucket] = useState([]);
 
+    // checkout specific stuff
+    const [SessionStatus, setSessionStatus ] = useState();
+    const [CheckoutTo, setCheckoutTo] = useState();
+
+    const [startCheckout, setStartCheckout] = useState(true);
     const closeStartCheckout = () => setStartCheckout(false);
 
-    function checkScannedCard(currentUser){
-        console.log(currentUser)
-        console.log(bucket)
+    function checkScannedCard(){
 
-        // if (currentUser in ){
-        //     return true
-        // }
+        for (var i = 0; i < bucket.length; i++) {
+            if (currentUser === bucket[i].username){
+                setSessionStatus(true)
+                setCheckoutTo(bucket[i])
+                closeStartCheckout(false)
+            }
+        }
 
-    }
+    };
 
     const { isLoggedIn, username, isLoading, items, user } = useSelector(
         (state) =>({
@@ -71,24 +79,61 @@ function Checkout(props) {
 
     }, [setBucket, isLoading, dispatch]);
 
+
+    console.log(SessionStatus)
+    console.log(CheckoutTo)
+
     return (
+        <>
         <Modal show={startCheckout} onHide={closeStartCheckout} backdrop='static' size="lg" aria-labelledby="contained-modal-title-vcenter" centered keyboard>
             <Modal.Body >
                 <Form>
                     <Form.Group className="text-center" controlId="exampleForm.ControlInput1">
                         <Form.Label>Please Swipe MavID To Start CheckoutSession</Form.Label>
                         <Form.Control value={currentUser} onChange={e => setCurrentUser(e.target.value)} required className="text-center" type="text" placeholder="Swipe MavID" />
-                        {
-                            checkScannedCard(currentUser)
-                            ?
-                                closeStartCheckout()
-                            :
-                            <></>
-                        }
                     </Form.Group>
+                    
                 </Form>
-            </Modal.Body >
+                {
+                    startCheckout
+                    ?
+                        checkScannedCard()
+                    :
+                    <></>
+                }
+            </Modal.Body>
         </Modal>
+        <Container>
+            <Row>
+                <Col md={{ span: 8, offset: 0 }}>
+                    <Card classname={'justify-auto'}>
+                        <Card.Header>Current Cart</Card.Header>
+                        <Card.Body>Hi</Card.Body>
+                    </Card> 
+                </Col>
+                <Col >
+                    <Container>
+                        <Card >
+                            <Card.Body>
+                                Hello
+                            </Card.Body>
+                        </Card>
+                    </Container>
+                </Col>
+            </Row>
+            <Row>
+                <Col classname={"mt-2"} md={{ span: 8, offset: 0 }}>
+                    <Form>
+                        <Form.Group className="text-center" controlId="exampleForm.ControlInput1">
+                            <Form.Label></Form.Label>
+                            <Form.Control  required className="text-center" type="input" placeholder="Scan Barcode To Add Item" />
+                        </Form.Group>
+                    </Form>
+                </Col>
+            </Row>
+        </Container>
+        </>
+
     );
 }
 
