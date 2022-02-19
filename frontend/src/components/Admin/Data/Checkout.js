@@ -8,10 +8,11 @@ import { fetchUsers, logoutUser } from '../../../redux/actionCreators/authAction
 import { setError } from '../../../redux/actionCreators/authActionCreator';
 
 import axios from 'axios';
-import { Card, Col, Row, Stack } from 'react-bootstrap';
+import { Button, Card, Col, Row, Stack } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap';
 import { Form } from 'react-bootstrap';
 import { Container } from 'react-bootstrap';
+import { Divider } from '@mui/material';
 
 function Checkout(props) {
 
@@ -25,6 +26,8 @@ function Checkout(props) {
     // checkout specific stuff
     const [SessionStatus, setSessionStatus ] = useState();
     const [CheckoutTo, setCheckoutTo] = useState();
+    const [currentBarcode, setCurrentBarcode] = useState();
+    const studentsItems = [];
 
     const [startCheckout, setStartCheckout] = useState(true);
     const closeStartCheckout = () => setStartCheckout(false);
@@ -84,12 +87,13 @@ function Checkout(props) {
 
     return (
         <>
-        <Modal show={startCheckout} onHide={closeStartCheckout} backdrop='static' size="lg" aria-labelledby="contained-modal-title-vcenter" centered keyboard>
+        {/* <Modal show={startCheckout} onHide={closeStartCheckout} backdrop='static' size="lg" aria-labelledby="contained-modal-title-vcenter" centered> */}
+        <Modal show={false} onHide={closeStartCheckout} backdrop='static' size="lg" aria-labelledby="contained-modal-title-vcenter" centered> 
             <Modal.Body >
                 <Form>
                     <Form.Group className="text-center" controlId="exampleForm.ControlInput1">
                         <Form.Label>Please Swipe MavID To Start CheckoutSession</Form.Label>
-                        <Form.Control value={currentUser} onChange={e => setCurrentUser(e.target.value)} required className="text-center" type="text" placeholder="Swipe MavID" />
+                        <Form.Control value={currentUser} onChange={e => setCurrentUser(e.target.value)} className="text-center" type="text" placeholder="Swipe MavID" />
                     </Form.Group>
                     
                 </Form>
@@ -102,34 +106,85 @@ function Checkout(props) {
                 }
             </Modal.Body>
         </Modal>
-        <Container>
+
+
+        <Container classname='h-100 d-inline-block'>
+
             <Row>
+
                 <Col md={{ span: 8, offset: 0 }}>
                     <Card classname={'justify-auto'}>
                         <Card.Header>Current Cart</Card.Header>
-                        <Card.Body>Hi</Card.Body>
+                        {
+                            studentsItems.length === 0
+                            ?
+                                <Card.Body style={{ height: '18rem' }} className="text-center">
+                                    <div style={{ height: '7rem' }}> </div>
+                                    <div className='pt-auto'>No items have been added.</div>
+                                </Card.Body>
+                            :
+                                <Card.Body className="text-center">
+                                    {
+                                        studentsItems.map((item, index) =>(
+                                            <Card>
+                                                <Card.Body>
+                                                    {item}
+                                                </Card.Body>
+                                            </Card>
+                                        ))
+                                    } 
+                                </Card.Body>
+                        }
+                        
                     </Card> 
                 </Col>
+
                 <Col >
-                    <Container>
-                        <Card >
-                            <Card.Body>
-                                Hello
-                            </Card.Body>
-                        </Card>
-                    </Container>
+                    <Card >
+                        <Card.Body>
+                            {
+                                studentsItems.length === 0
+                                ?
+                                    <Card.Body style={{ height: '14rem' }} className="text-center">
+                                        <div className='pt-auto'>empty.</div>
+                                    </Card.Body>
+                                :
+                                    <Card.Body>
+                                        <div>
+                                            Enter somedescription here
+                                        </div>
+                                    </Card.Body>
+
+                            }
+                            <Divider style={{margin:"rem"}}/>
+
+                            <div className ="w-100 py-3">
+                                <Button className="btn btn-primary w-100" type="submit">Checkout</Button>
+                            </div>
+
+                        </Card.Body>
+                    </Card>
                 </Col>
+
             </Row>
+
             <Row>
-                <Col classname={"mt-2"} md={{ span: 8, offset: 0 }}>
+                <Col md={{ span: 8, offset: 0 }}>
                     <Form>
-                        <Form.Group className="text-center" controlId="exampleForm.ControlInput1">
+                        <Form.Group className="text-center">
                             <Form.Label></Form.Label>
-                            <Form.Control  required className="text-center" type="input" placeholder="Scan Barcode To Add Item" />
+                            <Form.Control value={currentBarcode} onChange={e => setCurrentBarcode(e.target.value)} className="text-center" placeholder="Scan Barcode To Add Item" />
                         </Form.Group>
                     </Form>
                 </Col>
+                <Col className="text-center vertical-align">
+                    <div className='bd-highlight pt-4 w-100'>
+                        <Button className='w-100' type='submit' variant='danger'> Reset Session </Button>
+                    </div>
+                    
+                </Col>
             </Row>
+
         </Container>
         </>
 
