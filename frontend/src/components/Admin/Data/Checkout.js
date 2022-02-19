@@ -38,7 +38,6 @@ function Checkout(props) {
                 closeStartCheckout(false)
             }
         }
-
     };
 
     const { isLoggedIn, username, isLoading, items, user } = useSelector(
