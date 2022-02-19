@@ -3,6 +3,7 @@ import { Modal, Button, Card, Form, Stack, Alert } from 'react-bootstrap';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { setError } from '../../../../redux/actionCreators/authActionCreator';
 import { createClass, createSection, editClass, fetchClass, removeClass, editSection } from '../../../../redux/actionCreators/sectionActionCreators';
+import Loading from '../../../Loading/Loading';
 import './Section.css';
 
 function Section(props) {
@@ -389,7 +390,7 @@ function Section(props) {
                     }
                 </Stack>
             :
-                <h1>Loading</h1>
+                <Loading/>
         }
         </>
     );

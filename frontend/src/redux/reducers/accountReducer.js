@@ -1,7 +1,7 @@
-import { ADD_ACCOUNT, SET_ACCOUNT, RESET_ACCOUNT, DELETE_ACCOUNT, IS_SET } from "../types/accountTypes"
+import { ADD_ACCOUNT, SET_ACCOUNT, RESET_ACCOUNT, DELETE_ACCOUNT, IS_SET, GET_INSTRUCTORS } from "../types/accountTypes"
 
 const initialState = {
-    set:false,
+    instructors:null,
     data:null,
     mounted:false,
 }
@@ -31,8 +31,12 @@ const accountReducer = (state=initialState, {type, payload})=>{
             return state;
         case IS_SET:
             state={...state, 
-                set:payload,
-                mounted:true,
+                mounted:payload,
+            }
+            return state;
+        case GET_INSTRUCTORS:
+            state={...state, 
+                instructors:payload,
             }
             return state;
         default:

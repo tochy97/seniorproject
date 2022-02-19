@@ -2,6 +2,12 @@
 root/.env
 core/migrations
 venv
+/frontend/src/config
+/frontend/.firebaserc
+/frontend/firebase.json
+/core/migrations
+firebase-debug.log
+**/package-lock.json
 
 # dependencies
 **/node_modules

@@ -1,0 +1,15 @@
+.text-center {
+  padding: 6px;
+}
+
+a.link {
+  text-decoration: none;
+  color: #0f53bd;
+  transition: 0.2s;
+}
+
+a.link:hover {
+  color: #fc903a;
+  transform: scale(1.1);
+  transition: 0.1s;
+}

@@ -1,8 +1,9 @@
 import React from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
-import { Button, Card, Container, Row } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import Col from 'react-bootstrap/Col'
+import { Card, Container, Row } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBook, faUserCircle, faCircleInfo, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import './Dashboard.css'
 
 function Dashboard() {
     const dispatch = useDispatch();    
@@ -14,40 +15,38 @@ function Dashboard() {
     }), shallowEqual);
 
     const dashElements = [
-        "View Inventory",
-        "Profile",
-        "----",
-        "----"
-    ]
-    const hrefIndex = [
-        "/viewitems",
-        "/profile",
-        "/#",
-        "/#"
+        {
+            title: "Inventory",
+            link: "/viewitems",
+            icon: faBook
+        },
+        {
+            title: "Profile",
+            link: "/profile",
+            icon: faUserCircle
+        },
+        {
+            title: "About",
+            link: "/about",
+            icon: faCircleInfo
+        },
+        {
+            title: "-------",
+            link: "/#",
+            icon: faQuestionCircle
+        },
     ]
 
     return (
-        <Container>
+        <Container style={{ width: '500px' }}>
             <Row xs={1} md={2} className="g-4">
-            {Array.from({ length: 4 }).map((_, idx) => (
-                <Col>
-                    {/* <Card style={{ backgroundColor: "#F58025" }} > */}
-                    <Card >
-                        <Card.Img src="https://testbucketuta.s3.us-east-2.amazonaws.com/istockphoto-1278998606-170667a.jpg"/>
-                        <Card.ImgOverlay>
-                            {/* <Container> */}
-                                <div class ="text-center">
-                                    <Button  href={hrefIndex[idx]}>{dashElements[idx]}</Button> 
-                                </div>
-                            
-                                {/* <Link to="/profile" >
-                                    <Button className="btn btn-#F58025 btn-lg ml-auto" as="Nav">View Profile</Button>
-                                </Link> */}
-                            {/* </Container> */}
-                        </Card.ImgOverlay>
-                        
+            { dashElements.map( (element, idx) => (
+                <a className='link' key={idx} href={ element.link }>
+                    <Card style={{ border: 'none', height: '200px' }} >
+                        <FontAwesomeIcon className='text-center' icon={element.icon} size='8x' />
+                        <span className='text-center'>{ element.title }</span> 
                     </Card>
-                </Col>
+                </a>
             ))}
             </Row>
         </Container>
