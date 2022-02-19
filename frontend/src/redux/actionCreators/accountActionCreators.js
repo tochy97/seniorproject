@@ -94,7 +94,10 @@ export const fetchAccount = ( id ) => async dispatch => {
         dispatch(setAccount(res.data));
     })
     .catch(err => {
-        dispatch(mountAccount(true));
+        if(err.response.status !== 401)
+        {
+            dispatch(mountAccount(true));
+        }
         const info= {
             error:"Failed to find account",
             status:404
