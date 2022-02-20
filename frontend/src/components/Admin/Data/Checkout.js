@@ -12,6 +12,7 @@ import { Button, Card, Col, Row, Stack } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap';
 import { Form } from 'react-bootstrap';
 import { Container } from 'react-bootstrap';
+import { Table } from 'react-bootstrap'
 import { Divider } from '@mui/material';
 
 function Checkout(props) {
@@ -22,15 +23,17 @@ function Checkout(props) {
     const [currentUser, setCurrentUser] = useState("");
     // bucket holds all the users from database
     const [bucket, setBucket] = useState([]);
+    const [itemsBucket, setItemsBucket] = useState([]);
+    const [currentCart, setCurrentCart] = useState([]);
 
     // checkout specific stuff
     const [SessionStatus, setSessionStatus ] = useState();
-    const [CheckoutTo, setCheckoutTo] = useState();
-    const [currentBarcode, setCurrentBarcode] = useState();
-    const studentsItems = [];
+    const [checkoutTo, setCheckoutTo] = useState([]);
+    const [currentBarcode, setCurrentBarcode] = useState("");
 
     const [startCheckout, setStartCheckout] = useState(true);
     const closeStartCheckout = () => setStartCheckout(false);
+    const openStartCheckout = () => setStartCheckout(true);
 
     function checkScannedCard(){
 
@@ -41,6 +44,43 @@ function Checkout(props) {
                 closeStartCheckout(false)
             }
         }
+    };
+
+    function checkBarcode(){
+        for (var i = 0; i < itemsBucket.length; i++) {
+            if (currentBarcode === itemsBucket[i].ser_no){
+                // console.log(itemsBucket[i])
+                currentCart.push(itemsBucket[i])
+                setCurrentBarcode("")
+            }
+        }
+    };
+
+    function removeCurrentItem(id){
+        
+        // console.log(material);
+        const newList = currentCart.filter((it) => it.id !== id);
+        setCurrentCart(newList);
+
+
+    };
+
+    function totalNumberItem(someItem){
+        let currentSer = someItem.ser_no
+        let count = 0
+        for (var i = 0; i < currentCart.length; i++) {
+            if (currentSer == currentCart[i].ser_no){
+                count = count + 1
+            }
+        }
+        return count
+    };
+    
+
+    function handleReset(){
+        openStartCheckout()
+        setSessionStatus(false)
+        setCurrentUser('')
     };
 
     const { isLoggedIn, username, isLoading, items, user } = useSelector(
@@ -79,16 +119,21 @@ function Checkout(props) {
             })
         }
 
-    }, [setBucket, isLoading, dispatch]);
+    }, [setItemsBucket, isLoading, dispatch]);
 
-
-    console.log(SessionStatus)
-    console.log(CheckoutTo)
+    useEffect(() => {
+        if(items){
+            let gList = items.map((it) => it)
+            const temp = [...new Set(gList)]
+            setItemsBucket(temp)
+        }
+    }, [items, setItemsBucket])
 
     return (
         <>
-        {/* <Modal show={startCheckout} onHide={closeStartCheckout} backdrop='static' size="lg" aria-labelledby="contained-modal-title-vcenter" centered> */}
-        <Modal show={false} onHide={closeStartCheckout} backdrop='static' size="lg" aria-labelledby="contained-modal-title-vcenter" centered> 
+        <h1 className='pb-4 text-center'> Item Checkout</h1>
+        <Modal show={startCheckout} onHide={closeStartCheckout} backdrop='static' size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+        {/* <Modal show={false} onHide={closeStartCheckout} backdrop='static' size="lg" aria-labelledby="contained-modal-title-vcenter" centered>  */}
             <Modal.Body >
                 <Form>
                     <Form.Group className="text-center" controlId="exampleForm.ControlInput1">
@@ -108,15 +153,15 @@ function Checkout(props) {
         </Modal>
 
 
-        <Container classname='h-100 d-inline-block'>
+        <Container >
 
             <Row>
 
                 <Col md={{ span: 8, offset: 0 }}>
-                    <Card classname={'justify-auto'}>
+                    <Card className={'justify-auto'}>
                         <Card.Header>Current Cart</Card.Header>
                         {
-                            studentsItems.length === 0
+                            currentCart.length === 0
                             ?
                                 <Card.Body style={{ height: '18rem' }} className="text-center">
                                     <div style={{ height: '7rem' }}> </div>
@@ -124,15 +169,39 @@ function Checkout(props) {
                                 </Card.Body>
                             :
                                 <Card.Body className="text-center">
-                                    {
-                                        studentsItems.map((item, index) =>(
-                                            <Card>
-                                                <Card.Body>
-                                                    {item}
-                                                </Card.Body>
-                                            </Card>
-                                        ))
-                                    } 
+                                    
+                                    <Table striped bordered hover size="sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Remove</th>
+                                                <th>Item Name</th>
+                                                <th>Item Type</th>
+                                                {/* <th>Item Description</th> */}
+                                                <th>Serial Number</th>
+                                                <th>Quantity</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                currentCart.map((it, index) =>(
+                                                    <tr key={index} >
+                                                        <td>
+                                                            <div className="d-grid gap-2">
+                                                                <Button onClick={() => removeCurrentItem(it.id)} size="sm" id={"button-"+index} title={it.id}> Remove </Button>
+                                                            </div>
+                                                        </td>
+                                                        <td>{it.name}</td> 
+                                                        <td>{it.type}</td>
+                                                        {/* <td>{it.description}</td> */}
+                                                        <td>{it.ser_no}</td>
+                                                        <td>{totalNumberItem(it)}</td>
+                                                    </tr>
+                                                ))
+                                            }
+                                        </tbody>
+
+                                    </Table>
+                                    
                                 </Card.Body>
                         }
                         
@@ -143,7 +212,7 @@ function Checkout(props) {
                     <Card >
                         <Card.Body>
                             {
-                                studentsItems.length === 0
+                                currentCart.length === 0
                                 ?
                                     <Card.Body style={{ height: '14rem' }} className="text-center">
                                         <div className='pt-auto'>empty.</div>
@@ -159,7 +228,7 @@ function Checkout(props) {
                             <Divider style={{margin:"rem"}}/>
 
                             <div className ="w-100 py-3">
-                                <Button className="btn btn-primary w-100" type="submit">Checkout</Button>
+                                <Button className="btn btn-primary w-100" type="button">Checkout</Button>
                             </div>
 
                         </Card.Body>
@@ -176,10 +245,18 @@ function Checkout(props) {
                             <Form.Control value={currentBarcode} onChange={e => setCurrentBarcode(e.target.value)} className="text-center" placeholder="Scan Barcode To Add Item" />
                         </Form.Group>
                     </Form>
+                    {
+                        SessionStatus
+                        ?
+                            checkBarcode()
+                        :
+                            <></>
+                    }
                 </Col>
+
                 <Col className="text-center vertical-align">
                     <div className='bd-highlight pt-4 w-100'>
-                        <Button className='w-100' type='submit' variant='danger'> Reset Session </Button>
+                        <Button className='w-100' onClick={() => handleReset()} variant='danger'> Reset Session </Button>
                     </div>
                     
                 </Col>
