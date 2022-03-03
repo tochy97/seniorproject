@@ -6,6 +6,7 @@ import { setLoading } from '../../../redux/actionCreators/itemActionCreators';
 import { fetchItems } from '../../../redux/actionCreators/itemActionCreators';
 import { fetchUsers, logoutUser } from '../../../redux/actionCreators/authActionCreator';
 import { setError } from '../../../redux/actionCreators/authActionCreator';
+import { fetchAccount } from '../../../redux/actionCreators/accountActionCreators';
 
 import axios from 'axios';
 import { Button, Card, Col, Row, Stack } from 'react-bootstrap';
@@ -25,6 +26,7 @@ function Checkout(props) {
     const [bucket, setBucket] = useState([]);
     const [itemsBucket, setItemsBucket] = useState([]);
     const [currentCart, setCurrentCart] = useState([]);
+    const [uniqState, setUniqState] = useState([]);
 
     // checkout specific stuff
     const [SessionStatus, setSessionStatus ] = useState();
@@ -42,6 +44,7 @@ function Checkout(props) {
                 setSessionStatus(true)
                 setCheckoutTo(bucket[i])
                 closeStartCheckout(false)
+                dispatch(fetchAccount(bucket[i].id))
             }
         }
     };
@@ -51,18 +54,18 @@ function Checkout(props) {
             if (currentBarcode === itemsBucket[i].ser_no){
                 // console.log(itemsBucket[i])
                 currentCart.push(itemsBucket[i])
+                if (!(uniqState.includes(itemsBucket[i]))){
+                    uniqState.push(itemsBucket[i])
+                }
                 setCurrentBarcode("")
             }
         }
     };
 
     function removeCurrentItem(id){
-        
         // console.log(material);
         const newList = currentCart.filter((it) => it.id !== id);
         setCurrentCart(newList);
-
-
     };
 
     function totalNumberItem(someItem){
@@ -75,21 +78,71 @@ function Checkout(props) {
         }
         return count
     };
-    
 
     function handleReset(){
         openStartCheckout()
         setSessionStatus(false)
         setCurrentUser('')
+        setUniqState([])
+        setCurrentCart([])
     };
 
-    const { isLoggedIn, username, isLoading, items, user } = useSelector(
+    function handleCheckout(){
+        console.log(currentCart)
+        console.log(account)
+        let formData = new FormData()
+
+        let tempBucket = []
+        let itemsCounts = {}
+        for (var i = 0; i < currentCart.length; i++) {
+            tempBucket.push(currentCart[i].id)
+            formData.append('items', currentCart[i].id)
+
+            if (currentCart[i].id in itemsCounts){
+                itemsCounts[currentCart[i].id] += 1
+            }
+            else{
+                itemsCounts[currentCart[i].id] = 1
+            }
+            // console.log(currentCart[i].id)
+        }
+        console.log(itemsCounts)
+
+
+        // if ((account.items).length > 0){
+        //     for (var i = 0; i < (account.items).length; i++) {
+        //         tempBucket.push(account.items[i])
+        //     }
+        // }
+
+        
+        formData.append('instructor', account.instructor)
+
+        formData.append('myClass', account.myClass)
+        formData.append('section', account.section)
+        formData.append('team', account.team)
+        formData.append('user', account.user)
+
+        axios.put(`http://127.0.0.1:8000/accounts/${account.user}/`, formData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `JWT ${localStorage.getItem('token')}`,
+                }
+            })
+            .then(res => {
+                // Now I need to update the 
+            })
+                .catch(err => console.log(err))
+    };
+
+    const { isLoggedIn, username, isLoading, items, user, account } = useSelector(
         (state) =>({
             isLoggedIn:state.auth.isLoggedIn, 
             username:state.auth.username,
             isLoading:state.item.isLoading,
             user:state.auth.user, 
             items:state.item.items,
+            account:state.account.data,
     }), shallowEqual);
 
     useEffect(() => {
@@ -129,6 +182,8 @@ function Checkout(props) {
         }
     }, [items, setItemsBucket])
 
+    console.log(uniqState)
+
     return (
         <>
         <h1 className='pb-4 text-center'> Item Checkout</h1>
@@ -138,7 +193,7 @@ function Checkout(props) {
                 <Form>
                     <Form.Group className="text-center" controlId="exampleForm.ControlInput1">
                         <Form.Label>Please Swipe MavID To Start CheckoutSession</Form.Label>
-                        <Form.Control value={currentUser} onChange={e => setCurrentUser(e.target.value)} className="text-center" type="text" placeholder="Swipe MavID" />
+                        <Form.Control type='text' value={currentUser} onChange={e => setCurrentUser(e.target.value)} className="text-center" type="text" placeholder="Swipe MavID"/>
                     </Form.Group>
                     
                 </Form>
@@ -183,7 +238,8 @@ function Checkout(props) {
                                         </thead>
                                         <tbody>
                                             {
-                                                currentCart.map((it, index) =>(
+                                                
+                                                uniqState.map((it, index) =>(
                                                     <tr key={index} >
                                                         <td>
                                                             <div className="d-grid gap-2">
@@ -228,7 +284,7 @@ function Checkout(props) {
                             <Divider style={{margin:"rem"}}/>
 
                             <div className ="w-100 py-3">
-                                <Button className="btn btn-primary w-100" type="button">Checkout</Button>
+                                <Button onClick={() => handleCheckout()} className="btn btn-primary w-100" type="button">Checkout</Button>
                             </div>
 
                         </Card.Body>
@@ -242,7 +298,7 @@ function Checkout(props) {
                     <Form>
                         <Form.Group className="text-center">
                             <Form.Label></Form.Label>
-                            <Form.Control value={currentBarcode} onChange={e => setCurrentBarcode(e.target.value)} className="text-center" placeholder="Scan Barcode To Add Item" />
+                            <Form.Control type='text' value={currentBarcode} onChange={e => setCurrentBarcode(e.target.value)} className="text-center" placeholder="Scan Barcode To Add Item" />
                         </Form.Group>
                     </Form>
                     {
