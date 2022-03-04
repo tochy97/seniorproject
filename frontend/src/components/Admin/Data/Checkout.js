@@ -60,12 +60,35 @@ function Checkout(props) {
                 setCurrentBarcode("")
             }
         }
+        console.log(currentCart)
     };
 
     function removeCurrentItem(id){
         // console.log(material);
+        let repeatedcount = 0
+        let itemCopy = null
+
+        for (var i = 0; i < currentCart.length; i++) {
+            if (currentCart[i].id === id){
+                repeatedcount += 1
+            }
+            if (repeatedcount > 1){
+                // Store a copy of the current id
+                itemCopy = currentCart[i]
+            }
+        };
+        
         const newList = currentCart.filter((it) => it.id !== id);
+        for (var i = 0; i < repeatedcount-1; i++) {
+            newList.push(itemCopy)
+        }
         setCurrentCart(newList);
+
+        if (repeatedcount <= 1){
+            const newListTwo = uniqState.filter((it) => it.id !== id);
+            setUniqState(newListTwo);
+        }
+        
     };
 
     function totalNumberItem(someItem){
@@ -108,14 +131,6 @@ function Checkout(props) {
         }
         console.log(itemsCounts)
 
-
-        // if ((account.items).length > 0){
-        //     for (var i = 0; i < (account.items).length; i++) {
-        //         tempBucket.push(account.items[i])
-        //     }
-        // }
-
-        
         formData.append('instructor', account.instructor)
 
         formData.append('myClass', account.myClass)
@@ -130,7 +145,10 @@ function Checkout(props) {
                 }
             })
             .then(res => {
-                // Now I need to update the 
+                // Now I need to update the item counts
+
+
+                
             })
                 .catch(err => console.log(err))
     };
@@ -182,7 +200,6 @@ function Checkout(props) {
         }
     }, [items, setItemsBucket])
 
-    console.log(uniqState)
 
     return (
         <>
@@ -191,9 +208,9 @@ function Checkout(props) {
         {/* <Modal show={false} onHide={closeStartCheckout} backdrop='static' size="lg" aria-labelledby="contained-modal-title-vcenter" centered>  */}
             <Modal.Body >
                 <Form>
-                    <Form.Group className="text-center" controlId="exampleForm.ControlInput1">
+                    <Form.Group id='firstInput' className="text-center" controlId="exampleForm.ControlInput1">
                         <Form.Label>Please Swipe MavID To Start CheckoutSession</Form.Label>
-                        <Form.Control type='text' value={currentUser} onChange={e => setCurrentUser(e.target.value)} className="text-center" type="text" placeholder="Swipe MavID"/>
+                        <Form.Control ref={input => input && input.focus()} value={currentUser} onChange={e => setCurrentUser(e.target.value)} className="text-center" type="text" placeholder="Swipe MavID"/>
                     </Form.Group>
                     
                 </Form>
@@ -296,7 +313,7 @@ function Checkout(props) {
             <Row>
                 <Col md={{ span: 8, offset: 0 }}>
                     <Form>
-                        <Form.Group className="text-center">
+                        <Form.Group id='secondInput'className="text-center">
                             <Form.Label></Form.Label>
                             <Form.Control type='text' value={currentBarcode} onChange={e => setCurrentBarcode(e.target.value)} className="text-center" placeholder="Scan Barcode To Add Item" />
                         </Form.Group>
@@ -308,6 +325,7 @@ function Checkout(props) {
                         :
                             <></>
                     }
+                    
                 </Col>
 
                 <Col className="text-center vertical-align">
@@ -315,11 +333,15 @@ function Checkout(props) {
                         <Button className='w-100' onClick={() => handleReset()} variant='danger'> Reset Session </Button>
                     </div>
                     
+                    
                 </Col>
             </Row>
+            
 
         </Container>
+        
         </>
+
 
     );
 }
