@@ -98,14 +98,6 @@ function ManageItem() {
   
     useEffect(() => {
         if(items){
-            let gList = items.map((it) => it)
-            const temp = [...new Set(gList)]
-            setBuck(temp)
-        }
-    }, [items, setBuck])
-
-    useEffect(() => {
-        if(items){
             let gList = items.map((it) => it.type)
             const temp = [...new Set(gList)]
             setFilt(temp)
@@ -311,7 +303,58 @@ function ManageItem() {
             </>
         );
     }
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageCount, setPageCount] = useState(0);
+    const [itemsPerPage, setItemsPerPage] = useState(0);
+    const [upperBound, setUpperBound] = useState(0);
+    const [lowerBound, setLowerBound] = useState(0)
+
+    const nextPage = () => {
+        if(currentPage+1 < pageCount)
+        {
+            setCurrentPage(currentPage + 1)
+            setUpperBound(upperBound + ((currentPage)*itemsPerPage));
+            setLowerBound(((currentPage)*itemsPerPage));
+        }
+        else{
+            setCurrentPage(pageCount)
+            setUpperBound((pageCount*itemsPerPage));
+            setLowerBound(((pageCount-1)*itemsPerPage));
+        }
+    }
+    const prevPage = () => {
+        if(currentPage !== 1)
+        {
+            setCurrentPage(currentPage - 1)
+            setUpperBound(upperBound-itemsPerPage);
+            setLowerBound(lowerBound-itemsPerPage);
+        }
+    }
+
+    const firstPage = () => {
+        setCurrentPage(1);
+        setUpperBound(itemsPerPage);
+        setLowerBound(0);
+    }
     
+    const lastPage = () => {
+        setCurrentPage(pageCount)
+        setUpperBound((pageCount*itemsPerPage));
+        setLowerBound(((pageCount-1)*itemsPerPage));
+    }
+    console.log(lowerBound)
+    console.log(upperBound)
+    useEffect(() => {
+        if(items){
+            let gList = items.map((it) => it)
+            const temp = [...new Set(gList)]
+            setBuck(temp)
+            setPageCount(Math.ceil(items.length/7))
+            setItemsPerPage(7)
+            setUpperBound(itemsPerPage)
+        }
+    }, [items, setBuck, itemsPerPage])
     return (
         <>      
         <Table striped bordered hover >
@@ -425,28 +468,34 @@ function ManageItem() {
             <tbody>
                 {
                     buck.map((it, index) =>(
-                        <tr key={index} >
-                            <td>
-                                <div className="d-grid gap-2">
-                                    <DropdownButton  size="sm" id={"dropdown-"+index} title={"dropdown-"+it.id}>
-                                        
-                                        <Dropdown.Item eventKey={"dropdown-"+index} onClick={() => editItemState(it)} >
-                                            Edit
-                                        </Dropdown.Item>
-                                        <Dropdown.Item eventKey={"dropdown-"+index} onClick={() => deleteItemState(it)} >
-                                            Delete
-                                        </Dropdown.Item>
-                                    </DropdownButton>
-                                </div>
-                            </td>
-                            <td>{it.name}</td> 
-                            <td>{it.type}</td>
-                            <td>{it.description}</td> 
-                            <td>{it.available}</td>
-                            <td>{it.out}</td>
-                            <td>{it.total}</td>
-                            <td>{it.ser_no}</td>
-                        </tr>
+                        <>
+                            {
+                                index <= upperBound && index >= lowerBound
+                                &&
+                                <tr key={index} >
+                                    <td>
+                                        <div className="d-grid gap-2">
+                                            <DropdownButton  size="sm" id={"dropdown-"+index} title={"dropdown-"+it.id}>
+                                                
+                                                <Dropdown.Item eventKey={"dropdown-"+index} onClick={() => editItemState(it)} >
+                                                    Edit
+                                                </Dropdown.Item>
+                                                <Dropdown.Item eventKey={"dropdown-"+index} onClick={() => deleteItemState(it)} >
+                                                    Delete
+                                                </Dropdown.Item>
+                                            </DropdownButton>
+                                        </div>
+                                    </td>
+                                    <td>{it.name}</td> 
+                                    <td>{it.type}</td>
+                                    <td>{it.description}</td> 
+                                    <td>{it.available}</td>
+                                    <td>{it.out}</td>
+                                    <td>{it.total}</td>
+                                    <td>{it.ser_no}</td>
+                                </tr>
+                            }
+                        </>
                     ))
                 } 
                 
@@ -455,21 +504,11 @@ function ManageItem() {
                 <tr>
                     <td colSpan={7}>
                     <Pagination className="d-flex justify-content-center">
-                        <Pagination.First />
-                        <Pagination.Prev />
-                        <Pagination.Item active>{1}</Pagination.Item>
-                        <Pagination.Ellipsis />
-
-                        <Pagination.Item>{10}</Pagination.Item>
-                        <Pagination.Item>{11}</Pagination.Item>
-                        <Pagination.Item>{12}</Pagination.Item>
-                        <Pagination.Item>{13}</Pagination.Item>
-                        <Pagination.Item disabled>{14}</Pagination.Item>
-
-                        <Pagination.Ellipsis />
-                        <Pagination.Item>{20}</Pagination.Item>
-                        <Pagination.Next />
-                        <Pagination.Last />
+                        <Pagination.First disabled={currentPage === 1} onClick={firstPage}/>
+                        <Pagination.Prev disabled={currentPage === 1} onClick={prevPage}/>
+                        <Pagination.Item active>{currentPage}</Pagination.Item>
+                        <Pagination.Next disabled={currentPage === pageCount} onClick={nextPage}/>
+                        <Pagination.Last disabled={currentPage === pageCount} onClick={lastPage}/>
                     </Pagination>
                     </td>
                 </tr>
