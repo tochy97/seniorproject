@@ -36,6 +36,7 @@ function App() {
       }
       else{
         if(!accountMounted){
+          console.log(user)
           dispatch(fetchAccount(user.id))
         }
         else
@@ -45,7 +46,7 @@ function App() {
         }
         }
       }
-  }, [isLoggedIn,dispatch]);
+  }, [isLoggedIn,dispatch,user,account,accountMounted]);
 
   return (
     <>

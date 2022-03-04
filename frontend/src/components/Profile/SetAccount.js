@@ -43,7 +43,7 @@ function SetAccount() {
     }), shallowEqual);
 
     useEffect(() => {
-        if(!instructors){
+        if(!instructors || Array.isArray(instructors)){
             dispatch(fetchInstructors());
             if(!classes){
                 dispatch(fetchClass());
@@ -52,6 +52,7 @@ function SetAccount() {
             }
         }
         else{
+            console.log(Array.isArray(instructors))
             if(!loaded)
             {
                 setInstructor(instructors[0].id);
