@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 from django.forms import IntegerField
 from django_mysql.models import ListTextField
-
+from django.db.models import JSONField
 
 def upload_to(instance, filename):
     return 'itemImages/{filename}'.format(filename=filename)
@@ -26,9 +26,11 @@ class Account(models.Model):
     section = models.IntegerField(blank=True, null=True)
     team = models.CharField(max_length=50, blank=True, null=True)
     items = models.ManyToManyField(Item, related_name='users', blank=True)
+    itemsCount = JSONField(blank=True, default = dict)
 
 class Classes(models.Model):
     id = models.AutoField(primary_key=True)
     instructor = models.IntegerField()
     sections = ListTextField(base_field=models.IntegerField(), size=10, max_length=(10 * 5), blank=True, null=True)
     number = models.IntegerField()
+
