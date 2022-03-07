@@ -27,7 +27,7 @@ const getInstructors = ( data ) => ({
 })
 
 export const fetchMyInstructor = ( id ) => async dispatch => {
-    await axios.get(`http://127.0.0.1:8000/users/${id}/`, {
+    await axios.get(`http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/users/${id}/`, {
         headers: {
             Authorization: `JWT ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export const fetchMyInstructor = ( id ) => async dispatch => {
 }
 
 export const fetchInstructors = () => async dispatch => {
-    await axios.get("http://127.0.0.1:8000/users/", {
+    await axios.get("http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/users/", {
         headers: {
             Authorization: `JWT ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ export const fetchInstructors = () => async dispatch => {
 }
 
 export const fetchAccount = ( id ) => async dispatch => {
-    await axios.get(`http://127.0.0.1:8000/accounts/${id}/`, {
+    await axios.get(`http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/accounts/${id}/`, {
     headers: {
         Authorization: `JWT ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ export const fetchAccount = ( id ) => async dispatch => {
 export const createAccount = ( id ) => async dispatch => {
     let form_data = new FormData();
     form_data.append('user', id);
-    await axios.post("http://127.0.0.1:8000/accounts/", form_data, {
+    await axios.post("http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/accounts/", form_data, {
         headers:{
             Authorization: `JWT ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ export const createAccount = ( id ) => async dispatch => {
 
 export const updateAccount = ( userData, id, accountData ) => async dispatch => {
     const form_data = JSON.stringify(userData)
-    await axios.put(`http://127.0.0.1:8000/userapi/${id}/`, form_data, {
+    await axios.put(`http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/userapi/${id}/`, form_data, {
         headers:{
             Authorization: `JWT ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json',
@@ -141,7 +141,7 @@ export const updateAccount = ( userData, id, accountData ) => async dispatch => 
         (async () => {
             let account_data = JSON.stringify(accountData)
             console.log(accountData)
-            await axios.put(`http://127.0.0.1:8000/accounts/${id}/`, account_data, {
+            await axios.put(`http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/accounts/${id}/`, account_data, {
                 headers:{
                     Authorization: `JWT ${localStorage.getItem('token')}`,
                     'Content-Type': 'application/json',
