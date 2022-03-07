@@ -9,7 +9,6 @@ import AddItem from "./Data/Items/AddItem";
 import Checkout from "./Data/Checkout";
 import Dashboard from '../Dashboard/Dashboard';
 import { fetchClass } from '../../redux/actionCreators/sectionActionCreators';
-import Items from './Data/Items';
 
 function Admin() {
     const dispatch = useDispatch();    
