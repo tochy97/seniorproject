@@ -15,7 +15,7 @@ import Disclaimer from './components/Profile/Disclaimer';
 import { fetchAccount } from './redux/actionCreators/accountActionCreators';
 import Loading from './components/Loading/Loading';
 import NotFound from './components/NotFound/NotFound';
-
+import "./components/styles.css"
 function App() {
   const dispatch = useDispatch();    
  

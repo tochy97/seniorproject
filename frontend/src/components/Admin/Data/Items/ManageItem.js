@@ -10,6 +10,7 @@ import { Row } from 'react-bootstrap';
 
 import axios from 'axios';
 import { setLoading } from '../../../../redux/actionCreators/itemActionCreators';
+import Loading from '../../../Loading/Loading';
 
 function ManageItem() {
 
@@ -97,12 +98,12 @@ function ManageItem() {
     }, [setBuck, isLoading, dispatch]);
   
     useEffect(() => {
-        if(items){
+        if(!isLoading){
             let gList = items.map((it) => it.type)
             const temp = [...new Set(gList)]
             setFilt(temp)
         }
-    }, [items, setFilt])
+    }, [isLoading, setFilt])
 
 
     function handleDelete(data){
@@ -467,36 +468,40 @@ function ManageItem() {
 
             <tbody>
                 {
-                    buck.map((it, index) =>(
-                        <>
-                            {
-                                index <= upperBound && index >= lowerBound
-                                &&
-                                <tr key={index} >
-                                    <td>
-                                        <div className="d-grid gap-2">
-                                            <DropdownButton  size="sm" id={"dropdown-"+index} title={"dropdown-"+it.id}>
-                                                
-                                                <Dropdown.Item eventKey={"dropdown-"+index} onClick={() => editItemState(it)} >
-                                                    Edit
-                                                </Dropdown.Item>
-                                                <Dropdown.Item eventKey={"dropdown-"+index} onClick={() => deleteItemState(it)} >
-                                                    Delete
-                                                </Dropdown.Item>
-                                            </DropdownButton>
-                                        </div>
-                                    </td>
-                                    <td>{it.name}</td> 
-                                    <td>{it.type}</td>
-                                    <td>{it.description}</td> 
-                                    <td>{it.available}</td>
-                                    <td>{it.out}</td>
-                                    <td>{it.total}</td>
-                                    <td>{it.ser_no}</td>
-                                </tr>
-                            }
-                        </>
-                    ))
+                    !isLoading
+                    ?
+                        buck.map((it, index) =>(
+                            <>
+                                {
+                                    index <= upperBound && index >= lowerBound
+                                    &&
+                                    <tr key={index} >
+                                        <td>
+                                            <div className="d-grid gap-2">
+                                                <DropdownButton  size="sm" id={"dropdown-"+index} title={"dropdown-"+it.id}>
+                                                    
+                                                    <Dropdown.Item eventKey={"dropdown-"+index} onClick={() => editItemState(it)} >
+                                                        Edit
+                                                    </Dropdown.Item>
+                                                    <Dropdown.Item eventKey={"dropdown-"+index} onClick={() => deleteItemState(it)} >
+                                                        Delete
+                                                    </Dropdown.Item>
+                                                </DropdownButton>
+                                            </div>
+                                        </td>
+                                        <td>{it.name}</td> 
+                                        <td>{it.type}</td>
+                                        <td>{it.description}</td> 
+                                        <td>{it.available}</td>
+                                        <td>{it.out}</td>
+                                        <td>{it.total}</td>
+                                        <td>{it.ser_no}</td>
+                                    </tr>
+                                }
+                            </>
+                        ))
+                    :
+                        <Loading/>
                 } 
                 
             </tbody>

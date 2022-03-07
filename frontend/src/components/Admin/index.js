@@ -4,7 +4,7 @@ import { checkUser } from "../../redux/actionCreators/authActionCreator";
 import { Route, Routes } from 'react-router-dom';
 import Adder from './Data/Manage';
 import Report    from './Data/Report';
-import AddItem from "./Data/Items/AddItem";
+import Items from "./Data/Items";
 import Dashboard from '../Dashboard/Dashboard';
 import { fetchClass } from '../../redux/actionCreators/sectionActionCreators';
 
@@ -30,9 +30,9 @@ function Admin() {
                 user.is_superuser
                 ?
                 <>
-                <Route path="addItem" element={<AddItem/>}/>
+                <Route path="items" element={<Items/>}/>
                 
-                <Route path="add" element={<Adder/>} />
+                <Route path="datamanage" element={<Adder/>} />
                 <Route path="report" element={<Report/>} />
 
                 <Route path="/*" element={<Dashboard/>} /> 

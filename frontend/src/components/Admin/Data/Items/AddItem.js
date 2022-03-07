@@ -142,8 +142,7 @@ function AddItem() {
 
 
     return (
-        
-        <Stack gap={2} className="col-md-5 mx-auto">
+        <>
             <SendSuccess Name={name} show={showModal} onHide={() => setModal(false)}/>
             <Card>
                 <Card.Body>
@@ -237,7 +236,7 @@ function AddItem() {
                     </Form>
                 </Card.Body>
             </Card>
-        </Stack>
+        </>
     );
 }
 
