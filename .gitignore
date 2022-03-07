@@ -1,5 +1,6 @@
 **/__pycache__
 root/.env
+core/migrations
 venv
 /frontend/src/config
 /frontend/.firebaserc

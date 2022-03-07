@@ -4,7 +4,12 @@ import { checkUser } from "../../redux/actionCreators/authActionCreator";
 import { Route, Routes } from 'react-router-dom';
 import Adder from './Data/Manage';
 import Report    from './Data/Report';
+<<<<<<< HEAD
 import Items from "./Data/Items";
+=======
+import AddItem from "./Data/Items/AddItem";
+import Checkout from "./Data/Checkout";
+>>>>>>> e87e08886a576e41c4e9ad5890d5bc7281989fa3
 import Dashboard from '../Dashboard/Dashboard';
 import { fetchClass } from '../../redux/actionCreators/sectionActionCreators';
 
@@ -34,6 +39,8 @@ function Admin() {
                 
                 <Route path="datamanage" element={<Adder/>} />
                 <Route path="report" element={<Report/>} />
+
+                <Route path="checkout" element={<Checkout/>} />
 
                 <Route path="/*" element={<Dashboard/>} /> 
                 </>
