@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { useNavigate, Link } from "react-router-dom";
 import Divider from '@mui/material/Divider';
-import { Card, Row, Col, Form, Alert, Button, Modal } from 'react-bootstrap';
+import { Card, Row, Col, Form, Alert, Button, Modal, Container } from 'react-bootstrap';
 import { createUser, setError } from '../../redux/actionCreators/authActionCreator';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 function isNumeric(str) {
     if (typeof str != "string") return false // we only process strings!  
@@ -19,7 +21,9 @@ function Register() {
     const [data,setData] = useState("");
     const [username,setUsername] = useState("");
     const [password,setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false)
     const [cpassword,setCpassword] = useState("");
+    const [showCPassword, setShowCPassword] = useState(false)
 
     const dispatch = useDispatch();
     const histroy = useNavigate();
@@ -49,7 +53,7 @@ function Register() {
             const temp = data.split(" ");
             const last = temp[temp.length -1].split("+");
             setUsername(last[last.length -1].slice(0,-1));
-            setData(" ");
+            setData("");
             return openConfirm();
         }
         else{
@@ -61,7 +65,7 @@ function Register() {
                 return dispatch(setError(info));
             }*/
             setUsername(data);
-            setData(" ");
+            setData("");
             return openConfirm();
         }
     }
@@ -89,16 +93,13 @@ function Register() {
     }
     
     return (
-        <Card className="p-5" style={{border:0}}>
-            <Row className="px-5 my-6 gap-5">
+        <Container className="p-5" style={{border:0}}>
                 <Divider className="font-weight-bold text-center py-4"><h1>Register</h1></Divider>
                 {error && status === 999 && <Alert variant="danger">{error}</Alert>}
-                <Col lg={10}  className="mx-auto">
-                <Alert className="font-weight-bold text-center py-4" variant="dark"><h4>Enter ID or swipe card</h4></Alert>
                     <Form onSubmit={getUsername}>
                         <Form.Floating id="username" style={{marginTop: "1rem"}}>
-                            <Form.Control type="text" placeholder="Click me!" value={data} onChange={e=>setData(e.target.value)} required></Form.Control>
-                            <Form.Label>Click Me!</Form.Label>
+                            <Form.Control autoFocus type="text" placeholder="Swipe Card" value={data} onChange={e=>setData(e.target.value)} required></Form.Control>
+                            <Form.Label>Swipe Card</Form.Label>
                         </Form.Floating>
                         <Button className="w-100 mt-4" variant="dark" type="submit">Register</Button>
                     </Form>
@@ -127,11 +128,13 @@ function Register() {
                             <Form onSubmit={handleSubmit}>                
                             {error && status !== 401 && <Alert variant="danger">{error}  <Link to="/login" style={{color:"black"}}>Login</Link></Alert>}
                                 <Form.Floating id="password" style={{marginTop: "1rem"}} >
-                                    <Form.Control type="password" placeholder="Enter a password" value={password} onChange={e=>setPassword(e.target.value)} required></Form.Control>
+                                    <Form.Control type={showPassword ? "text" : "password"} placeholder="Enter your password" value={password} onChange={e=>setPassword(e.target.value)} required></Form.Control>
+                                    <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} style={{margin:"1em"}} className="hoverMe" onClick={() => setShowPassword(!showPassword)}/>
                                     <Form.Label>Enter a password</Form.Label>
                                 </Form.Floating>
                                 <Form.Floating id="cpassword" style={{marginTop: "1rem"}} >
-                                    <Form.Control type="password" placeholder="Confirm password" value={cpassword} onChange={e=>setCpassword(e.target.value)} required></Form.Control>
+                                    <Form.Control type={showPassword ? "text" : "password"} placeholder="Confirm password" value={cpassword} onChange={e=>setCpassword(e.target.value)} required></Form.Control>
+                                    <FontAwesomeIcon icon={showCPassword ? faEye : faEyeSlash} style={{margin:"1em"}} className="hoverMe" onClick={() => setShowCPassword(!showCPassword)}/>
                                     <Form.Label>Confirm password</Form.Label>
                                 </Form.Floating>
                             <Button className="w-100 mt-4" variant="dark" type="submit">Register</Button>
@@ -143,9 +146,7 @@ function Register() {
                         </Button>
                         </Modal.Footer>
                     </Modal>
-                </Col>
-            </Row>
-        </Card>
+        </Container>
     );
 }
 

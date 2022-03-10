@@ -1,3 +1,15 @@
 .hoverMe:hover{
     cursor: pointer;
 }
+
+.navHover:hover{
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.navHover:active{
+    font-weight: bold;
+}
+.navHover:focus{
+    font-weight: bold;
+}
