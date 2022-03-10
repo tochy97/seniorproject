@@ -78,7 +78,7 @@ function App() {
                   <Route exact path="/*" element={<NotFound/>}/>
                     <Route exact path="/" element={<Dashboard/>}/>
                     <Route exact path="profile" element={<Profile/>}/>
-                    <Route exact path="viewitems" element={<ViewItems/>}/>
+                    <Route exact path="inventory" element={<ViewItems/>}/>
                     <Route path="admin/*" element={<Admin/>} />
                     <Route exact path="confirmaccount" element={<SetAccount/>}/> 
                   </>

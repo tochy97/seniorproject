@@ -23,8 +23,8 @@ function SetAccount() {
     const [email,setEmail] = useState("");
     const [cemail,setCemail] = useState("");
     const [mySection,setMySection] = useState("");
-    const [myTeam,setTeam] = useState("");
-    const [myInstructor,setInstructor] = useState("");
+    const [myTeam,setMyTeam] = useState("");
+    const [myInstructor,setMyInstructor] = useState("");
     const [myClass,setMyClass] = useState("");
     const [sections,setSections] = useState([]);
     const [loaded,setLoaded] = useState(false);
@@ -42,25 +42,27 @@ function SetAccount() {
             classes:state.section.classes,
     }), shallowEqual);
 
+    console.log(myInstructor)
+    console.log(loaded)
+
     useEffect(() => {
         if(!instructors || Array.isArray(instructors)){
             dispatch(fetchInstructors());
             if(!classes){
                 dispatch(fetchClass());
-                if(instructors){
-                }
             }
         }
         else{
-            console.log(Array.isArray(instructors))
-            if(!loaded)
+            if(!loaded && instructors)
             {
-                setInstructor(instructors[0].id);
+                setMyInstructor(instructors[0].id);
                 setClassSection(classes[0].number)
                 setLoaded(true);
             }
+            console.log(Array.isArray(instructors))
         }
-    }, [instructors,setInstructor,dispatch,myInstructor,setLoaded]);
+    }, [instructors,setMyInstructor,dispatch,myInstructor,setLoaded]);
+
     const setClassSection = (value) => {
         setMyClass(value);
         const output = [];
@@ -147,16 +149,16 @@ function SetAccount() {
                                         :
                                             <>
                                             <FloatingLabel controlId="floatingSelect" label="Who is your instructor" style={{marginTop: "1rem"}}>
-                                                <Form.Select value={myInstructor} onChange={e=>setInstructor(e.target.value)} id="myInstructor" style={{marginTop: "1rem"}} >
+                                                <Form.Select value={myInstructor} onChange={e=>setMyInstructor(e.target.value)} id="myInstructor" style={{marginTop: "1rem"}} >
                                                     {
-                                                        instructors.map((instr) => (
-                                                            <option value={instr.id}>{`${instr.first} ${instr.last}`}</option>
+                                                        instructors.map((instr, index) => (
+                                                            <option key={index} value={instr.id}>{`${instr.first} ${instr.last}`}</option>
                                                         ))
                                                     }
                                                 </Form.Select>
                                             </FloatingLabel>
                                             <Form.Floating id="myTeam" style={{marginTop: "1rem"}} >
-                                                <Form.Control type="text" placeholder="Team name" value={myTeam} onChange={e=>setTeam(e.target.value)} required></Form.Control>
+                                                <Form.Control type="text" placeholder="Team name" value={myTeam} onChange={e=>setMyTeam(e.target.value)} required></Form.Control>
                                                 <Form.Label>Team name</Form.Label>
                                             </Form.Floating>
                                             {
@@ -165,8 +167,8 @@ function SetAccount() {
                                                 <FloatingLabel controlId="floatingSelect" label="Select your class" style={{marginTop: "1rem"}}>
                                                     <Form.Select value={myClass} onChange={e=>setClassSection(e.target.value)} id="myClass" style={{marginTop: "1rem"}} >
                                                         {
-                                                            classes.map((cla) => (
-                                                                <option value={cla.number}>{cla.number}</option>
+                                                            classes.map((cla, index) => (
+                                                                <option key={index} value={cla.number}>{cla.number}</option>
                                                             ))
                                                         }
                                                     </Form.Select>
@@ -184,8 +186,8 @@ function SetAccount() {
                                                     <FloatingLabel controlId="floatingSelect" label="Select your section" style={{marginTop: "1rem"}}>
                                                         <Form.Select value={mySection} onChange={e=>setMySection(e.target.value)} id="mySection" style={{marginTop: "1rem"}} >
                                                         {
-                                                            sections.map((cla) => (
-                                                                <option value={cla}>00{cla}</option>
+                                                            sections.map((cla, index) => (
+                                                                <option key={index} value={cla}>00{cla}</option>
                                                             ))
                                                         }
                                                         </Form.Select>

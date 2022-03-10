@@ -128,9 +128,9 @@ function Login() {
                                 <Form onSubmit={handleSubmit}>
                                 {error && status !== 401 && <Alert variant="danger">{error} <Link to="/register" style={{color:"black"}}>Register</Link></Alert>}
                                     <Form.Floating id="username" style={{marginTop: "1rem"}} >
-                                            <Form.Control type={showPassword ? "text" : "password"} placeholder="Enter your password" value={password} onChange={e=>setPassword(e.target.value)} required></Form.Control>
-                                            <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} style={{margin:"1em"}} className="hoverMe" onClick={() => setShowPassword(!showPassword)}/>
-                                            <Form.Label>Enter your password</Form.Label>
+                                        <Form.Control type={showPassword ? "text" : "password"} placeholder="Enter your password" value={password} onChange={e=>setPassword(e.target.value)} required></Form.Control>
+                                        <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} style={{margin:"1em", position:"absolute", top:5, right:0}} className="hoverMe" onClick={() => setShowPassword(!showPassword)}/>
+                                        <Form.Label>Enter your password</Form.Label>
                                     </Form.Floating>
                                     <Button className="w-100 mt-4" variant="dark" type="submit">Login</Button>
                                 </Form>

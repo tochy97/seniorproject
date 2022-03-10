@@ -41,7 +41,7 @@ function NavComp() {
                                     <Divider className="my-3"/>
                                     <Nav.Link href="/admin/report" className="navHover mx-4">Report</Nav.Link>
                                     <Divider className="my-3"/>
-                                    <Nav.Link href="/admin/add" className="navHover mx-4">Data Management</Nav.Link>
+                                    <Nav.Link href="/admin/data" className="navHover mx-4">Data Management</Nav.Link>
                                     <Divider className="my-3"/>
                                 </>
                             }

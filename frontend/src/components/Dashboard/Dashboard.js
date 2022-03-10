@@ -41,7 +41,7 @@ function Dashboard() {
     const adminElements = [
         {
             title: "Data Managment",
-            link: "/admin/datamanage",
+            link: "/admin/data",
             icon: faLayerGroup
         },
         {
