@@ -37,6 +37,9 @@ function Checkout(props) {
     const closeStartCheckout = () => setStartCheckout(false);
     const openStartCheckout = () => setStartCheckout(true);
 
+    const [enterUser, prompEnterUser] = useState(false)
+    const closeEnterUser = () => prompEnterUser(false)
+
     function checkScannedCard(){
 
         for (var i = 0; i < bucket.length; i++) {
@@ -106,6 +109,7 @@ function Checkout(props) {
         openStartCheckout()
         setSessionStatus(false)
         setCurrentUser('')
+        setCurrentBarcode('')
         setUniqState([])
         setCurrentCart([])
     };
@@ -113,6 +117,9 @@ function Checkout(props) {
     function handleCheckout(){
         console.log(currentCart)
         console.log(account)
+
+        if (checkoutTo.length !== 0){
+
         let formData = new FormData()
 
         let tempBucket = []
@@ -151,6 +158,11 @@ function Checkout(props) {
                 
             })
                 .catch(err => console.log(err))
+        }
+        else{
+            prompEnterUser(true)
+        }
+        
     };
 
     const { isLoggedIn, username, isLoading, items, user, account } = useSelector(
@@ -221,6 +233,11 @@ function Checkout(props) {
                     :
                     <></>
                 }
+            </Modal.Body>
+        </Modal>
+        <Modal show={enterUser} onHide={closeEnterUser} backdrop='static' size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+            <Modal.Body >
+                Please Reset Session and Enter Student ID or swipe card.
             </Modal.Body>
         </Modal>
 
