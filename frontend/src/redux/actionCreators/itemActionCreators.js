@@ -44,7 +44,7 @@ export const createItem = (data, id)  => dispatch => {
 
     // console.log(formData['name'])
 
-    axios.post("http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/items/", formData, {
+    axios.post("http://127.0.0.1:8000/items/", formData, {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `JWT ${localStorage.getItem('token')}`,
@@ -73,7 +73,7 @@ export const doItem = ( data, item, setProgress ) => dispatch => {
 
 export const fetchItems = () => dispatch => {
     dispatch(setLoading(true));
-    axios.get("http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/items/", {
+    axios.get("http://127.0.0.1:8000/items/", {
         headers: {
             Authorization: `JWT ${localStorage.getItem('token')}`,
           }

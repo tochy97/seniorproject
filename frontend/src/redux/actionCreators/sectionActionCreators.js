@@ -19,7 +19,7 @@ const deleteClass = ( data ) => ({
 })
 
 export const fetchClass = () => async dispatch => {
-    await axios.get("http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/classes/", {
+    await axios.get("http://127.0.0.1:8000/classes/", {
         headers:{
             'Content-Type': 'application/json',
             Authorization: `JWT ${localStorage.getItem('token')}`,
@@ -41,7 +41,7 @@ export const createClass = ( classNum, id ) => async dispatch => {
     let form_data = new FormData();
     form_data.append('instructor', id);
     form_data.append('number', classNum);
-    await axios.post("http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/classes/", form_data, {
+    await axios.post("http://127.0.0.1:8000/classes/", form_data, {
         headers:{
             'Content-Type': 'application/json',
             Authorization: `JWT ${localStorage.getItem('token')}`,
@@ -60,7 +60,7 @@ export const createClass = ( classNum, id ) => async dispatch => {
 }
 
 export const removeClass = ( classID ) => async dispatch => {
-    await axios.delete(`http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/classes/${classID}/`, {
+    await axios.delete(`http://127.0.0.1:8000/classes/${classID}/`, {
         headers:{
             'Content-Type': 'application/json',
             Authorization: `JWT ${localStorage.getItem('token')}`,
@@ -68,7 +68,7 @@ export const removeClass = ( classID ) => async dispatch => {
     })
     .then(() => {
         (async () => {
-            await axios.get("http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/classes/", {
+            await axios.get("http://127.0.0.1:8000/classes/", {
                 headers:{
                     'Content-Type': 'application/json',
                     Authorization: `JWT ${localStorage.getItem('token')}`,
@@ -96,7 +96,7 @@ export const removeClass = ( classID ) => async dispatch => {
 }
 
 export const editClass = ( classID, newNumber ) => async dispatch => {
-    await axios.get(`http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/classes/${classID}/`, {
+    await axios.get(`http://127.0.0.1:8000/classes/${classID}/`, {
         headers:{
             'Content-Type': 'application/json',
             Authorization: `JWT ${localStorage.getItem('token')}`,
@@ -107,7 +107,7 @@ export const editClass = ( classID, newNumber ) => async dispatch => {
             let form_data = new FormData();
             form_data.append('instructor', res.data.instructor);
             form_data.append('number', newNumber);
-            await axios.put(`http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/classes/${classID}/`, form_data, {
+            await axios.put(`http://127.0.0.1:8000/classes/${classID}/`, form_data, {
                 headers:{
                     'Content-Type': 'application/json',
                     Authorization: `JWT ${localStorage.getItem('token')}`,
@@ -115,7 +115,7 @@ export const editClass = ( classID, newNumber ) => async dispatch => {
             })
             .then(() => {
                 (async () => {
-                    await axios.get("http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/classes/", {
+                    await axios.get("http://127.0.0.1:8000/classes/", {
                         headers:{
                             'Content-Type': 'application/json',
                             Authorization: `JWT ${localStorage.getItem('token')}`,
@@ -162,7 +162,7 @@ export const createSection = ( classID, secNum, id, classNum ) => async dispatch
         return true;
     }
 
-    await axios.get(`http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/classes/${classID}/`, {
+    await axios.get(`http://127.0.0.1:8000/classes/${classID}/`, {
         headers:{
             'Content-Type': 'application/json',
             Authorization: `JWT ${localStorage.getItem('token')}`,
@@ -187,7 +187,7 @@ export const createSection = ( classID, secNum, id, classNum ) => async dispatch
         form_data.append('sections', output);
         form_data.append('number', classNum);
         (async () => {
-            await axios.put(`http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/classes/${classID}/`, form_data, {
+            await axios.put(`http://127.0.0.1:8000/classes/${classID}/`, form_data, {
                 headers:{
                     'Content-Type': 'application/json',
                     Authorization: `JWT ${localStorage.getItem('token')}`,
@@ -195,7 +195,7 @@ export const createSection = ( classID, secNum, id, classNum ) => async dispatch
             })
             .then(() => {
                 (async () => {
-                    await axios.get("http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/classes/", {
+                    await axios.get("http://127.0.0.1:8000/classes/", {
                         headers:{
                             'Content-Type': 'application/json',
                             Authorization: `JWT ${localStorage.getItem('token')}`,
@@ -237,7 +237,7 @@ export const editSection = ( clas ) => async dispatch => {
     form_data.append('instructor', clas.instructor);
     form_data.append('number', clas.number);
     form_data.append('sections', clas.sections);
-    await axios.put(`http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/classes/${clas.id}/`, form_data, {
+    await axios.put(`http://127.0.0.1:8000/classes/${clas.id}/`, form_data, {
         headers:{
             'Content-Type': 'application/json',
             Authorization: `JWT ${localStorage.getItem('token')}`,
@@ -245,7 +245,7 @@ export const editSection = ( clas ) => async dispatch => {
     })
     .then(() => {
         (async () => {
-            await axios.get("http://SeniorDesign-env.eba-itcpbav3.us-west-2.elasticbeanstalk.com/classes/", {
+            await axios.get("http://127.0.0.1:8000/classes/", {
                 headers:{
                     'Content-Type': 'application/json',
                     Authorization: `JWT ${localStorage.getItem('token')}`,
