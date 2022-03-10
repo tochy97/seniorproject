@@ -22,8 +22,8 @@ function Adder(props) {
     }), shallowEqual);
 
     return (
-        <Card className="py-5" style={{border:0}}>
-            <h1 className='p-5 text-center'>Data Management</h1>
+        <Card className="py-2" style={{border:0}}>
+            <h1 className='p-2 text-center'>Data Management</h1>
             {
                 <>
                     <Nav fill variant="tabs" className='justify-content-centered' defaultActiveKey="sections" onSelect={(selectedKey) => setTab(selectedKey)}>
