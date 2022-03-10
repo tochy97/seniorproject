@@ -19,6 +19,9 @@ import Modal from 'react-bootstrap/Modal';
 import { Container } from '@mui/material';
 import ModalHeader from 'react-bootstrap/esm/ModalHeader';
 
+import { useBarcode } from 'react-barcodes';
+import Barcode from 'react-barcode';
+
 function AddItem() {
 
     const dispatch = useDispatch();
@@ -36,6 +39,27 @@ function AddItem() {
 
     const [error, setError] = useState("");
     const [initializer, setInitializer] = useState(0);
+
+    const [activeGenBar, setGenBarCode] = useState(false);
+
+    const {inputRef}  = useBarcode({
+        value: 'UTA-0000000001',
+        options: {
+          background: '#ffffff',
+          flat: true,
+          height: 60,
+          width: 1.2,
+          fontSize: 18
+        }
+      });
+
+    function ActivateBar(){
+        setGenBarCode(true);
+
+        // Now I need to generate a code based on that and display its content
+        
+    }
+    const deactivateBar = () => setGenBarCode(false);
     
     const { isLoggedIn, username, isLoading, items, user, } = useSelector(
         (state) =>({
@@ -220,10 +244,31 @@ function AddItem() {
                         </Row>
                             
                         <Row>
-                            <InputGroup className="py-3 px-4" >
-                                <InputGroup.Text id="inputGroup-sizing-default" >Serial Number</InputGroup.Text>
-                                <FormControl aria-label="Serial Number" aria-describedby="inputGroup-sizing-default" placeholder="Scan Item Now" value={serial_number} onChange={e=>setSerial_number(e.target.value)} required/>
-                            </InputGroup>
+                            {
+                                activeGenBar 
+                                ?   
+
+                                <Col>
+                                <div id='div-svg'>
+                                    <svg id="barcode-canvas" ref={inputRef} />
+                                </div>
+                                {/* // <InputGroup className="py-3 px-4" >
+                                //     <InputGroup.Text id="inputGroup-sizing-default" >Serial Number</InputGroup.Text>
+                                //     <FormControl aria-label="Serial Number" aria-describedby="inputGroup-sizing-default" placeholder="Enter Serial Number e.g {UTA-0000000001}" value={serial_number} onChange={e=>setSerial_number(e.target.value)} required/>
+                                // </InputGroup> */}
+                                </Col>
+                                :
+                                <Col>
+                                    <div className="d-grid px-3 pt-3">
+                                        <Button onClick={()=>ActivateBar()}variant="success" size="md">Generate Barcode Serial Number</Button>
+                                    </div>
+                                    <Col md={{ span: 6, offset: 3 }} className="d-flex justify-content-center pt-4 pb-2">
+                                    <div id='div-svg'>
+                                        <svg classname='justify-center' id="barcode-canvas" ref={inputRef} />
+                                    </div>
+                                    </Col>
+                                </Col>
+                            }
                         </Row>
                         
                         <Row>
