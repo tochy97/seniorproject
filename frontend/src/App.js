@@ -51,6 +51,7 @@ function App() {
   return (
     <>
     <NavComp/>
+    <div style={{marginTop:"10em", zIndex:10}}>
     {
       mounted
       ?
@@ -94,6 +95,7 @@ function App() {
       :
         <Loading/>
     }
+    </div>
     </>
   );
 }
