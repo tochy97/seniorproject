@@ -34,7 +34,7 @@ function NavComp() {
                         &&
                         <>  
                             {
-                                user.is_superuser
+                                user.admin
                                 &&
                                 <>
                                     <Nav.Link href="/admin/checkout" className="navHover mx-4">Checkout</Nav.Link>

@@ -19,7 +19,7 @@ function Dashboard() {
     const dashElements = [
         {
             title: "Inventory",
-            link: "/viewitems",
+            link: "/inventory",
             icon: faBook
         },
         {

@@ -35,13 +35,13 @@ function App() {
           dispatch(checkUser());
       }
       else{
-        if(!accountMounted){
+        if(!accountMounted && !user.admin){
           console.log(user)
           dispatch(fetchAccount(user.id))
         }
         else
         {
-        if(user.is_superuser === true || account){
+        if(user.admin === true || account){
           dispatch(setAllowed(true));
         }
         }
@@ -72,7 +72,7 @@ function App() {
             ?
             <Routes>
               {
-                allowed || user.is_superuser
+                allowed || user.admin
                 ?
                   <>
                   <Route exact path="/*" element={<NotFound/>}/>
@@ -80,7 +80,7 @@ function App() {
                     <Route exact path="profile" element={<Profile/>}/>
                     <Route exact path="inventory" element={<ViewItems/>}/>
                     <Route path="admin/*" element={<Admin/>} />
-                    <Route exact path="confirmaccount" element={<SetAccount/>}/> 
+                    <Route exact path="set_account" element={<SetAccount/>}/> 
                   </>
                 :
                 <Route exact path="/*" element={<Disclaimer/>}/>

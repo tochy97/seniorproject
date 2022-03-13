@@ -29,7 +29,7 @@ function Admin() {
     return (
         <Routes>
             {
-                user.is_superuser
+                user.admin
                 ?
                 <>
                 <Route path="items" element={<Items/>}/>

@@ -22,7 +22,7 @@ function Disclaimer(props) {
         if(checked)
         {
             dispatch(createAccount(user.id));
-            histroy("../", {replace:true});
+            histroy("../set_account", {replace:true});
         }
         else{
             const info= {

@@ -258,7 +258,7 @@ function Section(props) {
                                 <Form.Control type="number" placeholder="Confirm class number" value={cClassNumber} onChange={e=>setCClassNumber(e.target.value)} required></Form.Control>
                                 <Form.Label>Confirm class number</Form.Label>
                             </Form.Floating>
-                            <Button type='submit' variant='dark' className='mt-3 p-2'>
+                            <Button type='submit' variant='primary' disabled={classNumber.length ===0 || cClassNumber.length ===0 || cClassNumber !== classNumber} className='mt-3 p-2'>
                                 Add Class
                             </Button>
                         </Form>
@@ -275,7 +275,7 @@ function Section(props) {
                                 ?
                                 <div className='mt-3'>
                                     <p>{`${selectedClass} ------> ${eClassNumber}`}</p>
-                                    <Button type='submit' variant='success' className='my-3 p-2' onClick={updateClass}>
+                                    <Button type='submit' variant='primary' className='my-3 p-2' onClick={updateClass}>
                                         Confirm
                                     </Button>
                                 </div>
@@ -286,106 +286,114 @@ function Section(props) {
                     </Modal>
                     {
                         classes.map((clas, index) =>(
-                            <Card key={index}>
-                                <Card.Header className='p-4'>
-                                    <Form.Floating id="class" style={{marginTop: "1rem"}} >
-                                        <Form.Control type="number" placeholder={`Class: ${clas.number}`} value={eClassNumber} onChange={e=>setEClassNumber(e.target.value)} required></Form.Control>
-                                        <Form.Label><h4>Class: {clas.number}</h4></Form.Label>
-                                    </Form.Floating>
-                                    <div className='mt-3'>
-                                        <Button variant='success' className='p-2'  onClick={()=>showConfirm(clas)}>
-                                            Save
-                                        </Button>
-                                        <Button variant='danger' className='p-2 mx-3'  onClick={()=>deleteClass(clas.id)}>
-                                            Delete
-                                        </Button>
-                                    </div>
-                                </Card.Header>
-                                <Card.Body>
-                                <Stack gap={3}>
-                                    {
-                                        clas.sections
-                                        ?
-                                            <Stack gap={3}>
-                                                {
-                                                    sectionList.map((sec, ind) => (
-                                                        index === ind
-                                                        ?
-                                                            <>
-                                                                {
-                                                                    sec.map((data) =>(
-                                                                        <>
-                                                                        <Card className='section_box' onClick={()=>openEditing(clas,data)}>
-                                                                            <Card.Title>Section: {data}</Card.Title>
-                                                                        </Card>
-                                                                        <Modal show={editing} onHide={closeEditing}>
-                                                                            <Modal.Header closeButton>
-                                                                            <Modal.Title>Edit Section {selectedClass.number}-{selectedSection}</Modal.Title>
-                                                                            </Modal.Header>
-                                                                            <Modal.Body>
-                                                                                {error && <Alert variant='danger'>{error}</Alert>}
-                                                                                <Form>
-                                                                                    <Form.Floating id="class" style={{marginTop: "1rem"}} >
-                                                                                        <Form.Control type="number" placeholder="Section number" value={sectionNumber} onChange={e=>handleChange(e.target.value, clas)} required></Form.Control>
-                                                                                        <Form.Label>New Section number</Form.Label>
-                                                                                    </Form.Floating>
-                                                                                    <Form.Floating id="class" style={{marginTop: "1rem"}} >
-                                                                                        <Form.Control type="number" placeholder="Confirm section number" value={cSectionNumber} onChange={e=>setCSectionNumber(e.target.value)} required></Form.Control>
-                                                                                        <Form.Label>Confirm section number</Form.Label>
-                                                                                    </Form.Floating>
-                                                                                    <div className='mt-3'>
-                                                                                        <Button variant='success' className='p-2 ' onClick={() => updateSection()}>
-                                                                                            Save
-                                                                                        </Button>
-                                                                                        <Button variant='danger' className='mx-3 p-2' onClick={() => deleteSection()}>
-                                                                                            Delete Section
-                                                                                        </Button>
-                                                                                    </div>
-                                                                                </Form>
-                                                                            </Modal.Body>
-                                                                        </Modal>
-                                                                        </>
-                                                                    ))
-                                                                }
-                                                            </>
-                                                        :
-                                                            <></>
-                                                    
-                                                    ))
-                                                }
-                                            </Stack>
-                                        :
-                                            <h5>This class has no sections</h5>
-                                    }
-                                </Stack>
-                                </Card.Body>
-                                <Modal show={adding} onHide={closeAdding}>
-                                    <Modal.Header closeButton>
-                                        <Modal.Title>New Section in {selectedClass.number}</Modal.Title>
-                                    </Modal.Header>
-                                    <Modal.Body>
-                                        {error && <Alert variant='danger'>{error}</Alert>}
-                                        <Form onSubmit={newSection}>
+                            <>
+                            {
+                                clas.instructor === user.id
+                                ?
+                                    <Card key={index}>
+                                        <Card.Header className='p-4'>
                                             <Form.Floating id="class" style={{marginTop: "1rem"}} >
-                                                <Form.Control type="number" placeholder="Section number" value={sectionNumber} onChange={e=>setSectionNumber(e.target.value)} required></Form.Control>
-                                                <Form.Label>Section number</Form.Label>
+                                                <Form.Control type="number" placeholder={`Class: ${clas.number} - ${user.first_name} ${user.last_name}`} value={eClassNumber} onChange={e=>setEClassNumber(e.target.value)} required></Form.Control>
+                                                <Form.Label><h4>Class: {clas.number} - {user.first_name} {user.last_name}</h4></Form.Label>
                                             </Form.Floating>
-                                            <Form.Floating id="class" style={{marginTop: "1rem"}} >
-                                                <Form.Control type="number" placeholder="Confirm Section number" value={cSectionNumber} onChange={e=>setCSectionNumber(e.target.value)} required></Form.Control>
-                                                <Form.Label>Confirm Section number</Form.Label>
-                                            </Form.Floating>
-                                            <Button type='submit' variant='dark' className='mt-3 p-2'>
-                                                Add Section
+                                            <div className='mt-3'>
+                                                <Button variant='primary' className='p-2' disabled={eClassNumber.length <= 0} onClick={()=>showConfirm(clas)}>
+                                                    Save
+                                                </Button>
+                                                <Button variant='danger' className='p-2 mx-3'  onClick={()=>deleteClass(clas.id)}>
+                                                    Delete
+                                                </Button>
+                                            </div>
+                                        </Card.Header>
+                                        <Card.Body>
+                                        <Stack gap={3}>
+                                            {
+                                                clas.sections
+                                                ?
+                                                    <Stack gap={3}>
+                                                        {
+                                                            sectionList.map((sec, ind) => (
+                                                                index === ind
+                                                                ?
+                                                                    <>
+                                                                        {
+                                                                            sec.map((data) =>(
+                                                                                <>
+                                                                                <Card className='section_box' onClick={()=>openEditing(clas,data)}>
+                                                                                    <Card.Title>Section: {data}</Card.Title>
+                                                                                </Card>
+                                                                                <Modal show={editing} onHide={closeEditing}>
+                                                                                    <Modal.Header closeButton>
+                                                                                    <Modal.Title>Edit Section {selectedClass.number}-{selectedSection}</Modal.Title>
+                                                                                    </Modal.Header>
+                                                                                    <Modal.Body>
+                                                                                        {error && <Alert variant='danger'>{error}</Alert>}
+                                                                                        <Form>
+                                                                                            <Form.Floating id="class" style={{marginTop: "1rem"}} >
+                                                                                                <Form.Control type="number" placeholder="Section number" value={sectionNumber} onChange={e=>handleChange(e.target.value, clas)} required></Form.Control>
+                                                                                                <Form.Label>New Section number</Form.Label>
+                                                                                            </Form.Floating>
+                                                                                            <Form.Floating id="class" style={{marginTop: "1rem"}} >
+                                                                                                <Form.Control type="number" placeholder="Confirm section number" value={cSectionNumber} onChange={e=>setCSectionNumber(e.target.value)} required></Form.Control>
+                                                                                                <Form.Label>Confirm section number</Form.Label>
+                                                                                            </Form.Floating>
+                                                                                            <div className='mt-3'>
+                                                                                                <Button variant='primary' className='p-2 ' onClick={() => updateSection()}>
+                                                                                                    Save
+                                                                                                </Button>
+                                                                                                <Button variant='danger' className='mx-3 p-2' onClick={() => deleteSection()}>
+                                                                                                    Delete Section
+                                                                                                </Button>
+                                                                                            </div>
+                                                                                        </Form>
+                                                                                    </Modal.Body>
+                                                                                </Modal>
+                                                                                </>
+                                                                            ))
+                                                                        }
+                                                                    </>
+                                                                :
+                                                                    <></>
+                                                            
+                                                            ))
+                                                        }
+                                                    </Stack>
+                                                :
+                                                    <h5>This class has no sections</h5>
+                                            }
+                                        </Stack>
+                                        </Card.Body>
+                                        <Modal show={adding} onHide={closeAdding}>
+                                            <Modal.Header closeButton>
+                                                <Modal.Title>New Section in {selectedClass.number}</Modal.Title>
+                                            </Modal.Header>
+                                            <Modal.Body>
+                                                {error && <Alert variant='danger'>{error}</Alert>}
+                                                <Form onSubmit={newSection}>
+                                                    <Form.Floating id="class" style={{marginTop: "1rem"}} >
+                                                        <Form.Control type="number" placeholder="Section number" value={sectionNumber} onChange={e=>setSectionNumber(e.target.value)} required></Form.Control>
+                                                        <Form.Label>Section number</Form.Label>
+                                                    </Form.Floating>
+                                                    <Form.Floating id="class" style={{marginTop: "1rem"}} >
+                                                        <Form.Control type="number" placeholder="Confirm Section number" value={cSectionNumber} onChange={e=>setCSectionNumber(e.target.value)} required></Form.Control>
+                                                        <Form.Label>Confirm Section number</Form.Label>
+                                                    </Form.Floating>
+                                                    <Button type='submit' variant='primary' className='mt-3 p-2'>
+                                                        Add Section
+                                                    </Button>
+                                                </Form>
+                                            </Modal.Body>
+                                        </Modal>
+                                        <Card.Footer>
+                                            <Button className='p-2' variant="primary" onClick={()=>showAdding(clas, index)}>
+                                                New Section
                                             </Button>
-                                        </Form>
-                                    </Modal.Body>
-                                </Modal>
-                                <Card.Footer>
-                                    <Button className='p-2' variant="secondary" onClick={()=>showAdding(clas, index)}>
-                                        New Section
-                                    </Button>
-                                </Card.Footer>
-                            </Card>
+                                        </Card.Footer>
+                                    </Card>
+                                    :
+                                    <></>
+                                }
+                                </>
                         ))
                     }
                 </Stack>
