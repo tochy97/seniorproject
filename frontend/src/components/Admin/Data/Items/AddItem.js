@@ -42,17 +42,6 @@ function AddItem() {
 
     const [activeGenBar, setGenBarCode] = useState(false);
 
-    const {inputRef}  = useBarcode({
-        value: 'UTA-0000000001',
-        options: {
-          background: '#ffffff',
-          flat: true,
-          height: 60,
-          width: 1.2,
-          fontSize: 18
-        }
-      });
-
     function ActivateBar(){
         setGenBarCode(true);
 
@@ -78,11 +67,21 @@ function AddItem() {
 
     useEffect(() => {
         if(items){
+            var tempID = items[(items.length)-1].id
+            var holder = 'UTA-'
+            for(var i=0; i < 10-String(tempID).length;i++){
+                holder = holder + '0'
+            }
+            setSerial_number(holder + String(tempID))
+
             let gList = items.map((it) => it.type)
             const temp = [...new Set(gList)]
             setFilt(temp)
+
+
         }
     }, [items, setFilt])
+
 
     function SendSuccess(prop) {
         return (
@@ -90,19 +89,40 @@ function AddItem() {
             <Modal {...prop} size="lg" aria-labelledby="contained-modal-title-vcenter" centered keyboard>
                 <ModalHeader closeButton></ModalHeader>
                 <Modal.Body >
-                <h5 className='text-center'>Item {prop.Name} Successfully Added</h5>
+                <h5 className='text-center'>Item {prop.name} Successfully Added</h5>
                 </Modal.Body>
             </Modal>
           </>
         );
       }
+
+    const onPrintBarcode = () => {
+    var container = document.getElementById("div-svg");
+    var mySVG = document.getElementById("barcode-canvas");
+    
+    var width  = window.innerWidth
+    var height = window.innerHeight
+    
+    var printWindow = window.open('', 'PrintMap','width=' + width + ',height=' + height);
+    printWindow.document.writeln(container.innerHTML);
+    
+    
+    printWindow.document.close();
+    printWindow.print();
+    };
+
+    function getNextSerialNumber(){
+        return serial_number
+    } 
     
     function handleSubmit(e){
         e.preventDefault();
         e.stopPropagation();
 
+        onPrintBarcode()
+
         if (type === 'Select a Type ...'){
-            console.log(type)
+            // console.log(type)
             setError("Please Select a Type")
             setInitializer(1)
         }
@@ -118,7 +138,7 @@ function AddItem() {
                 'ser_no': serial_number
             }
 
-            console.log(data)
+            // console.log(data)
 
             let formData = new FormData()
 
@@ -249,23 +269,25 @@ function AddItem() {
                                 ?   
 
                                 <Col>
-                                <div id='div-svg'>
-                                    <svg id="barcode-canvas" ref={inputRef} />
-                                </div>
-                                {/* // <InputGroup className="py-3 px-4" >
-                                //     <InputGroup.Text id="inputGroup-sizing-default" >Serial Number</InputGroup.Text>
-                                //     <FormControl aria-label="Serial Number" aria-describedby="inputGroup-sizing-default" placeholder="Enter Serial Number e.g {UTA-0000000001}" value={serial_number} onChange={e=>setSerial_number(e.target.value)} required/>
-                                // </InputGroup> */}
+                                    <div id='div-svg'>
+                                        {/* <svg id="barcode-canvas" ref={inputRef} /> */}
+                                    </div>
+                                    {/* // <InputGroup className="py-3 px-4" >
+                                    //     <InputGroup.Text id="inputGroup-sizing-default" >Serial Number</InputGroup.Text>
+                                    //     <FormControl aria-label="Serial Number" aria-describedby="inputGroup-sizing-default" placeholder="Enter Serial Number e.g {UTA-0000000001}" value={serial_number} onChange={e=>setSerial_number(e.target.value)} required/>
+                                    // </InputGroup> */}
                                 </Col>
                                 :
                                 <Col>
-                                    <div className="d-grid px-3 pt-3">
-                                        <Button onClick={()=>ActivateBar()}variant="success" size="md">Generate Barcode Serial Number</Button>
-                                    </div>
+                                        {/* Saving for later if custon barcodes */}
+                                        {/* <div className="d-grid px-3 pt-3">
+                                            <Button onClick={()=>ActivateBar()}variant="success" size="md">Generate Barcode Serial Number</Button>
+                                        </div> */}
                                     <Col md={{ span: 6, offset: 3 }} className="d-flex justify-content-center pt-4 pb-2">
-                                    <div id='div-svg'>
-                                        <svg classname='justify-center' id="barcode-canvas" ref={inputRef} />
-                                    </div>
+                                        <div id='div-svg'>
+                                            {/* <svg classname='justify-center' id="barcode-canvas" ref={inputRef} /> */}
+                                            <Barcode value={getNextSerialNumber()} background= '#ffffff' height= '60' width= '1.2' fontSize='18'></Barcode>
+                                        </div>
                                     </Col>
                                 </Col>
                             }
