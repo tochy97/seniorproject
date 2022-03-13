@@ -47,7 +47,7 @@ function NavComp() {
                             }
                             <Nav.Link href="/profile" className="navHover mx-4">Profile</Nav.Link>
                             <Divider className="my-3"/>  
-                            <Nav.Link href="/viewitems" className="navHover mx-4">Inventory</Nav.Link>
+                            <Nav.Link href="/inventory" className="navHover mx-4">Inventory</Nav.Link>
                             <Divider className="my-3"/>
                             <Nav.Link href="/about" className="navHover mx-4">About</Nav.Link>
                             <Divider className="my-3"/>
