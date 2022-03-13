@@ -1,4 +1,4 @@
-import { ADD_ACCOUNT, SET_ACCOUNT, RESET_ACCOUNT, DELETE_ACCOUNT, IS_SET, GET_INSTRUCTORS, GET_MY_INSTRUCTOR } from "../types/accountTypes"
+import { ADD_ACCOUNT, SET_ACCOUNT, RESET_ACCOUNT, IS_SET, GET_INSTRUCTORS, GET_MY_INSTRUCTOR } from "../types/accountTypes"
 
 const initialState = {
     instructors:null,
@@ -9,11 +9,6 @@ const initialState = {
 
 const accountReducer = (state=initialState, {type, payload})=>{
     switch(type){
-        case ADD_ACCOUNT:
-            state={
-                data:[...state.data,payload]
-            }
-            return state;
         case SET_ACCOUNT:     
             state={...state,
                 data:payload,
@@ -23,12 +18,6 @@ const accountReducer = (state=initialState, {type, payload})=>{
             return state;
         case RESET_ACCOUNT:
             state=initialState;
-            return state;
-        case DELETE_ACCOUNT:
-            const filteredData = state.data.filter(i=> i.id !== payload);
-            state={...state,
-                data:filteredData,
-            }
             return state;
         case IS_SET:
             state={...state, 

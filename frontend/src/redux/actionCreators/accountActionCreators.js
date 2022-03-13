@@ -6,16 +6,8 @@ const setAccount = ( data ) => ({
     type:types.SET_ACCOUNT,
     payload:data
 })
-const addAccount = ( data ) => ({
-    type:types.ADD_ACCOUNT,
-    payload:data
-})
 export const resetAccount = () => ({
     type:types.RESET_ACCOUNT,
-})
-const deleteAccount = ( data ) => ({
-    type:types.DELETE_ACCOUNT,
-    payload:data,
 })
 export const mountAccount = ( data ) => ({
     type:types.IS_SET,
@@ -47,8 +39,8 @@ export const fetchMyInstructor = ( id ) => async dispatch => {
     })
     .catch(err => {
         const info= {
-            error:"Failed to fetch instrcutors",
-            status:404
+            error:"Failed finding your instrcutor",
+            status:err.response.status
         }
         dispatch(setError(info));
     })
@@ -79,8 +71,8 @@ export const fetchInstructors = () => async dispatch => {
     .catch(err => {
         dispatch(mountAccount(true));
         const info= {
-            error:"Failed to fetch instrcutors",
-            status:404
+            error:"Failed to find instrcutors",
+            status:err.response.status
         }
         dispatch(setError(info));
     })
@@ -94,7 +86,6 @@ export const fetchAccount = ( id ) => async dispatch => {
       }
     })
     .then(res => {
-        dispatch(setAllowed(true));
         dispatch(setAccount(res.data));
     })
     .catch(err => {
@@ -104,7 +95,7 @@ export const fetchAccount = ( id ) => async dispatch => {
         }
         const info= {
             error:"Failed to find account",
-            status:404
+            status:err.response.status
         }
         dispatch(setError(info));
     })
@@ -121,12 +112,11 @@ export const createAccount = ( id ) => async dispatch => {
     })
     .then(res => {
         dispatch(setAccount(res.data));
-        dispatch(setAllowed(true));
     })
     .catch(err => {
         const info= {
-            error:"Failed to send",
-            status:404
+            error:"Failed creating account",
+            status:err.response.status
         }
         dispatch(setError(info));
     })
@@ -157,8 +147,8 @@ export const updateAccount = ( userData, id, accountData ) => async dispatch => 
             })
             .catch(err => {
                 const info= {
-                    error:"Failed to send",
-                    status:404
+                    error:"Failed to update",
+                    status:err.response.status
                 }
                 dispatch(setError(info));
             })
@@ -166,8 +156,8 @@ export const updateAccount = ( userData, id, accountData ) => async dispatch => 
     })
     .catch(err => {
         const info= {
-            error:"Failed to send",
-            status:404
+            error:"Failed to update",
+            status:err.response.status
         }
         dispatch(setError(info));
     })

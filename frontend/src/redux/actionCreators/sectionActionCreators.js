@@ -6,16 +6,9 @@ const addClass = ( data ) => ({
     type:types.ADD_CLASS,
     payload:data
 })
-const resetClass = () => ({
-    type:types.RESET_CLASS,
-})
 const setClass = ( data ) => ({
     type:types.SET_CLASS,
     payload:data
-})
-const deleteClass = ( data ) => ({
-    type:types.DELETE_CLASS,
-    payload:data,
 })
 
 export const fetchClass = () => async dispatch => {
@@ -32,7 +25,7 @@ export const fetchClass = () => async dispatch => {
     .catch(err => {
         const info= {
             error:"Failed to retrieve classes",
-            status:504
+            status:err.response.status
         }
         dispatch(setError(info));
     })
@@ -54,7 +47,7 @@ export const createClass = ( classNum, id ) => async dispatch => {
     .catch(err => {
         const info= {
             error:"Failed to create class",
-            status:501
+            status:err.response.status
         }
         dispatch(setError(info));
     })
@@ -81,7 +74,7 @@ export const removeClass = ( classID ) => async dispatch => {
             .catch(err => {
                 const info= {
                     error:"Failed to update class list",
-                    status:504
+                    status:err.response.status
                 }
                 dispatch(setError(info));
             })
@@ -90,7 +83,7 @@ export const removeClass = ( classID ) => async dispatch => {
     .catch(err => {
         const info= {
             error:"Failed to delete class",
-            status:502
+            status:err.response.status
         }
         dispatch(setError(info));
     })
@@ -128,7 +121,7 @@ export const editClass = ( classID, newNumber ) => async dispatch => {
                     .catch(err => {
                         const info= {
                             error:"Failed to reload",
-                            status:504
+                            status:err.response.status
                         }
                         dispatch(setError(info));
                     })
@@ -136,7 +129,7 @@ export const editClass = ( classID, newNumber ) => async dispatch => {
             })
             .catch(err => {
                 const info= {
-                    status:503,
+                    status:err.response.status,
                     error:"Failed to update class number",
                 }
                 dispatch(setError(info));
@@ -145,7 +138,7 @@ export const editClass = ( classID, newNumber ) => async dispatch => {
     })
     .catch(err => {
         const info= {
-            status:504,
+            status:err.response.status,
             error:"Failed to load class for update",
         }
         dispatch(setError(info));
@@ -208,7 +201,7 @@ export const createSection = ( classID, secNum, id, classNum ) => async dispatch
                     .catch(err => {
                         const info= {
                             error:"Failed to reload",
-                            status:504
+                            status:err.response.status
                         }
                         dispatch(setError(info));
                     })
@@ -216,7 +209,7 @@ export const createSection = ( classID, secNum, id, classNum ) => async dispatch
             })
             .catch(err => {
                 const info= {
-                    status:503,
+                    status:err.response.status,
                     error:"Failed to create section",
                 }
                 dispatch(setError(info));
@@ -225,7 +218,7 @@ export const createSection = ( classID, secNum, id, classNum ) => async dispatch
     })
     .catch(err => {
         const info= {
-            status:504,
+            status:err.response.status,
             error:"Failed to load class for update",
         }
         dispatch(setError(info));
@@ -258,7 +251,7 @@ export const editSection = ( clas ) => async dispatch => {
             .catch(err => {
                 const info= {
                     error:"Failed to reload",
-                    status:504
+                    status:err.response.status
                 }
                 dispatch(setError(info));
             })
@@ -267,7 +260,7 @@ export const editSection = ( clas ) => async dispatch => {
     .catch(err => {
         console.log(err)
         const info= {
-            status:503,
+            status:err.response.status,
             error:"Failed to update class number",
         }
         dispatch(setError(info));

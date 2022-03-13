@@ -48,7 +48,7 @@ export const checkUser = ()  => async dispatch=>{
     .catch(err => {   
         localStorage.removeItem('token');
         const info= {
-            error:"You are notlogged in ",
+            error:"You are not logged in",
             status:401
         }
         dispatch(setError(info))
@@ -72,7 +72,7 @@ export const loginUser = (data) => async dispatch=>{
                 email:res.data.user.email,
                 admin:res.data.user.is_staff,
             },
-            status:res.status
+            status:101
         }
         dispatch(setUser(data));
         localStorage.setItem('token', res.data.token);
@@ -86,8 +86,8 @@ export const loginUser = (data) => async dispatch=>{
     .catch(err => {
         localStorage.removeItem('token');
         const info= {
-            error:"Invalid username or password",
-            status:402
+            error:"Failed to login",
+            status:err.response.status
         }
         dispatch(setError(info))
     });
@@ -107,8 +107,8 @@ export const createUser = (data) =>  async dispatch=>{
     .catch(err => {
         localStorage.removeItem('token');
         const info= {
-            error:err.response.data.username,
-            status:403
+            error:"Failed to register",
+            status:err.response.status
         }
         dispatch(setError(info))
     });
@@ -128,13 +128,13 @@ export const updateUser = ( data, id ) => async dispatch => {
             'Content-Type': 'application/json',
         }
     })
-    .then(res => {
+    .then(() => {
         dispatch(checkUser());
     })
     .catch(err => {
         const info= {
-            error:"Failed to send",
-            status:404
+            error:"Failed to update",
+            status:err.response.status
         }
         dispatch(setError(info));
     })

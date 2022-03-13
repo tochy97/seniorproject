@@ -3,7 +3,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { Card, Container, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom"
 import { fetchMyInstructor } from '../../redux/actionCreators/accountActionCreators';
-import Loading from '../Loading/Loading';
+import Loading from '../../components/Loading/Loading';
 
 function Profile() {
     const dispatch = useDispatch();    
@@ -31,7 +31,7 @@ function Profile() {
                     user.first_name
                     ?
                     <>
-                        <h1 className='text-center'>ID: {user.username}</h1>
+                        <h1 className='text-center'>ID: {user.id}</h1>
                         <h1 className='text-center'>First Name: {user.first_name}</h1>
                         <h1 className='text-center'>Last Name: {user.last_name}</h1>
                         <h1 className='text-center'>Email: {user.email}</h1>

@@ -26,7 +26,9 @@ const authReducer = (state=initialState, {type, payload})=>{
             }
         case SET_ALLOWED:
             state={ ...state,
-                allowed:payload
+                allowed:payload,
+                status:101,
+                error:""
             }
         case SET_ERROR:
             state={ ...state,

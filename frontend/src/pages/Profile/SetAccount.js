@@ -5,7 +5,7 @@ import Divider from '@mui/material/Divider';
 import { Card, FloatingLabel, Form, Alert, Button, Container } from 'react-bootstrap';
 import { setError, updateUser } from '../../redux/actionCreators/authActionCreator';
 import { fetchInstructors, updateAccount } from '../../redux/actionCreators/accountActionCreators';
-import Loading from '../Loading/Loading';
+import Loading from '../../components/Loading/Loading';
 import { fetchClass } from '../../redux/actionCreators/sectionActionCreators';
 
 function isNumeric(str) {
@@ -65,11 +65,11 @@ function SetAccount() {
     const setClassSection = (value) => {
         setSectionRadioState(!sectionRadioState)
         setMyClassInstructor(myInstructor)
-        setMyClass(value);
+        setMyClass(value.split(",")[0]);
         setMySection("")
         const output = [];
         let curr;
-        let currentClass = classes.filter((element) => element.number === parseInt(value))
+        let currentClass = classes.filter((element) => element.id === parseInt(value.split(",")[1]))
         if(currentClass[0].sections)
         {
             for (let i = 0; i < currentClass[0].sections.length; i++) {
@@ -195,7 +195,7 @@ function SetAccount() {
                                                                 ?
                                                                 <Form.Check
                                                                     key={classRadioState}
-                                                                    value={cla.number}
+                                                                    value={`${cla.number},${cla.id}`}
                                                                     inline
                                                                     onChange={e=>setClassSection(e.target.value)}
                                                                     label={cla.number}

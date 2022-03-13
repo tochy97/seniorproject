@@ -4,7 +4,7 @@ import { Card, Container, Row, Button, Nav } from 'react-bootstrap';
 import { Divider } from '@mui/material';
 import { checkUser } from '../../redux/actionCreators/authActionCreator';
 import { fetchItems } from '../../redux/actionCreators/itemActionCreators';
-import Loading from '../Loading/Loading';
+import Loading from '../../components/Loading/Loading';
 
 function ViewItems() {
     const dispatch = useDispatch();

@@ -3,7 +3,7 @@ import { Modal, Button, Card, Form, Stack, Alert } from 'react-bootstrap';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { setError } from '../../../../redux/actionCreators/authActionCreator';
 import { createClass, createSection, editClass, fetchClass, removeClass, editSection } from '../../../../redux/actionCreators/sectionActionCreators';
-import Loading from '../../../Loading/Loading';
+import Loading from '../../../../components/Loading/Loading';
 import './Section.css';
 
 function Section(props) {
@@ -213,6 +213,8 @@ function Section(props) {
             }
             selectedClass.sections = curr;
             dispatch(editSection(selectedClass));
+            setSectionNumber("")
+            setCSectionNumber("")
             closeEditing();
         }
     }
