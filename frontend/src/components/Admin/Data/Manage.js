@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Nav, Button, Card, Container } from 'react-bootstrap';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import Loading from '../../Loading/Loading';
+import Items from './Items';
 import AddItem from './Items/AddItem';
 import ManageItem from './Items/ManageItem';
 import AddSection from './Sections/Section';
@@ -21,8 +22,8 @@ function Adder(props) {
     }), shallowEqual);
 
     return (
-        <Card className="py-5" style={{border:0}}>
-            <h1 className='p-5 text-center'>Data Management</h1>
+        <Card className="py-2" style={{border:0}}>
+            <h1 className='p-2 text-center'>Data Management</h1>
             {
                 <>
                     <Nav fill variant="tabs" className='justify-content-centered' defaultActiveKey="sections" onSelect={(selectedKey) => setTab(selectedKey)}>
@@ -32,15 +33,12 @@ function Adder(props) {
                         <Nav.Item>
                             <Nav.Link eventKey="items"><h5>Items</h5></Nav.Link>
                         </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link eventKey="itemsEdit"><h5>Manage Items</h5></Nav.Link>
-                        </Nav.Item>
                     </Nav>
                     {
                         tab === "items"
                         ?
                             <Container className='mt-5'>
-                                <AddItem/>
+                                <Items/>
                             </Container>
                         :
                             <></>
@@ -50,15 +48,6 @@ function Adder(props) {
                         ?
                             <Container className='mt-5'>
                                 <AddSection/>
-                            </Container>
-                        :
-                        <></>
-                    }
-                    {   
-                        tab === "itemsEdit"
-                        ?
-                            <Container className='mt-5'>
-                                <ManageItem/>
                             </Container>
                         :
                         <></>

@@ -1,5 +1,5 @@
 import * as types from "../types/accountTypes";
-import { setError, logoutUser, setAllowed, setMount } from "./authActionCreator";
+import { setError, logoutUser, setAllowed, setMount, checkUser } from "./authActionCreator";
 import axios from 'axios';
 
 const setAccount = ( data ) => ({
@@ -25,6 +25,10 @@ const getInstructors = ( data ) => ({
     type:types.GET_INSTRUCTORS,
     payload:data,
 })
+const getMyInstructor = ( data ) => ({
+    type:types.GET_MY_INSTRUCTOR,
+    payload:data,
+})
 
 export const fetchMyInstructor = ( id ) => async dispatch => {
     await axios.get(`http://127.0.0.1:8000/users/${id}/`, {
@@ -39,7 +43,7 @@ export const fetchMyInstructor = ( id ) => async dispatch => {
             first_name: res.data.first_name,
             last_name: res.data.last_name,
         }
-        dispatch(getInstructors(output))
+        dispatch(getMyInstructor(output))
     })
     .catch(err => {
         const info= {
@@ -61,7 +65,7 @@ export const fetchInstructors = () => async dispatch => {
         const output = []
         let temp;
         res.data.forEach(element => {
-            if(element.is_superuser){
+            if(element.is_staff){
                 temp = {
                     first: element.first_name,
                     last: element.last_name,
@@ -94,7 +98,10 @@ export const fetchAccount = ( id ) => async dispatch => {
         dispatch(setAccount(res.data));
     })
     .catch(err => {
-        dispatch(mountAccount(true));
+        if(err.response.status !== 401)
+        {
+            dispatch(mountAccount(true));
+        }
         const info= {
             error:"Failed to find account",
             status:404
@@ -144,8 +151,9 @@ export const updateAccount = ( userData, id, accountData ) => async dispatch => 
                     'Content-Type': 'application/json',
                 }
             })
-            .then(res => {
-                dispatch(setAccount(res.data));
+            .then(res2 => {
+                dispatch(checkUser());
+                dispatch(setAccount(res2.data));
             })
             .catch(err => {
                 const info= {

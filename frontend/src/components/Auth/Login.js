@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { useNavigate, Link } from "react-router-dom";
 import Divider from '@mui/material/Divider';
-import { Card, Row, Col, Form, Alert, Button, Modal } from 'react-bootstrap';
-import { setError, loginUser, setMount } from '../../redux/actionCreators/authActionCreator';
-import Loading from '../Loading/Loading'
+import { Card, Row, Col, Form, Alert, Button, Modal, Container } from 'react-bootstrap';
+import { setError, loginUser } from '../../redux/actionCreators/authActionCreator';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 function isNumeric(str) {
     if (typeof str != "string") return false // we only process strings!  
@@ -21,6 +22,7 @@ function Login() {
     const [data,setData] = useState("");
     const [username,setUsername] = useState("");
     const [password,setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false)
     const dispatch = useDispatch();
     const histroy = useNavigate();
     
@@ -44,12 +46,19 @@ function Login() {
     const getUsername = (e) => {
         e.preventDefault();
         const x = data
+        if(!data){
+            const info= {
+                error:"ID is required",
+                status:999
+            }
+            return dispatch(setError(info));
+        }
         if(x.split(" ").length > 2)
         {
             const temp = data.split(" ");
             const last = temp[temp.length -1].split("+");
             setUsername(last[last.length -1].slice(0,-1));
-            setData(" ");
+            setData("");
             return openConfirm();
         }
         else{
@@ -61,8 +70,7 @@ function Login() {
             //     return dispatch(setError(info));
             // }
             setUsername(data);
-            setData(" ");
-            dispatch(setError(""));
+            setData("");
             return handleShow();
         }
     }
@@ -84,16 +92,13 @@ function Login() {
     }
 
     return (
-        <Card className="p-5" style={{border:0}}>
-                <Row className="px-5 my-6 gap-5">
+        <Container className="p-5" style={{border:0}}>
                     <Divider className="font-weight-bold text-center py-4"><h1>Login</h1></Divider>
                     {error && status === 999 && <Alert variant="danger">{error}</Alert>}
-                    <Col lg={10}  className="mx-auto">
-                    <Alert className="font-weight-bold text-center py-4" variant="dark"><h4>Enter ID or Swipe Mav Card</h4></Alert>
                         <Form onSubmit={getUsername}>
                             <Form.Floating id="username" style={{marginTop: "1rem"}} >
-                                <Form.Control type="text" placeholder="Click me!" value={data} onChange={e=>setData(e.target.value)} required></Form.Control>
-                                <Form.Label>Click Me!</Form.Label>
+                                <Form.Control autoFocus type="text" placeholder="Swipe Card" value={data} onChange={e=>setData(e.target.value)} required></Form.Control>
+                                <Form.Label>Swipe Card</Form.Label>
                             </Form.Floating>
                             <Button className="w-100 mt-4" variant="dark" type="submit">Login</Button>
                         </Form>
@@ -122,9 +127,9 @@ function Login() {
                             <Modal.Body>
                                 <Form onSubmit={handleSubmit}>
                                 {error && status !== 401 && <Alert variant="danger">{error} <Link to="/register" style={{color:"black"}}>Register</Link></Alert>}
-
                                     <Form.Floating id="username" style={{marginTop: "1rem"}} >
-                                        <Form.Control type="password" placeholder="Enter your password" value={password} onChange={e=>setPassword(e.target.value)} required></Form.Control>
+                                        <Form.Control type={showPassword ? "text" : "password"} placeholder="Enter your password" value={password} onChange={e=>setPassword(e.target.value)} required></Form.Control>
+                                        <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} style={{margin:"1em", position:"absolute", top:5, right:0}} className="hoverMe" onClick={() => setShowPassword(!showPassword)}/>
                                         <Form.Label>Enter your password</Form.Label>
                                     </Form.Floating>
                                     <Button className="w-100 mt-4" variant="dark" type="submit">Login</Button>
@@ -136,9 +141,7 @@ function Login() {
                             </Button>
                             </Modal.Footer>
                         </Modal>
-                    </Col>
-                </Row>
-        </Card>
+        </Container>
     );
 }
 

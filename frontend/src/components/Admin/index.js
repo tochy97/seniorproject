@@ -4,6 +4,7 @@ import { checkUser } from "../../redux/actionCreators/authActionCreator";
 import { Route, Routes } from 'react-router-dom';
 import Adder from './Data/Manage';
 import Report    from './Data/Report';
+import Items from "./Data/Items";
 import AddItem from "./Data/Items/AddItem";
 import Checkout from "./Data/Checkout";
 import Dashboard from '../Dashboard/Dashboard';
@@ -28,12 +29,12 @@ function Admin() {
     return (
         <Routes>
             {
-                user.is_superuser
+                user.admin
                 ?
                 <>
-                <Route path="addItem" element={<AddItem/>}/>
+                <Route path="items" element={<Items/>}/>
                 
-                <Route path="add" element={<Adder/>} />
+                <Route path="data" element={<Adder/>} />
                 <Route path="report" element={<Report/>} />
 
                 <Route path="checkout" element={<Checkout/>} />

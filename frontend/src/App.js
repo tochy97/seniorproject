@@ -15,7 +15,7 @@ import Disclaimer from './components/Profile/Disclaimer';
 import { fetchAccount } from './redux/actionCreators/accountActionCreators';
 import Loading from './components/Loading/Loading';
 import NotFound from './components/NotFound/NotFound';
-
+import "./components/styles.css"
 function App() {
   const dispatch = useDispatch();    
  
@@ -35,21 +35,23 @@ function App() {
           dispatch(checkUser());
       }
       else{
-        if(!accountMounted){
+        if(!accountMounted && !user.admin){
+          console.log(user)
           dispatch(fetchAccount(user.id))
         }
         else
         {
-        if(user.is_superuser === true || account){
+        if(user.admin === true || account){
           dispatch(setAllowed(true));
         }
         }
       }
-  }, [isLoggedIn,dispatch]);
+  }, [isLoggedIn,dispatch,user,account,accountMounted]);
 
   return (
     <>
     <NavComp/>
+    <div style={{marginTop:"10em", zIndex:10}}>
     {
       mounted
       ?
@@ -70,15 +72,15 @@ function App() {
             ?
             <Routes>
               {
-                allowed || user.is_superuser
+                allowed || user.admin
                 ?
                   <>
                   <Route exact path="/*" element={<NotFound/>}/>
                     <Route exact path="/" element={<Dashboard/>}/>
                     <Route exact path="profile" element={<Profile/>}/>
-                    <Route exact path="viewitems" element={<ViewItems/>}/>
+                    <Route exact path="inventory" element={<ViewItems/>}/>
                     <Route path="admin/*" element={<Admin/>} />
-                    <Route exact path="confirmaccount" element={<SetAccount/>}/> 
+                    <Route exact path="set_account" element={<SetAccount/>}/> 
                   </>
                 :
                 <Route exact path="/*" element={<Disclaimer/>}/>
@@ -93,6 +95,7 @@ function App() {
       :
         <Loading/>
     }
+    </div>
     </>
   );
 }
