@@ -23,11 +23,15 @@ function SetAccount() {
     const [email,setEmail] = useState("");
     const [cemail,setCemail] = useState("");
     const [mySection,setMySection] = useState("");
-    const [myTeam,setTeam] = useState("");
-    const [myInstructor,setInstructor] = useState("");
+    const [myTeam,setMyTeam] = useState("");
+    const [myInstructor,setMyInstructor] = useState("");
     const [myClass,setMyClass] = useState("");
+    const [myClassInstructor,setMyClassInstructor] = useState("");
     const [sections,setSections] = useState([]);
     const [loaded,setLoaded] = useState(false);
+
+    const [classRadioState, setClassRadioState] = useState(false);
+    const [sectionRadioState, setSectionRadioState] = useState(false);
 
     const dispatch = useDispatch();
     const histroy = useNavigate();
@@ -42,27 +46,27 @@ function SetAccount() {
             classes:state.section.classes,
     }), shallowEqual);
 
+
     useEffect(() => {
-        if(!instructors || Array.isArray(instructors)){
+        if(!instructors || !Array.isArray(instructors)){
             dispatch(fetchInstructors());
             if(!classes){
                 dispatch(fetchClass());
-                if(instructors){
-                }
             }
         }
-        else{
-            console.log(Array.isArray(instructors))
-            if(!loaded)
-            {
-                setInstructor(instructors[0].id);
-                setClassSection(classes[0].number)
-                setLoaded(true);
-            }
-        }
-    }, [instructors,setInstructor,dispatch,myInstructor,setLoaded]);
+    }, [instructors,setMyInstructor,dispatch,myInstructor,setLoaded]);
+
+    const setInstructorFields = (value) => {
+        setClassRadioState(!classRadioState)
+        setMyInstructor(value)
+        setMyClass("")
+    }
+
     const setClassSection = (value) => {
+        setSectionRadioState(!sectionRadioState)
+        setMyClassInstructor(myInstructor)
         setMyClass(value);
+        setMySection("")
         const output = [];
         let curr;
         let currentClass = classes.filter((element) => element.number === parseInt(value))
@@ -76,7 +80,10 @@ function SetAccount() {
             }
         }
         setSections(output)
-        setMySection(output[0])
+    }
+    
+    const setThisSection = (value) => {
+        setMySection(value)
     }
 
     const handleSubmit = (e) => {
@@ -84,9 +91,17 @@ function SetAccount() {
         if(email.localeCompare(cemail) !== 0 ){
             const info= {
                 error:"Emails did not match",
+                status:999
             }
-            dispatch(setError(info));
-            return;
+            return dispatch(setError(info));
+        }
+        if(!myInstructor || !myClass || !mySection){
+            const info= {
+                error:"All fields are required",
+                status:999
+            }
+            return dispatch(setError(info));
+            
         }
         const userData = {
             user:user.id,
@@ -94,7 +109,7 @@ function SetAccount() {
             last_name:last_name,
             email:email,
         }
-        if(!user.is_superuser){
+        if(!user.admin){
             const accountData = {
                 user:user.id,
                 section:mySection,
@@ -109,6 +124,7 @@ function SetAccount() {
         }
         histroy("/profile", {replace:true});
     }
+
 
     return (
         <>
@@ -137,7 +153,7 @@ function SetAccount() {
                                         <Form.Label>Confirm Email</Form.Label>
                                     </Form.Floating>
                                     {
-                                        user.is_superuser
+                                        user.admin
                                         ?
                                             <></>
                                         :
@@ -146,31 +162,52 @@ function SetAccount() {
                                             <Loading/>
                                         :
                                             <>
-                                            <FloatingLabel controlId="floatingSelect" label="Who is your instructor" style={{marginTop: "1rem"}}>
-                                                <Form.Select value={myInstructor} onChange={e=>setInstructor(e.target.value)} id="myInstructor" style={{marginTop: "1rem"}} >
-                                                    {
-                                                        instructors.map((instr) => (
-                                                            <option value={instr.id}>{`${instr.first} ${instr.last}`}</option>
-                                                        ))
-                                                    }
-                                                </Form.Select>
-                                            </FloatingLabel>
                                             <Form.Floating id="myTeam" style={{marginTop: "1rem"}} >
-                                                <Form.Control type="text" placeholder="Team name" value={myTeam} onChange={e=>setTeam(e.target.value)} required></Form.Control>
+                                                <Form.Control type="text" placeholder="Team name" value={myTeam} onChange={e=>setMyTeam(e.target.value)} required></Form.Control>
                                                 <Form.Label>Team name</Form.Label>
                                             </Form.Floating>
+                                            <div style={{marginTop:"2em"}}>
+                                                <Form.Label style={{marginRight:"1em"}}>Select your instructor: </Form.Label>
+                                                {
+                                                    instructors.map((instr, index) => (
+                                                        <Form.Check
+                                                            key={index}
+                                                            value={instr.id}
+                                                            inline
+                                                            onChange={e=>setInstructorFields(e.target.value)}
+                                                            label={`${instr.first} ${instr.last}`}
+                                                            name="myInstructor"
+                                                            type="radio"
+                                                        />
+                                                    ))
+                                                }
+                                            </div>
                                             {
                                                 myInstructor && classes
                                                 ?
-                                                <FloatingLabel controlId="floatingSelect" label="Select your class" style={{marginTop: "1rem"}}>
-                                                    <Form.Select value={myClass} onChange={e=>setClassSection(e.target.value)} id="myClass" style={{marginTop: "1rem"}} >
-                                                        {
-                                                            classes.map((cla) => (
-                                                                <option value={cla.number}>{cla.number}</option>
-                                                            ))
-                                                        }
-                                                    </Form.Select>
-                                                </FloatingLabel>
+                                                <div style={{display:"flex" ,marginTop:"2em"}}>
+                                                    <Form.Label style={{marginRight:"1em"}}>Select your class: </Form.Label>
+                                                    {
+                                                        classes.map((cla, index) => (
+                                                            <div key={index}>
+                                                            {
+                                                                cla.instructor === parseInt(myInstructor)
+                                                                ?
+                                                                <Form.Check
+                                                                    key={classRadioState}
+                                                                    value={cla.number}
+                                                                    inline
+                                                                    onChange={e=>setClassSection(e.target.value)}
+                                                                    label={cla.number}
+                                                                    name="myClass"
+                                                                    type="radio"
+                                                                />
+                                                                :<></>
+                                                            }
+                                                            </div>
+                                                        ))
+                                                    }
+                                                </div>
                                                 :
                                                 !classes
                                                 ?
@@ -179,17 +216,28 @@ function SetAccount() {
                                                 <></>
                                             }
                                             {
-                                                myInstructor && classes && sections && myClass
+                                                myInstructor && classes && sections && myClass && myInstructor === myClassInstructor
                                                 ?
-                                                    <FloatingLabel controlId="floatingSelect" label="Select your section" style={{marginTop: "1rem"}}>
-                                                        <Form.Select value={mySection} onChange={e=>setMySection(e.target.value)} id="mySection" style={{marginTop: "1rem"}} >
+                                                    <div style={{display:"flex" ,marginTop:"2em"}}>
+                                                        <Form.Label style={{marginRight:"1em"}}>Select your section: </Form.Label>
                                                         {
-                                                            sections.map((cla) => (
-                                                                <option value={cla}>00{cla}</option>
+                                                            sections.map((cla, index) => (
+                                                                <div key={index}>
+                                                                    {
+                                                                        <Form.Check
+                                                                            key={sectionRadioState}
+                                                                            value={cla}
+                                                                            inline
+                                                                            onChange={e=>setThisSection(e.target.value)}
+                                                                            label={`00${cla}`}
+                                                                            name="mySection"
+                                                                            type="radio"
+                                                                        />
+                                                                    }
+                                                                </div>
                                                             ))
                                                         }
-                                                        </Form.Select>
-                                                    </FloatingLabel>
+                                                    </div>
                                                 :
                                                 !classes
                                                 ?
@@ -199,7 +247,7 @@ function SetAccount() {
                                             }
                                             </>
                                     }
-                                    <Button className="w-100 mt-4" variant="dark" type="submit">Confirm</Button>
+                                    <Button className="w-100 mt-4" variant="dark" type="submit" disabled={(!myClass || !myInstructor || !myClass || !myTeam || !first_name || !last_name || !email || !cemail) ? true : false}>Confirm</Button>
                                 </Form>
                         }
                     </Card>

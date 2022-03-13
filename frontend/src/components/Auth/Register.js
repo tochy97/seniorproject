@@ -129,12 +129,12 @@ function Register() {
                             {error && status !== 401 && <Alert variant="danger">{error}  <Link to="/login" style={{color:"black"}}>Login</Link></Alert>}
                                 <Form.Floating id="password" style={{marginTop: "1rem"}} >
                                     <Form.Control type={showPassword ? "text" : "password"} placeholder="Enter your password" value={password} onChange={e=>setPassword(e.target.value)} required></Form.Control>
-                                    <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} style={{margin:"1em"}} className="hoverMe" onClick={() => setShowPassword(!showPassword)}/>
+                                    <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} style={{margin:"1em", position:"absolute", top:5, right:0}} className="hoverMe" onClick={() => setShowPassword(!showPassword)}/>
                                     <Form.Label>Enter a password</Form.Label>
                                 </Form.Floating>
                                 <Form.Floating id="cpassword" style={{marginTop: "1rem"}} >
-                                    <Form.Control type={showPassword ? "text" : "password"} placeholder="Confirm password" value={cpassword} onChange={e=>setCpassword(e.target.value)} required></Form.Control>
-                                    <FontAwesomeIcon icon={showCPassword ? faEye : faEyeSlash} style={{margin:"1em"}} className="hoverMe" onClick={() => setShowCPassword(!showCPassword)}/>
+                                    <Form.Control type={showCPassword ? "text" : "password"} placeholder="Confirm password" value={cpassword} onChange={e=>setCpassword(e.target.value)} required></Form.Control>
+                                    <FontAwesomeIcon icon={showCPassword ? faEye : faEyeSlash} style={{margin:"1em", position:"absolute", top:5, right:0}} className="hoverMe" onClick={() => setShowCPassword(!showCPassword)}/>
                                     <Form.Label>Confirm password</Form.Label>
                                 </Form.Floating>
                             <Button className="w-100 mt-4" variant="dark" type="submit">Register</Button>

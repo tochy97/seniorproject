@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { Card, Container, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom"
-import { fetchAccount, fetchMyInstructor } from '../../redux/actionCreators/accountActionCreators';
+import { fetchMyInstructor } from '../../redux/actionCreators/accountActionCreators';
 import Loading from '../Loading/Loading';
 
 function Profile() {
@@ -13,7 +13,7 @@ function Profile() {
             isLoggedIn:state.auth.isLoggedIn, 
             user:state.auth.user,
             account:state.account.data,
-            myInstructor:state.account.instructors
+            myInstructor:state.account.myInstructor
     }), shallowEqual);
     
     useEffect(() => {
@@ -36,7 +36,7 @@ function Profile() {
                         <h1 className='text-center'>Last Name: {user.last_name}</h1>
                         <h1 className='text-center'>Email: {user.email}</h1>
                         {
-                            user.is_superuser
+                            user.admin
                             ?
                             <></>
                             :
@@ -51,12 +51,12 @@ function Profile() {
                                 <h1 className='text-center'>Instructor: {myInstructor.first_name} {myInstructor.last_name}</h1>
                             </>
                         }
-                        <Link to="/confirmaccount" className='m-5 text-center'><Button as="Nav">Change Account Information</Button></Link> 
+                        <Link to="/set_account" className='m-5 text-center'><Button as="Nav">Change Account Information</Button></Link> 
                     </>
                     :
                     !user.first_name
                     ?
-                    <Link to="/confirmaccount" className='m-5 text-center'><Button as="Nav">Confirm Account information</Button></Link>
+                    <Link to="/set_account" className='m-5 text-center'><Button as="Nav">Confirm Account information</Button></Link>
                     :
                     <>
                 </>

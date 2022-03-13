@@ -31,11 +31,17 @@ export const checkUser = ()  => async dispatch=>{
     })
     .then(res => {
         const data = {
-            user:res.data,
+            user:{
+                id:res.data.id,
+                first_name:res.data.first_name,
+                last_name:res.data.last_name,
+                email:res.data.email,
+                admin:res.data.is_staff,
+            },
             status:101
         }
         dispatch(setUser(data));
-        if(!res.data.is_superuser){
+        if(!res.data.is_staff){
             dispatch(fetchAccount(res.data.id));
         }
     })
@@ -59,12 +65,18 @@ export const loginUser = (data) => async dispatch=>{
     })
     .then(res => {
         const data = {
-            user:res.data.user,
+            user:{
+                id:res.data.user.id,
+                first_name:res.data.user.first_name,
+                last_name:res.data.user.last_name,
+                email:res.data.user.email,
+                admin:res.data.user.is_staff,
+            },
             status:res.status
         }
         dispatch(setUser(data));
         localStorage.setItem('token', res.data.token);
-        if(!res.data.user.is_superuser){
+        if(!res.data.user.is_staff){
             dispatch(fetchAccount(res.data.user.id));
         }
         else{

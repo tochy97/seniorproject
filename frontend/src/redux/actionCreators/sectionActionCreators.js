@@ -26,6 +26,7 @@ export const fetchClass = () => async dispatch => {
         }
     })
     .then((res) => {
+        
         dispatch(setClass(res.data));
     })
     .catch(err => {

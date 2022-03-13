@@ -29,12 +29,12 @@ function Admin() {
     return (
         <Routes>
             {
-                user.is_superuser
+                user.admin
                 ?
                 <>
                 <Route path="items" element={<Items/>}/>
                 
-                <Route path="datamanage" element={<Adder/>} />
+                <Route path="data" element={<Adder/>} />
                 <Route path="report" element={<Report/>} />
 
                 <Route path="checkout" element={<Checkout/>} />
