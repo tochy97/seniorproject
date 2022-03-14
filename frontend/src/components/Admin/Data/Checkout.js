@@ -171,28 +171,36 @@ function Checkout(props) {
 
                     uniqState.forEach((val, itemKey) => {
                         let itemUpdateData = new FormData()
-                        itemUpdateData.append("out", ( val['out'] + itemsCounts[val['id']]))
-                        itemUpdateData.append("available", val['available'] - itemsCounts[val['id']] )
-                        
-                        
-                        // console.log(val)
-                        // console.log(val['out'] + itemsCounts[val['id']])
-                        // console.log(val['available'] - itemsCounts[val['id']] )
-                        // console.log('NEXT')
 
-                        axios.patch(`http://127.0.0.1:8000/items/${val['id']}/`, itemUpdateData, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `JWT ${localStorage.getItem('token')}`,
+                        if( val['available'] - itemsCounts[val['id']]  >= 0 ){
+
+                            itemUpdateData.append("out", ( val['out'] + itemsCounts[val['id']]))
+                            itemUpdateData.append("available", val['available'] - itemsCounts[val['id']] )
+                            
+                            // console.log(val)
+                            // console.log(val['out'] + itemsCounts[val['id']])
+                            // console.log(val['available'] - itemsCounts[val['id']] )
+                            // console.log('NEXT')
+
+                            axios.patch(`http://127.0.0.1:8000/items/${val['id']}/`, itemUpdateData, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: `JWT ${localStorage.getItem('token')}`,
+                            }
+                            }).then(res => {
+                                handleReset()
+                                dispatch(singleFetch())
+                            })
+                            .catch(err => console.log(err))
                         }
-                        }).then(res => {
+                        else{
+                            console.log("OUT OF STOCK")
                             handleReset()
-                            dispatch(singleFetch())
-                        })
-                        .catch(err => console.log(err))
+                        }
 
                     })
                     handleReset()
+                
                 })
                     .catch(err => console.log(err))
         }
