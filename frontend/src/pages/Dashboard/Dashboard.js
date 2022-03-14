@@ -62,7 +62,7 @@ function Dashboard() {
                 </a>
             ))}
             {
-                user.is_staff && adminElements.map( (element, idx) => (
+                user.admin && adminElements.map( (element, idx) => (
                     <a className='link' key={idx} href={ element.link }>
                         <Card style={{ border: 'none', height: '200px' }} >
                             <FontAwesomeIcon className='text-center' icon={element.icon} size='8x' />

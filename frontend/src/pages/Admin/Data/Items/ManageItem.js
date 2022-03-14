@@ -10,7 +10,7 @@ import { Row } from 'react-bootstrap';
 
 import axios from 'axios';
 import { setLoading } from '../../../../redux/actionCreators/itemActionCreators';
-import Loading from '../../../Loading/Loading';
+import Loading from '../../../../components/Loading/Loading';
 
 function ManageItem() {
 
