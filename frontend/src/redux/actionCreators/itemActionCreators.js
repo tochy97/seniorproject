@@ -95,6 +95,28 @@ export const fetchItems = () => dispatch => {
     })
 }
 
+export const singleFetch = () => dispatch => {
+    axios.get("http://127.0.0.1:8000/items/", {
+        headers: {
+            Authorization: `JWT ${localStorage.getItem('token')}`,
+          }
+    })
+    .then(res => {
+        dispatch(setItem(res.data));
+    })
+    .catch(err => {
+        if(err.response.status === 401)
+        {
+            const info= {
+                error:"Session expired. Refresh Page",
+                status:err.response.status
+            }
+            dispatch(setError(info))
+            dispatch(logoutUser());
+        }
+    })
+}
+
 export const removeItem = ( id ) => dispatch => {
     
 }
