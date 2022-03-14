@@ -3,7 +3,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 
 import Loading from '../../Loading/Loading';
 import { setLoading } from '../../../redux/actionCreators/itemActionCreators';
-import { fetchItems } from '../../../redux/actionCreators/itemActionCreators';
+import { fetchItems, singleFetch } from '../../../redux/actionCreators/itemActionCreators';
 import { fetchUsers, logoutUser } from '../../../redux/actionCreators/authActionCreator';
 import { setError } from '../../../redux/actionCreators/authActionCreator';
 import { fetchAccount } from '../../../redux/actionCreators/accountActionCreators';
@@ -33,6 +33,7 @@ function Checkout(props) {
     const [SessionStatus, setSessionStatus ] = useState(false);
     const [checkoutTo, setCheckoutTo] = useState([]);
     const [currentBarcode, setCurrentBarcode] = useState("");
+    const [go, setGo] = useState(false)
 
     const [startCheckout, setStartCheckout] = useState(true);
     const closeStartCheckout = () => setStartCheckout(false);
@@ -186,6 +187,7 @@ function Checkout(props) {
                         }
                         }).then(res => {
                             handleReset()
+                            dispatch(singleFetch())
                         })
                         .catch(err => console.log(err))
 
@@ -245,7 +247,7 @@ function Checkout(props) {
             const temp = [...new Set(gList)]
             setItemsBucket(temp)
         }
-    }, [items, setItemsBucket])
+    }, [items,setItemsBucket])
 
     return (
         <>
@@ -358,10 +360,10 @@ function Checkout(props) {
                                                     <Col>
                                                         <Container className='mt-2'>
                                                             {
-                                                                items.map((it_now) => (
+                                                                items.map((it_now, idx) => (
                                                                     it_now.id === opt
                                                                     ?
-                                                                        <div>
+                                                                        <div key={idx+'base'}>
                                                                             {index+1}{'.\t'}{it_now.name}
                                                                         </div>
                                                                     :
