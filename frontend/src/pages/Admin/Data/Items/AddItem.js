@@ -29,14 +29,19 @@ function AddItem() {
 
     const [name,setName] = useState("");
     const [description,setDescription] = useState("");
+    const [location, setLocation] = useState("Select a Location ...");
+    const [newLocation, setNewLocation] = useState('');
+
     const [type,setType] = useState("Select a Type ...");
     const [newType, setNewType] = useState('');
+
     const [serial_number,setSerial_number] = useState("");
     const [avail,setAvail] = useState("");
     const [out,setOut] = useState("");
     const [total,setTotal] = useState("");
 
-    const [error, setError] = useState("");
+    const [errorType, setErrorType] = useState("");
+    const [errorLocation, setErrorLocation] = useState("");
     const [initializer, setInitializer] = useState(0);
 
     const [activeGenBar, setGenBarCode] = useState(false);
@@ -115,15 +120,19 @@ function AddItem() {
         e.preventDefault();
         e.stopPropagation();
 
-        onPrintBarcode()
+        console.log(location)
+        console.log(type)
 
-        if (type === 'Select a Type ...'){
+        if (type === 'Select a Type ...' || location === 'Select a Location ...'){
             // console.log(type)
-            setError("Please Select a Type")
+            setErrorType("Please Select a Type")
+            setErrorLocation("Please Select a Location")
             setInitializer(1)
         }
         else{
-            
+
+            onPrintBarcode()
+
             let data = {
                 'name' : name,
                 'type' : type,
@@ -170,6 +179,7 @@ function AddItem() {
                 setAvail("")
                 setOut("")
                 setTotal("")    
+                setInitializer(0)
 
                 dispatch(singleFetch())
             })
@@ -230,9 +240,32 @@ function AddItem() {
                                 <Form.Control as="textarea" placeholder="Enter Description ..." value={description} onChange={e=>setDescription(e.target.value)} required rows={3} />
                             </Form.Group>
                         </Row>
-                        
+
                         <Row>
-                            <Form.Group className="pt-4 pb-1 px-4" controlId="formSelectType">
+
+                        
+                            <Form.Group className="pt-3 pb-1 px-4" controlId="formSelectLocation">
+                                <Form.Label>Location</Form.Label>
+                                <Form.Select value={location} onChange={e=>setLocation(e.target.value)} isInvalid={ location === 'Select a Location ...' && initializer ? 1 : 0 }>
+                                    <option>Select a Location ...</option>
+                                    <option>Add New Location</option>
+                                </Form.Select>
+                                <Form.Control.Feedback type="invalid">{errorLocation}</Form.Control.Feedback>
+                            </Form.Group >
+                            {
+                                location === 'Add New Location'
+                                ?
+                                    <InputGroup size="sm" className="pt-0 pb-3 px-4">
+                                        <InputGroup.Text id="inputGroup-sizing-sm">New Location</InputGroup.Text>
+                                        <FormControl placeholder='Enter New Location' aria-label="Small" value={newLocation} onChange={e=>setNewLocation(e.target.value)} aria-describedby="inputGroup-sizing-sm" required/>
+                                    </InputGroup>
+                                :
+                                <></>
+                            }
+                        </Row>
+
+                        <Row>
+                            <Form.Group className="pt-3 pb-1 px-4" controlId="formSelectType">
                                 <Form.Label>Type</Form.Label>
                                 <Form.Select value={type} onChange={e=>setType(e.target.value)} isInvalid={ type === 'Select a Type ...' && initializer ? 1 : 0 }>
                                 <option>Select a Type ...</option>
@@ -244,7 +277,7 @@ function AddItem() {
                                 } 
                                         
                                 </Form.Select>
-                                <Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>
+                                <Form.Control.Feedback type="invalid">{errorType}</Form.Control.Feedback>
 
                                 </Form.Group >
                                 {
