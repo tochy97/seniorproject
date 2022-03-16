@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { checkUser } from "../../../../redux/actionCreators/authActionCreator";
-import { fetchItems, setLoading } from '../../../../redux/actionCreators/itemActionCreators';
+import { fetchItems, setLoading, singleFetch } from '../../../../redux/actionCreators/itemActionCreators';
 import { createItem } from '../../../../redux/actionCreators/itemActionCreators';
 import axios from 'axios';
 
@@ -19,7 +19,6 @@ import Modal from 'react-bootstrap/Modal';
 import { Container } from '@mui/material';
 import ModalHeader from 'react-bootstrap/esm/ModalHeader';
 
-import { useBarcode } from 'react-barcodes';
 import Barcode from 'react-barcode';
 
 function AddItem() {
@@ -77,8 +76,6 @@ function AddItem() {
             let gList = items.map((it) => it.type)
             const temp = [...new Set(gList)]
             setFilt(temp)
-
-
         }
     }, [items, setFilt])
 
@@ -97,18 +94,17 @@ function AddItem() {
       }
 
     const onPrintBarcode = () => {
-    var container = document.getElementById("div-svg");
-    var mySVG = document.getElementById("barcode-canvas");
-    
-    var width  = window.innerWidth
-    var height = window.innerHeight
-    
-    var printWindow = window.open('', 'PrintMap','width=' + width + ',height=' + height);
-    printWindow.document.writeln(container.innerHTML);
-    
-    
-    printWindow.document.close();
-    printWindow.print();
+
+        var container = document.getElementById("cur-barcode");
+        
+        var width  = window.innerWidth
+        var height = window.innerHeight
+        
+        var printWindow = window.open('', 'PrintMap','width=' + width + ',height=' + height);
+        printWindow.document.writeln(container.innerHTML);
+        
+        printWindow.document.close();
+        printWindow.print();
     };
 
     function getNextSerialNumber(){
@@ -175,7 +171,7 @@ function AddItem() {
                 setOut("")
                 setTotal("")    
 
-                dispatch(setLoading(true))
+                dispatch(singleFetch())
             })
             .catch(err => console.log(err))
         
@@ -256,7 +252,7 @@ function AddItem() {
                                     ?
                                         <InputGroup size="sm" className="pt-0 pb-3 px-4">
                                             <InputGroup.Text id="inputGroup-sizing-sm">New Type</InputGroup.Text>
-                                            <FormControl placeholder='Enter New Type' aria-label="Small" value={newType} onChange={e=>setNewType(e.target.value)} aria-describedby="inputGroup-sizing-sm" />
+                                            <FormControl placeholder='Enter New Type' aria-label="Small" value={newType} onChange={e=>setNewType(e.target.value)} aria-describedby="inputGroup-sizing-sm" required/>
                                         </InputGroup>
                                     :
                                     <></>
@@ -269,7 +265,7 @@ function AddItem() {
                                 ?   
 
                                 <Col>
-                                    <div id='div-svg'>
+                                    <div id='cur-barcode'>
                                         {/* <svg id="barcode-canvas" ref={inputRef} /> */}
                                     </div>
                                     {/* // <InputGroup className="py-3 px-4" >
@@ -284,7 +280,7 @@ function AddItem() {
                                             <Button onClick={()=>ActivateBar()}variant="success" size="md">Generate Barcode Serial Number</Button>
                                         </div> */}
                                     <Col md={{ span: 6, offset: 3 }} className="d-flex justify-content-center pt-4 pb-2">
-                                        <div id='div-svg'>
+                                        <div id='cur-barcode'>
                                             {/* <svg classname='justify-center' id="barcode-canvas" ref={inputRef} /> */}
                                             <Barcode value={getNextSerialNumber()} background= '#ffffff' height= '60' width= '1.2' fontSize='18'></Barcode>
                                         </div>
