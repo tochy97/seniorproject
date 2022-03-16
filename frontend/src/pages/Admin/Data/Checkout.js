@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 
-import Loading from '../../Loading/Loading';
 import { setLoading } from '../../../redux/actionCreators/itemActionCreators';
 import { fetchItems, singleFetch } from '../../../redux/actionCreators/itemActionCreators';
 import { fetchUsers, logoutUser } from '../../../redux/actionCreators/authActionCreator';
