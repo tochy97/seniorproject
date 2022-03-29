@@ -455,7 +455,7 @@ function ManageItem() {
 
             <thead>
                 <tr>
-                    <th>Select</th>
+                    <th></th>
                     <th>Item Name</th>
                     <th>Item Type</th>
                     <th>Item Description</th>
@@ -478,7 +478,7 @@ function ManageItem() {
                                     <tr key={index} >
                                         <td>
                                             <div className="d-grid gap-2">
-                                                <DropdownButton  size="sm" id={"dropdown-"+index} title={"dropdown-"+it.id}>
+                                                <DropdownButton  size="sm" id={"dropdown-"+index} title={"Action"}>
                                                     
                                                     <Dropdown.Item eventKey={"dropdown-"+index} onClick={() => editItemState(it)} >
                                                         Edit
