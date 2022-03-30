@@ -175,6 +175,13 @@ function ManageItem() {
                 console.log(newType)
             }
 
+            if (newNewLocation !== '' && newLocation !== 'Select a Location ...'){
+                formData.append('locations', newNewLocation);
+            }
+            else{
+                formData.append('locations', newLocation);
+            }
+
             formData.append('description', newDescription);
             console.log(newDescription)
             formData.append('total', newTotal);
