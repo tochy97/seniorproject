@@ -95,16 +95,16 @@ function AddItem() {
 
     const onPrintBarcode = () => {
 
-        var container = document.getElementById("cur-barcode");
+        let svg_div = document.getElementById("cur-barcode")
         
-        var width  = window.innerWidth
-        var height = window.innerHeight
+        let width  = window.innerWidth / 2
+        let height = window.innerHeight / 2
         
-        var printWindow = window.open('', 'PrintMap','width=' + width + ',height=' + height);
-        printWindow.document.writeln(container.innerHTML);
+        let popUpWindow = window.open('', 'PrintMap','width=' + width + ',height=' + height)
+        popUpWindow.document.writeln(svg_div.innerHTML)
         
-        printWindow.document.close();
-        printWindow.print();
+        popUpWindow.document.close()
+        popUpWindow.print()
     };
 
     function getNextSerialNumber(){
