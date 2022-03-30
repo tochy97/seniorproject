@@ -401,7 +401,6 @@ function ManageItem() {
                     <Row>
                         <Form.Group className='pt-0 px-4 ' controlId="formItemDescription">
                             <Form.Label>Description</Form.Label>
-                            {/* <Form.Control type="Text" placeholder="Enter Description" value={description} onChange={e=>setDescription(e.target.value)} required/> */}
                             <Form.Control as="textarea" defaultValue={currentCell.description} onChange={e => setNewDescription(e.target.value)} required rows={3} />
                         </Form.Group>
                     </Row>
@@ -459,7 +458,7 @@ function ManageItem() {
                     <th>Item Name</th>
                     <th>Item Type</th>
                     <th>Location</th>
-                    <th>Item Description</th>
+                    {/* <th>Item Description</th> */}
                     <th>Available</th>
                     <th>Out</th>
                     <th>Total</th>
@@ -493,7 +492,7 @@ function ManageItem() {
                                         <td>{it.name}</td> 
                                         <td>{it.type}</td>
                                         <td>{it.locations}</td>
-                                        <td>{it.description}</td> 
+                                        {/* <td>{it.description}</td>  */}
                                         <td>{it.available}</td>
                                         <td>{it.out}</td>
                                         <td>{it.total}</td>
