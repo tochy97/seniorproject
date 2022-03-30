@@ -25,6 +25,7 @@ function AddItem() {
 
     const dispatch = useDispatch();
     const [filt, setFilt] = useState([]);
+    const [filtLocation, setFiltLoc] = useState([])
     const [showModal, setModal] = useState(false)
 
     const [name,setName] = useState("");
@@ -43,16 +44,6 @@ function AddItem() {
     const [errorType, setErrorType] = useState("");
     const [errorLocation, setErrorLocation] = useState("");
     const [initializer, setInitializer] = useState(0);
-
-    const [activeGenBar, setGenBarCode] = useState(false);
-
-    function ActivateBar(){
-        setGenBarCode(true);
-
-        // Now I need to generate a code based on that and display its content
-        
-    }
-    const deactivateBar = () => setGenBarCode(false);
     
     const { isLoggedIn, username, isLoading, items, user, } = useSelector(
         (state) =>({
@@ -81,6 +72,10 @@ function AddItem() {
             let gList = items.map((it) => it.type)
             const temp = [...new Set(gList)]
             setFilt(temp)
+
+            let gListLoc = items.map((it) => it.locations)
+            const tempLoc = [...new Set(gListLoc)]
+            setFiltLoc(tempLoc)
         }
     }, [items, setFilt])
 
@@ -115,6 +110,20 @@ function AddItem() {
     function getNextSerialNumber(){
         return serial_number
     } 
+
+    function resetForm(){
+        setName("")
+        setDescription("")
+        setType("Select a Type ...")
+        setNewType('')
+        setLocation("Select a Location ...")
+        setNewLocation('')
+        setSerial_number("")
+        setAvail("")
+        setOut("")
+        setTotal("")    
+        setInitializer(0)
+    }
     
     function handleSubmit(e){
         e.preventDefault();
@@ -133,18 +142,6 @@ function AddItem() {
 
             onPrintBarcode()
 
-            let data = {
-                'name' : name,
-                'type' : type,
-                'description' : description,
-                'total' : total,
-                'out': out,
-                'available': avail,
-                'ser_no': serial_number
-            }
-
-            // console.log(data)
-
             let formData = new FormData()
 
             formData.append('name', name);
@@ -155,6 +152,14 @@ function AddItem() {
             else{
                 formData.append('type', type);
             }
+
+            if (newLocation !== '' && location !== 'Select a Location ...'){
+                formData.append('locations', newLocation);
+            }
+            else{
+                formData.append('locations', location);
+            }
+
             formData.append('description', description);
             formData.append('total', total);
             formData.append('out', out);
@@ -175,6 +180,8 @@ function AddItem() {
                 setDescription("")
                 setType("Select a Type ...")
                 setNewType('')
+                setLocation("Select a Location ...")
+                setNewLocation('')
                 setSerial_number("")
                 setAvail("")
                 setOut("")
@@ -211,21 +218,21 @@ function AddItem() {
                                     <Col className='py-3 px-4'>
                                         <Form.Group className="mb-3" controlId="formItemAvail">
                                         <Form.Label>Available</Form.Label>
-                                        <Form.Control type="Text" placeholder="0" value={avail} onChange={e=>setAvail(e.target.value)} required/>
+                                        <Form.Control type="number" placeholder="0" value={avail} onChange={e=>setAvail(e.target.value)} required/>
                                         </Form.Group>
                                     </Col>
 
                                     <Col className='py-3 px-0'>
                                         <Form.Group className="mb-3" controlId="formItemOut">
                                             <Form.Label>Out</Form.Label>
-                                            <Form.Control type="Text" placeholder="0" value={out} onChange={e=>setOut(e.target.value)} required/>
+                                            <Form.Control type="number" placeholder="0" value={out} onChange={e=>setOut(e.target.value)} required/>
                                         </Form.Group>
                                     </Col>
                                     
                                     <Col className='py-3 px-4'>
                                         <Form.Group className="mb-3" controlId="formItemTotal">
                                             <Form.Label>Total</Form.Label>
-                                            <Form.Control type="Text" placeholder="0" value={total} onChange={e=>setTotal(e.target.value)} required/>
+                                            <Form.Control type="number" placeholder="0" value={total} onChange={e=>setTotal(e.target.value)} required/>
                                         </Form.Group>
                                     </Col>
                                 </Row>
@@ -243,12 +250,17 @@ function AddItem() {
 
                         <Row>
 
-                        
                             <Form.Group className="pt-3 pb-1 px-4" controlId="formSelectLocation">
                                 <Form.Label>Location</Form.Label>
                                 <Form.Select value={location} onChange={e=>setLocation(e.target.value)} isInvalid={ location === 'Select a Location ...' && initializer ? 1 : 0 }>
                                     <option>Select a Location ...</option>
                                     <option>Add New Location</option>
+                                    {
+                                        filtLocation.map((loc, index) =>(
+                                            <option key={loc}>{loc}</option>
+                                        ))
+                                    } 
+
                                 </Form.Select>
                                 <Form.Control.Feedback type="invalid">{errorLocation}</Form.Control.Feedback>
                             </Form.Group >
@@ -293,38 +305,20 @@ function AddItem() {
                         </Row>
                             
                         <Row>
-                            {
-                                activeGenBar 
-                                ?   
-
-                                <Col>
+                            
+                            <Col>
+                                <Col md={{ span: 6, offset: 3 }} className="d-flex justify-content-center pt-4 pb-2">
                                     <div id='cur-barcode'>
-                                        {/* <svg id="barcode-canvas" ref={inputRef} /> */}
+                                        <Barcode value={getNextSerialNumber()} background= '#ffffff' height= '60' width= '1.2' fontSize='18'></Barcode>
                                     </div>
-                                    {/* // <InputGroup className="py-3 px-4" >
-                                    //     <InputGroup.Text id="inputGroup-sizing-default" >Serial Number</InputGroup.Text>
-                                    //     <FormControl aria-label="Serial Number" aria-describedby="inputGroup-sizing-default" placeholder="Enter Serial Number e.g {UTA-0000000001}" value={serial_number} onChange={e=>setSerial_number(e.target.value)} required/>
-                                    // </InputGroup> */}
                                 </Col>
-                                :
-                                <Col>
-                                        {/* Saving for later if custon barcodes */}
-                                        {/* <div className="d-grid px-3 pt-3">
-                                            <Button onClick={()=>ActivateBar()}variant="success" size="md">Generate Barcode Serial Number</Button>
-                                        </div> */}
-                                    <Col md={{ span: 6, offset: 3 }} className="d-flex justify-content-center pt-4 pb-2">
-                                        <div id='cur-barcode'>
-                                            {/* <svg classname='justify-center' id="barcode-canvas" ref={inputRef} /> */}
-                                            <Barcode value={getNextSerialNumber()} background= '#ffffff' height= '60' width= '1.2' fontSize='18'></Barcode>
-                                        </div>
-                                    </Col>
-                                </Col>
-                            }
+                            </Col>
+                            
                         </Row>
                         
                         <Row>
                             <div className ="Container d-flex justify-content-between py-3 px-4">
-                                <Button className="btn btn-primary w-auto" href="/dashboard">Back</Button> 
+                                <Button className="btn btn-primary w-auto" onClick={()=>resetForm()}>Reset</Button> 
                                 <Button className="btn btn-primary w-auto" type="submit">Submit</Button>
                             </div>
                         </Row>
