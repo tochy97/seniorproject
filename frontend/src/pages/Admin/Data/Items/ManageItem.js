@@ -458,6 +458,7 @@ function ManageItem() {
                     <th></th>
                     <th>Item Name</th>
                     <th>Item Type</th>
+                    <th>Location</th>
                     <th>Item Description</th>
                     <th>Available</th>
                     <th>Out</th>
@@ -491,6 +492,7 @@ function ManageItem() {
                                         </td>
                                         <td>{it.name}</td> 
                                         <td>{it.type}</td>
+                                        <td>{it.locations}</td>
                                         <td>{it.description}</td> 
                                         <td>{it.available}</td>
                                         <td>{it.out}</td>
@@ -507,7 +509,7 @@ function ManageItem() {
             </tbody>
             <tfoot>
                 <tr>
-                    <td colSpan={7}>
+                    <td colSpan={9}>
                     <Pagination className="d-flex justify-content-center">
                         <Pagination.First disabled={currentPage === 1} onClick={firstPage}/>
                         <Pagination.Prev disabled={currentPage === 1} onClick={prevPage}/>
