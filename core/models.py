@@ -13,6 +13,7 @@ class Item(models.Model):
     name = models.CharField(max_length=50)
     id = models.AutoField(primary_key=True)
     type = models.CharField(max_length=50)
+    locations = models.CharField(max_length=25,blank=True, null=True)
     description = models.CharField(max_length=255)
     total = models.IntegerField(default=0)
     out = models.IntegerField(default=0)
