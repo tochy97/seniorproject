@@ -122,18 +122,30 @@ function Checkout(props) {
     function handleCheckout(){
 
         if (SessionStatus === true && currentCart.length !== 0){
-        
+            
+            console.log("Entering handle Checkout")
             console.log(currentCart)
             console.log(account)
 
             let formData = new FormData()
-
             let tempBucket = []
             let itemsCounts = {}
+
+            if (((account.items).length) > 0){
+                for (var i = 0; i < (account.items).length; i++) {
+                    formData.append('items', account.items[i])
+                    // console.log(account.items[i])
+                    itemsCounts[account.items[i]] = account.itemsCount[account.items[i]]
+                }
+            }
+
+            
             for (var i = 0; i < currentCart.length; i++) {
                 tempBucket.push(currentCart[i].id)
-                formData.append('items', currentCart[i].id)
 
+                formData.append('items', currentCart[i].id)
+                console.log(currentCart[i].id)
+  
                 if (currentCart[i].id in itemsCounts){
                     itemsCounts[currentCart[i].id] += 1
                 }
@@ -142,14 +154,9 @@ function Checkout(props) {
                 }
                 // console.log(currentCart[i].id)
             }
+            
             console.log(itemsCounts)
 
-            // formData.append('instructor', account.instructor)
-
-            // formData.append('myClass', account.myClass)
-            // formData.append('section', account.section)
-            // formData.append('team', account.team)
-            // formData.append('user', account.user)
             formData.append('itemsCount', JSON.stringify(itemsCounts))
 
             axios.patch(`http://127.0.0.1:8000/accounts/${account.user}/`, formData, {
@@ -180,17 +187,23 @@ function Checkout(props) {
                             // console.log(val['out'] + itemsCounts[val['id']])
                             // console.log(val['available'] - itemsCounts[val['id']] )
                             // console.log('NEXT')
+                            // console.log('What im looking at')
+                            // console.log((account))
+                            // console.log(account.items)
 
+                            
                             axios.patch(`http://127.0.0.1:8000/items/${val['id']}/`, itemUpdateData, {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                Authorization: `JWT ${localStorage.getItem('token')}`,
-                            }
-                            }).then(res => {
-                                handleReset()
-                                dispatch(singleFetch())
-                            })
-                            .catch(err => console.log(err))
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    Authorization: `JWT ${localStorage.getItem('token')}`,
+                                }
+                                }).then(res => {
+                                    handleReset()
+                                    dispatch(singleFetch())
+                                })
+                                .catch(err => console.log(err))
+                            
+                            
                         }
                         else{
                             console.log("OUT OF STOCK")
