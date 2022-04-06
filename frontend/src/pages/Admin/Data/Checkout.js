@@ -45,9 +45,9 @@ function Checkout(props) {
     const closeConfirmation = () => setShouldIDisplayConfirmation(false)
 
     function checkScannedCard(){
-
         for (var i = 0; i < bucket.length; i++) {
             if (currentUser === bucket[i].username){
+                
                 dispatch(fetchAccount(bucket[i].id))
                 setSessionStatus(true)
                 setCheckoutTo(bucket[i])
@@ -60,12 +60,20 @@ function Checkout(props) {
     function checkBarcode(){
         for (var i = 0; i < itemsBucket.length; i++) {
             if (currentBarcode === itemsBucket[i].ser_no){
-                // console.log(itemsBucket[i])
-                currentCart.push(itemsBucket[i])
-                if (!(uniqState.includes(itemsBucket[i]))){
-                    uniqState.push(itemsBucket[i])
+                // if(itemsBucket[i].available > 0){
+                if(1){
+                    console.log("Available =", itemsBucket[i].available)
+                    // console.log(itemsBucket[i])
+                    currentCart.push(itemsBucket[i])
+                    if (!(uniqState.includes(itemsBucket[i]))){
+                        uniqState.push(itemsBucket[i])
+                    }
+                    setCurrentBarcode("")
                 }
-                setCurrentBarcode("")
+                else{
+                    console.log('Hold your horses !! Something went wrong that item shouldn\'t be available')
+                }
+                
             }
         }
         // console.log(currentCart)
@@ -130,6 +138,7 @@ function Checkout(props) {
             let formData = new FormData()
             let tempBucket = []
             let itemsCounts = {}
+            let curItemsCounts = {}
 
             if (((account.items).length) > 0){
                 for (var i = 0; i < (account.items).length; i++) {
@@ -153,68 +162,101 @@ function Checkout(props) {
                     itemsCounts[currentCart[i].id] = 1
                 }
                 // console.log(currentCart[i].id)
+
+                if (currentCart[i].id in curItemsCounts){
+                    curItemsCounts[currentCart[i].id] += 1
+                }
+                else{
+                    curItemsCounts[currentCart[i].id] = 1
+                }
             }
             
             console.log(itemsCounts)
+            console.log(curItemsCounts)
+            let cond=0
+            uniqState.forEach((val, itemKey) => {
+                console.log(val)
+                if( val['available'] - curItemsCounts[val['id']]  >= 0 ){
+                    console.log('Good')
+                    cond=1
+                }
+                else{
+                    console.log('NOT GOOD')
+                    cond=0
+                }
+            })
 
-            formData.append('itemsCount', JSON.stringify(itemsCounts))
+            if(cond){
 
-            axios.patch(`http://127.0.0.1:8000/accounts/${account.user}/`, formData, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `JWT ${localStorage.getItem('token')}`,
-                    }
-                })
-                .then(res => {
-                    // Now I need to update the item counts
-                    
-                    setShouldIDisplayConfirmation(true)
-                    console.log(currentCart)
-                    console.log(uniqState)
-                    console.log(itemsCounts)
+                formData.append('itemsCount', JSON.stringify(itemsCounts))
 
-                    console.log('Look BELLOW')
-
-                    uniqState.forEach((val, itemKey) => {
-                        let itemUpdateData = new FormData()
-
-                        if( val['available'] - itemsCounts[val['id']]  >= 0 ){
-
-                            itemUpdateData.append("out", ( val['out'] + itemsCounts[val['id']]))
-                            itemUpdateData.append("available", val['available'] - itemsCounts[val['id']] )
-                            
-                            // console.log(val)
-                            // console.log(val['out'] + itemsCounts[val['id']])
-                            // console.log(val['available'] - itemsCounts[val['id']] )
-                            // console.log('NEXT')
-                            // console.log('What im looking at')
-                            // console.log((account))
-                            // console.log(account.items)
-
-                            
-                            axios.patch(`http://127.0.0.1:8000/items/${val['id']}/`, itemUpdateData, {
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    Authorization: `JWT ${localStorage.getItem('token')}`,
-                                }
-                                }).then(res => {
-                                    handleReset()
-                                    dispatch(singleFetch())
-                                })
-                                .catch(err => console.log(err))
-                            
-                            
+                axios.patch(`http://127.0.0.1:8000/accounts/${account.user}/`, formData, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `JWT ${localStorage.getItem('token')}`,
                         }
-                        else{
-                            console.log("OUT OF STOCK")
-                            handleReset()
-                        }
-
                     })
-                    handleReset()
-                
-                })
-                    .catch(err => console.log(err))
+                    .then(res => {
+
+                        // Add the timestamp
+                        for (var i = 0; i < currentCart.length; i++) {
+
+                            let timestamp = new FormData()
+
+                            timestamp.append('user', account.user)
+                            timestamp.append('item_id', currentCart[i].id)
+
+                            axios.post(`http://127.0.0.1:8000/timestamps/`, timestamp, {
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        Authorization: `JWT ${localStorage.getItem('token')}`,
+                                    }
+                                    }).catch(err => console.log(err))
+
+                        }
+
+                        // Now I need to update the item counts
+                        
+                        setShouldIDisplayConfirmation(true)
+                        console.log(currentCart)
+                        console.log(uniqState)
+                        console.log(itemsCounts)
+
+                        console.log('Look BELLOW')
+
+                        uniqState.forEach((val, itemKey) => {
+                            let itemUpdateData = new FormData()
+
+                            if( val['available'] - curItemsCounts[val['id']]  >= 0 ){
+
+                                itemUpdateData.append("out", ( val['out'] + curItemsCounts[val['id']]))
+                                itemUpdateData.append("available", val['available'] - curItemsCounts[val['id']] )
+                                
+                                
+                                axios.patch(`http://127.0.0.1:8000/items/${val['id']}/`, itemUpdateData, {
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        Authorization: `JWT ${localStorage.getItem('token')}`,
+                                    }
+                                    }).then(res => {
+                                        handleReset()
+                                        dispatch(singleFetch())
+                                    })
+                                    .catch(err => console.log(err))
+                                
+                                
+                            }
+                            else{
+                                console.log("OUT OF STOCK")
+                                handleReset()
+                            }
+
+                        })
+                        handleReset()
+                    
+                    })
+                        .catch(err => console.log(err))
+            }
         }
         else{
             prompEnterUser(true)
@@ -268,6 +310,8 @@ function Checkout(props) {
             setItemsBucket(temp)
         }
     }, [items,setItemsBucket])
+
+    
 
     return (
         <>
