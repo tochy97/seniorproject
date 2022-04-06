@@ -39,9 +39,11 @@ function NavComp() {
                                 <>
                                     <Nav.Link href="/admin/checkout" className="navHover mx-4">Checkout</Nav.Link>
                                     <Divider className="my-3"/>
+                                    <Nav.Link href="/admin/return" className="navHover mx-4">Return</Nav.Link>
+                                    <Divider className="my-3"/>
                                     <Nav.Link href="/admin/report" className="navHover mx-4">Report</Nav.Link>
                                     <Divider className="my-3"/>
-                                    <Nav.Link href="/admin/datamanage" className="navHover mx-4">Data Management</Nav.Link>
+                                    <Nav.Link href="/admin/data" className="navHover mx-4">Data Management</Nav.Link>
                                     <Divider className="my-3"/>
                                 </>
                             }

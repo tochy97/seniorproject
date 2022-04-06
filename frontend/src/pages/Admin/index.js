@@ -7,7 +7,9 @@ import Report    from './Data/Report';
 import Items from "./Data/Items";
 import AddItem from "./Data/Items/AddItem";
 import Checkout from "./Data/Checkout";
+import Return from './Data/Return';
 import Dashboard from '../Dashboard/Dashboard';
+
 import { fetchClass } from '../../redux/actionCreators/sectionActionCreators';
 
 function Admin() {
@@ -38,6 +40,7 @@ function Admin() {
                 <Route path="report" element={<Report/>} />
 
                 <Route path="checkout" element={<Checkout/>} />
+                <Route path="return" element={<Return/>} />
 
                 <Route path="/*" element={<Dashboard/>} /> 
                 </>
