@@ -95,7 +95,7 @@ function SetAccount() {
             }
             return dispatch(setError(info));
         }
-        if(!myInstructor || !myClass || !mySection){
+        if( !user.admin && (!myClass || !myInstructor || !myTeam )){
             const info= {
                 error:"All fields are required",
                 status:999
@@ -247,7 +247,7 @@ function SetAccount() {
                                             }
                                             </>
                                     }
-                                    <Button className="w-100 mt-4" variant="dark" type="submit" disabled={(!myClass || !myInstructor || !myClass || !myTeam || !first_name || !last_name || !email || !cemail) ? true : false}>Confirm</Button>
+                                    <Button className="w-100 mt-4" variant="dark" type="submit" disabled={( ( !user.admin && (!myClass || !myInstructor || !myTeam )) || !first_name || !last_name || !email || !cemail) ? true : false}>Confirm</Button>
                                 </Form>
                         }
                     </Card>
