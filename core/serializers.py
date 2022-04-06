@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from rest_framework_jwt.settings import api_settings
 from django.utils.translation import ugettext_lazy as _
 
-from .models import Account, Item, Classes
+from .models import Account, Item, Classes, TimeStamp
 
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,6 +30,13 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
+        fields = '__all__'
+
+
+class TimeStampSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = TimeStamp
         fields = '__all__'
 
 class UserSerializerWithToken(serializers.ModelSerializer):

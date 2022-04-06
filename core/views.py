@@ -8,8 +8,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import Http404
-from .serializers import AccountSerializer, ItemSerializer, UserSerializer, UserSerializerWithToken, ClassesSerializer
-from .models import Account, Item, Classes
+from .serializers import AccountSerializer, ItemSerializer, UserSerializer, UserSerializerWithToken, ClassesSerializer, TimeStampSerializer
+from .models import Account, Item, Classes, TimeStamp
 
 class ItemViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.all()
@@ -31,6 +31,13 @@ class ClassesViewSet(viewsets.ModelViewSet):
         permissions.IsAuthenticated
     ]
     serializer_class = ClassesSerializer
+
+class TimeStampViewSet(viewsets.ModelViewSet):
+    queryset = TimeStamp.objects.all()
+    permissions_classes = [ 
+        permissions.IsAuthenticated
+    ]
+    serializer_class = TimeStampSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()

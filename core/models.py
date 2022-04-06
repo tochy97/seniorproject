@@ -35,3 +35,9 @@ class Classes(models.Model):
     sections = ListTextField(base_field=models.IntegerField(), size=10, max_length=(10 * 5), blank=True, null=True)
     number = models.IntegerField()
 
+class TimeStamp(models.Model):
+    
+    id = models.AutoField(primary_key=True) 
+    user    = models.IntegerField()
+    item_id = models.IntegerField()
+    checkout_time = models.DateTimeField(auto_now_add=True)
