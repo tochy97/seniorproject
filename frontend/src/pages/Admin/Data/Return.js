@@ -138,32 +138,17 @@ function Return() {
             console.log(account)
 
             let formData = new FormData()
-            let tempBucket = []
             let itemsCounts = {}
             let curItemsCounts = {}
+            let tempItems = []
 
             if (((account.items).length) > 0){
                 for (var i = 0; i < (account.items).length; i++) {
-                    formData.append('items', account.items[i])
-                    // console.log(account.items[i])
-                    itemsCounts[account.items[i]] = account.itemsCount[account.items[i]]
+                    tempItems.push(account.items[i])
                 }
             }
 
-            
             for (var i = 0; i < currentCart.length; i++) {
-                tempBucket.push(currentCart[i].id)
-
-                formData.append('items', currentCart[i].id)
-                console.log(currentCart[i].id)
-  
-                if (currentCart[i].id in itemsCounts){
-                    itemsCounts[currentCart[i].id] += 1
-                }
-                else{
-                    itemsCounts[currentCart[i].id] = 1
-                }
-                // console.log(currentCart[i].id)
 
                 if (currentCart[i].id in curItemsCounts){
                     curItemsCounts[currentCart[i].id] += 1
@@ -173,26 +158,56 @@ function Return() {
                 }
             }
             
-            console.log(itemsCounts)
             console.log(curItemsCounts)
+
             let cond=0
             uniqState.forEach((val, itemKey) => {
                 console.log(val)
-                if( val['available'] - curItemsCounts[val['id']]  >= 0 ){
+                if( val['available'] + curItemsCounts[val['id']]  <= val['total'] ){
                     console.log('Good')
+                    // console.log(val['available'] + curItemsCounts[val['id']])
+                    // console.log(Math.abs(curItemsCounts[val['id']] - account.itemsCount[val['id']]))
+                    if(  account.itemsCount[val['id']] - curItemsCounts[val['id']] == 0 ){
+                        // Then I can remove that item from their account
+
+                        // I need to pop that from the list
+                        tempItems.pop(val['id'])
+                    }
+                    
                     cond=1
                 }
                 else{
                     console.log('NOT GOOD')
+                    // maybe take away a item from the 
+                    removeCurrentItem(val['id'])
                     cond=0
                 }
             })
 
             if(cond){
+                console.log(tempItems)
+                if (tempItems.length > 0){
+                    formData.append('user', account.user)
+                    formData.append('myClass', account.myClass)
+                    formData.append('section', account.section)
+                    formData.append('team', account.team)
+                    formData.append('itemsCount', account.itemsCount)
+                    formData.append('instructor', account.instructor)
 
-                formData.append('itemsCount', JSON.stringify(itemsCounts))
+                    formData.append('items', tempItems)
+                    
+                }
+                else{
+                    formData.append('user', account.user)
+                    formData.append('myClass', account.myClass)
+                    formData.append('section', account.section)
+                    formData.append('team', account.team)
+                    formData.append('itemsCount', JSON.stringify(account.itemsCount))
+                    formData.append('instructor', account.instructor)
+                }
+                
 
-                axios.patch(`http://127.0.0.1:8000/accounts/${account.user}/`, formData, {
+                axios.put(`http://127.0.0.1:8000/accounts/${account.user}/`, formData, {
                         headers: {
                             'Content-Type': 'application/json',
                             Authorization: `JWT ${localStorage.getItem('token')}`,
@@ -208,7 +223,7 @@ function Return() {
                             timestamp.append('user', account.user)
                             timestamp.append('item_id', currentCart[i].id)
 
-                            axios.post(`http://127.0.0.1:8000/timestamps/`, timestamp, {
+                            axios.post(`ahttp://127.0.0.1:8000/timestamps/`, timestamp, {
                                     headers: {
                                         'Content-Type': 'application/json',
                                         Authorization: `JWT ${localStorage.getItem('token')}`,
@@ -235,7 +250,7 @@ function Return() {
                                 itemUpdateData.append("available", val['available'] - curItemsCounts[val['id']] )
                                 
                                 
-                                axios.patch(`http://127.0.0.1:8000/items/${val['id']}/`, itemUpdateData, {
+                                axios.patch(`ahttp://127.0.0.1:8000/items/${val['id']}/`, itemUpdateData, {
                                     headers: {
                                         'Content-Type': 'application/json',
                                         Authorization: `JWT ${localStorage.getItem('token')}`,
