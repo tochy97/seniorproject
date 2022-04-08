@@ -1,0 +1,1 @@
+export const SET_TIMESTAMP = "SET_TIMESTAMP"
