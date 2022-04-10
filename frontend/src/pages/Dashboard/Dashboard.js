@@ -49,6 +49,11 @@ function Dashboard() {
             link: "/admin/report",
             icon: faMagnifyingGlass
         },
+        {
+            title: "Return Items",
+            link: "/admin/return",
+            icon: faLayerGroup
+        }
     ]
     return (
         <Container style={{ width: '500px' }}>
