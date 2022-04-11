@@ -134,26 +134,33 @@ function Return(props) {
             console.log(currentCart)
             console.log(account)
 
-            let formData = new FormData()
             let tempBucket = []
             let itemsCounts = {}
             let curItemsCounts = {}
 
             if (((account.items).length) > 0){
                 for (var i = 0; i < (account.items).length; i++) {
-                    formData.append('items', account.items[i])
-                    // console.log(account.items[i])
                     itemsCounts[account.items[i]] = account.itemsCount[account.items[i]]
                 }
             }
 
             
             for (var i = 0; i < currentCart.length; i++) {
+                console.log(account.items);
                 tempBucket.push(currentCart[i].id)
-
-                formData.delete('items', currentCart[i].id)
                 console.log(currentCart[i].id)
+
                 itemsCounts[currentCart[i].id] -= 1
+                account.itemsCount[currentCart[i].id] -= 1
+                if (itemsCounts[currentCart[i].id] === 0) {
+                    console.log("Item has 0 checked out for user")
+                    for (var j = 0; j < account.items.length; j++) {
+                        if (account.items[j] === currentCart[i].id) {
+                            account.items.splice(j,1);
+                        }
+                    }
+                }
+                console.log(account.items);
 
                 if (currentCart[i].id in curItemsCounts){
                     curItemsCounts[currentCart[i].id] += 1
@@ -167,16 +174,19 @@ function Return(props) {
             console.log(curItemsCounts)
             let cond=1
             for (var k in itemsCounts) {
-                if (k < 0) {
+                console.log("potatochip")
+                console.log(itemsCounts[k]);
+                if (itemsCounts[k] < 0) {
+                    console.log("hit")
                     cond=0
                 }
             }
 
             if(cond){
                 console.log("Valid Return")
-                formData.append('itemsCount', JSON.stringify(itemsCounts))
+                console.log("Form data")
 
-                axios.patch(`http://127.0.0.1:8000/accounts/${account.user}/`, formData, {
+                axios.put(`http://127.0.0.1:8000/accounts/${account.user}/`, account, {
                         headers: {
                             'Content-Type': 'application/json',
                             Authorization: `JWT ${localStorage.getItem('token')}`,
@@ -185,25 +195,42 @@ function Return(props) {
                     .then(res => {
                         //DON"T  KNOW ABOUT THIS ONE
                         // Add the timestamp
-                        for (var i = 0; i < currentCart.length; i++) {
-
-                            let timestamp = new FormData()
-
-                            timestamp.append('user', account.user)
-                            timestamp.append('item_id', currentCart[i].id)
-
-                            axios.post(`http://127.0.0.1:8000/timestamps/`, timestamp, {
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        Authorization: `JWT ${localStorage.getItem('token')}`,
+                        axios.get(`http://127.0.0.1:8000/timestamps/`, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: `JWT ${localStorage.getItem('token')}`,
+                            }
+                        })
+                        .then(res => {
+                            console.log(res)
+                            console.log("test")
+                            for (var i = 0; i < currentCart.length; i++) {
+                                console.log("item")
+                                console.log(currentCart[i])
+                                for (var k = 0; k < res.data.length; k++) {
+                                    if (res.data[k].item_id === currentCart[i].id && res.data[k].user === account.user) {
+                                        var url = `http://127.0.0.1:8000/timestamps/`+res.data[k].id+`/`
+                                        console.log(url)
+                                        res.data[k].item_id = -1
+                                        axios.delete(url, {
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                Authorization: `JWT ${localStorage.getItem('token')}`,
+                                            }
+                                        })
+                                        .then(res => {
+                                            console.log("Deleting Timestamp")
+                                        })
+                                        break;
                                     }
-                                    }).catch(err => console.log(err))
-
-                        }
+                                }
+                            }
+                        })
 
                         // Now I need to update the item counts
                         
                         setShouldIDisplayConfirmation(true)
+                        console.log("currentCart")
                         console.log(currentCart)
                         console.log(uniqState)
                         console.log(itemsCounts)
@@ -233,10 +260,12 @@ function Return(props) {
                     
                     })
                         .catch(err => console.log(err))
+            } else {
+                console.log("Invalid Return")
             }
         }
         else{
-            console.log("Invalid Return")
+            
             prompEnterUser(true)
         }
         
