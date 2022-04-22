@@ -3,6 +3,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 
 import { setLoading } from '../../../redux/actionCreators/itemActionCreators';
 import { fetchItems, singleFetch } from '../../../redux/actionCreators/itemActionCreators';
+import { singleFetchTimestamp } from '../../../redux/actionCreators/timestampActionCreator';
 import { fetchUsers, logoutUser } from '../../../redux/actionCreators/authActionCreator';
 import { setError } from '../../../redux/actionCreators/authActionCreator';
 import { fetchAccount } from '../../../redux/actionCreators/accountActionCreators';
@@ -48,6 +49,7 @@ function Return() {
             if (currentUser === bucket[i].username){
                 
                 dispatch(fetchAccount(bucket[i].id))
+                dispatch(singleFetchTimestamp())
                 setSessionStatus(true)
                 setCheckoutTo(bucket[i])
                 closeStartCheckout(false)
@@ -191,7 +193,7 @@ function Return() {
                     formData.append('myClass', account.myClass)
                     formData.append('section', account.section)
                     formData.append('team', account.team)
-                    formData.append('itemsCount', account.itemsCount)
+                    formData.append('itemsCount', JSON.stringify(account.itemsCount))
                     formData.append('instructor', account.instructor)
 
                     formData.append('items', tempItems)
@@ -215,7 +217,7 @@ function Return() {
                     })
                     .then(res => {
 
-                        // Add the timestamp
+                        // Remove the timestamp
                         for (var i = 0; i < currentCart.length; i++) {
 
                             let timestamp = new FormData()
@@ -223,12 +225,12 @@ function Return() {
                             timestamp.append('user', account.user)
                             timestamp.append('item_id', currentCart[i].id)
 
-                            axios.post(`ahttp://127.0.0.1:8000/timestamps/`, timestamp, {
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        Authorization: `JWT ${localStorage.getItem('token')}`,
-                                    }
-                                    }).catch(err => console.log(err))
+                            // axios.post(`ahttp://127.0.0.1:8000/timestamps/${}/`, timestamp, {
+                            //         headers: {
+                            //             'Content-Type': 'application/json',
+                            //             Authorization: `JWT ${localStorage.getItem('token')}`,
+                            //         }
+                            //         }).catch(err => console.log(err))
 
                         }
 
@@ -250,7 +252,7 @@ function Return() {
                                 itemUpdateData.append("available", val['available'] - curItemsCounts[val['id']] )
                                 
                                 
-                                axios.patch(`ahttp://127.0.0.1:8000/items/${val['id']}/`, itemUpdateData, {
+                                axios.patch(`http://127.0.0.1:8000/items/${val['id']}/`, itemUpdateData, {
                                     headers: {
                                         'Content-Type': 'application/json',
                                         Authorization: `JWT ${localStorage.getItem('token')}`,
@@ -281,7 +283,7 @@ function Return() {
         
     };
 
-    const { isLoggedIn, username, isLoading, items, user, account } = useSelector(
+    const { isLoggedIn, username, isLoading, items, user, account, timestamps} = useSelector(
         (state) =>({
             isLoggedIn:state.auth.isLoggedIn, 
             username:state.auth.username,
@@ -289,6 +291,8 @@ function Return() {
             user:state.auth.user, 
             items:state.item.items,
             account:state.account.data,
+            timestamp:state.timestamps
+            
     }), shallowEqual);
 
     useEffect(() => {
